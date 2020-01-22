@@ -1,0 +1,2 @@
+# POS
+ Simplify your sales operations and eliminate your headaches with the solution from FYA Media House. For 10 years, we have been devoted to advancing POS management systems and that culminate our latest advance. This system integrates all of the functions a modern sales team needs to manage staff, please clients, track inventory, market their business, and analyze and report on their performance.
