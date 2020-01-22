@@ -1,0 +1,4039 @@
+<?php require_once("setting.fya"); ?>
+<?php require_once 'incFirewall.fya'; ?> 
+<?php   
+$menu=array();
+?>
+
+						<div id="page-sidebar">
+							<div id="header-logo" class="logo-bg">
+								<a href="Dashboard.php" class="logo-content-big" title="My Pet Story ">NailSpa<span>POS App</span></a> <a href="Dashboard.php" class="logo-content-small" title="NailSpa">NailSpa <span>POS App</span></a> <a id="close-sidebar" href="#" title="Close sidebar"><i class="glyph-icon icon-outdent"></i></a>
+							</div>  
+
+							
+							
+<?//=$strAdminFullName?>
+						
+		   <?php
+				$DB = Connect();
+				$sql = "SELECT  AdminType, AdminFullName , AdminRoleID from tblAdmin where Status='0' and AdminFullName='$strAdminFullName'";
+				$RS = $DB->query($sql); 
+				if ($RS->num_rows > 0) 
+				{	
+					while($row = $RS->fetch_assoc())
+					{
+						$AdminFullName = $row["AdminFullName"];
+						$AdminRoleID = $row["AdminRoleID"];
+						$AdminType = $row["AdminType"];
+						$verify = EncodeQ($AdminType);
+						$Status = $row["Status"];
+					}
+					
+					if($AdminRoleID =='36')
+					{
+					?>
+						
+							<div class="scroll-sidebar" ><!--style="overflow-y: scroll; overflow-x: hidden;">-->
+								<ul id="sidebar-menu">
+									<!-- <li class="header"><span>Overview</span></li> -->
+									<li><a href="Dashboard.php" title="Admin Dashboard"><i class="glyph-icon icon-linecons-tv"></i> <span>Dashboard</span></a></li>
+									
+                                   
+                                 <!--  <div class="example-box-wrapper"><button class="btn btn-default btn-md" data-toggle="modal" data-target="#myModal">Day Closing</button>
+                                       <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                           <div class="modal-dialog">
+                                               <div class="modal-content">
+                                                   <div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                                       <h4 class="modal-title">Modal title</h4></div>
+                                                   <div class="modal-body">
+                                                       <p>Modal content here ...</p>
+                                                   </div>
+                                                   <div class="modal-footer"><button type="button" class="btn btn-default" data-dismiss="modal">Close</button> <button type="button" class="btn btn-primary">Save changes</button></div>
+                                               </div>
+                                           </div>
+                                       </div>
+                                   </div>-->
+									<li class="header"><span>Manage</span></li>
+								   <!--  <li><a href="ManageAdmin.php" title="Elements"><i class="glyph-icon icon-linecons-fire"></i> <span>ADMIN</span></a></li>
+									<li><a href="ManageAdminRoles.php" title="Elements"><i class="glyph-icon icon-linecons-fire"></i> <span>Manage Admin Role</span></a></li> -->
+									
+									<!-- <li><a href="ManagePost.php" title="Elements"><i class="glyph-icon icon-linecons-cup"></i> <span>POST</span></a></li> -->
+									
+									<li><a href="ManageAdmin.php" title="ADMIN"><i class="glyph-icon icon-linecons-lightbulb"></i><span>ADMIN</span></a>
+										<div class="sidebar-submenu">
+											<ul>
+												<li><a href="ManageAdmin.php" title="Admin"><span>Manage Admin</span></a></li>
+												<li><a href="ManageAdminMenuRoles.php" title="Master Admin Menu"><span>Connect Menu Roles</span></a></li>
+												<li><a href="ManageAdminMenuMasters.php" title="Master Admin Menu"><span>Manage Master Admin Menu</span></a></li>
+												<li><a href="ManageAdminRoles.php" title="Master Admin Menu"><span>Manage Admin Roles
+												</span></a></li>
+											</ul>	
+										</div>
+									</li>
+									<!--<li><a href="ManageAdminMenuMasters.php" title="ADMIN"><i class="glyph-icon icon-linecons-lightbulb"></i><span>ADMIN Menu Role</span></a>
+										<div class="sidebar-submenu">
+											<ul>
+												<li><a href="ManageAdminMenuMasters.php" title="Master Admin Menu"><span>Manage Master Admin Menu</span></a></li>	
+													
+												<!-- <li><a href="ManageAdminMenuRoles.php" title="Buttons"><span>Manage Admin Menu Roles</span></a></li> 
+											</ul>	
+										</div>
+									</li>-->
+									
+									<li><a href="" title="Inventory"><i class="glyph-icon icon-linecons-doc"></i><span>Inventory</span></a>
+										<div class="sidebar-submenu">
+											<ul>
+<?php 
+											$DB = Connect();
+											$sql_name = select("distinct MenuMasterID","tblAdminMenuRole","RoleID='36'");
+											foreach($sql_name as $val)
+											{
+												//print_r($val);
+												$menu[]=$val['MenuMasterID'];
+											}
+											for($i=0;$i<count($menu);$i++)
+											{
+												$sql_named = select("distinct SubmenuName"," tblAdminMenuMasters","MenuMasterID='".$menu[$i] ."'");
+												
+
+												if($sql_named[0]['SubmenuName']=='Manage Product Master')
+												{
+?>
+													<li><a href="ManageProductsMaster.php" title="Product"><span>Manage Product Master</span></a></li>
+<?php
+												}
+												if($sql_named[0]['SubmenuName']=='Manage Brand/Vendor Master')
+												{
+?>
+													<li><a href="ManageBrandMaster.php" title="Product"><span>Manage Brand/Vendor Master</span></a></li>
+<?php
+												}
+											 	if($sql_named[0]['SubmenuName']=='View Product Store Wise')
+														{
+															?>
+																<li><a href="ManageProductStoreWise.php" title="Product"><span>View Product Store Wise</span></a></li>
+															<?php
+														}
+												// if($sql_named[0]['SubmenuName']=="Manage Product Stock")
+												// {
+// ?>
+																<!--<li><a href="ManageProductsStock.php" title="Stock"><span>Manage Product Stock</span></a></li>-->
+<?php
+												// }
+											}
+														/* $sql_namep = select("distinct MenuMasterID","tblAdminMenuRole","RoleID='".$val['RoleID']."'");
+													foreach($sql_namep as $valp)
+														{
+															$sql_named = select("distinct SubmenuName"," tblAdminMenuMasters","MenuMasterID='".$valp['MenuMasterID'] ."'");
+														}
+														if($sql_named[0]['SubmenuName']=='Manage Customer')
+														{
+															?>
+																	<li><a href="ManageCustomers.php" title="Buttons"><span>Manage Customers</span></a></li>	
+															<?php
+														} */
+											$DB->close();
+												unset($menu);
+											?>
+												<!-- <li><a href="ManageAdminRoles.php" title="Buttons"><span>Manage Admin Role</span></a></li>									
+												<li><a href="ManageAdminMenuMasters.php" title="Buttons"><span>Manage Master Admin Menu</span></a></li>	
+												<li><a href="ManageAdminMenuRoles.php" title="Buttons"><span>Manage Admin Menu Roles</span></a></li> -->
+											</ul>	
+										</div>
+									</li>
+									<li><a href="" title="Services"><i class="glyph-icon icon-linecons-graduation-cap"></i><span>Services</span></a>
+										<div class="sidebar-submenu">
+											<ul>
+											<?php 
+											$DB = Connect();
+											$sql_name = select("distinct MenuMasterID","tblAdminMenuRole","RoleID='36'");
+											foreach($sql_name as $val)
+											{
+												//print_r($val);
+												$menu[]=$val['MenuMasterID'];
+											}
+											for($i=0;$i<count($menu);$i++)
+											{
+												$sql_named = select("distinct SubmenuName"," tblAdminMenuMasters","MenuMasterID='".$menu[$i] ."'");
+													if($sql_named[0]['SubmenuName']=="Manage Services")
+														{
+															?>
+																<li><a href="ManageServices.php" title="Buttons"><span>Manage Services</span></a></li>
+															<?php
+														}
+														
+																if($sql_named[0]['SubmenuName']=="Manage Categories")
+														{
+															?>
+																	<li><a href="ManageCategories.php" title="Buttons"><span>Manage Categories</span></a></li>
+															<?php
+														}
+											}
+														/* $sql_namep = select("distinct MenuMasterID","tblAdminMenuRole","RoleID='".$val['RoleID']."'");
+													foreach($sql_namep as $valp)
+														{
+															$sql_named = select("distinct SubmenuName"," tblAdminMenuMasters","MenuMasterID='".$valp['MenuMasterID'] ."'");
+														}
+														if($sql_named[0]['SubmenuName']=='Manage Customer')
+														{
+															?>
+																	<li><a href="ManageCustomers.php" title="Buttons"><span>Manage Customers</span></a></li>	
+															<?php
+														} */
+											$DB->close();
+												unset($menu);
+											?>
+												<!-- <li><a href="ManageProductsStock.php" title="Buttons"><span>Manage Product Stock</span></a></li> -->
+												<!-- <li><a href="ManageAdminRoles.php" title="Buttons"><span>Manage Admin Role</span></a></li>									
+												<li><a href="ManageAdminMenuMasters.php" title="Buttons"><span>Manage Master Admin Menu</span></a></li>	
+												<li><a href="ManageAdminMenuRoles.php" title="Buttons"><span>Manage Admin Menu Roles</span></a></li> -->
+											</ul>	
+										</div>
+									</li>
+									<li><a href="#" title="Manage Employee"><i class="glyph-icon icon-linecons-user"></i><span>Employee Management</span></a>
+										<div class="sidebar-submenu">
+											<ul>
+											<?php 
+											$DB = Connect();
+											$sql_name = select("distinct MenuMasterID","tblAdminMenuRole","RoleID='36'");
+											foreach($sql_name as $val)
+											{
+												//print_r($val);
+												$menu[]=$val['MenuMasterID'];
+											}
+											for($i=0;$i<count($menu);$i++)
+											{
+												$sql_named = select("distinct SubmenuName"," tblAdminMenuMasters","MenuMasterID='".$menu[$i] ."'");
+														if($sql_named[0]['SubmenuName']=="Register Employee")
+														{
+															?>
+															<li><a href="ManageEmployees.php" title="Register"><span>Register</span></a></li>
+															<?php
+														}
+														
+															if($sql_named[0]['SubmenuName']=="Manage Attendance")
+														{
+															?>
+																<li><a href="ManageAttendance.php" title="Attendance"><span>Employees Attendance</span></a></li>	
+															<?php
+														}
+														if($sql_named[0]['SubmenuName']=="Manage Employee Categories")
+														{
+															?>
+																<li><a href="ManageMasterEmployeeCategory.php" title="Attendance"><span>Employee Categories</span></a></li>	
+															<?php
+														}
+														if($sql_named[0]['SubmenuName']=="Manage Employee Target")
+														{
+															?>
+																<li><a href="ManageEmployeeTarget.php" title="Attendance"><span>Manage Employee Target</span></a></li>	
+																<li><a href="ManageEmployeeWeekoff.php" title="Attendance"><span>Manage Weekoff</span></a></li>	
+															<?php
+														}
+											}
+												
+														/* $sql_namep = select("distinct MenuMasterID","tblAdminMenuRole","RoleID='".$val['RoleID']."'");
+													foreach($sql_namep as $valp)
+														{
+															$sql_named = select("distinct SubmenuName"," tblAdminMenuMasters","MenuMasterID='".$valp['MenuMasterID'] ."'");
+														}
+														if($sql_named[0]['SubmenuName']=='Manage Customer')
+														{
+															?>
+																	<li><a href="ManageCustomers.php" title="Buttons"><span>Manage Customers</span></a></li>	
+															<?php
+														} */
+											$DB->close();
+												unset($menu);
+											?>
+												<!--<li><a href="#" title="Report"><span>Employee Report</span></a></li>-->
+												<!--<li><a href="#" title="Admin Role"><span>Employees With Admin Roles</span></a></li>-->
+																		
+												<!--<li><a href="ManageAdminMenuMasters.php" title="Buttons"><span>Manage Master Admin Menu</span></a></li>	
+												<li><a href="ManageAdminMenuRoles.php" title="Buttons"><span>Manage Admin Menu Roles</span></a></li>-->
+											</ul>	
+										</div>
+									</li>
+									<!--<li><a href="" title="Billing"><i class="glyph-icon icon-linecons-paper-plane"></i><span>Billing</span></a>
+										<div class="sidebar-submenu">
+											<ul>
+												<li><a href="#" title="Buttons"><span>Manage Invoice</span></a></li>
+																					
+												<li><a href="ManageAdminMenuMasters.php" title="Buttons"><span>Manage Master Admin Menu</span></a></li>	
+												<li><a href="ManageAdminMenuRoles.php" title="Buttons"><span>Manage Admin Menu Roles</span></a></li> 
+											</ul>	
+										</div>
+									</li>-->
+									<li><a href="" title="SMS"><i class="glyph-icon icon-linecons-star"></i><span>Customers</span></a>
+										<div class="sidebar-submenu">
+											<ul>
+											<?php 
+											$DB = Connect();
+											$sql_name = select("distinct MenuMasterID","tblAdminMenuRole","RoleID='36'");
+											foreach($sql_name as $val)
+											{
+												//print_r($val);
+												$menu[]=$val['MenuMasterID'];
+											}
+											for($i=0;$i<count($menu);$i++)
+											{
+												$sql_named = select("distinct SubmenuName"," tblAdminMenuMasters","MenuMasterID='".$menu[$i] ."'");
+														if($sql_named[0]['SubmenuName']=="Manage Membership")
+														{
+															?>
+																		<li><a href="ManageMemberships.php" title="Buttons"><span>Manage Membership</span></a></li>
+															<?php
+														}
+														if($sql_named[0]['SubmenuName']=="View Details of customers")
+														{
+															?>
+																		<li><a href="viewcustomers.php" title="Buttons"><span>View Details of Customers</span></a></li>
+																		<li><a href="45AppointmentConfirm.php" title="Buttons"><span>45 Minute Reminder Appt Confirm</span></a></li>
+																		
+															<?php
+														}
+														
+														
+														
+														
+													
+											}
+												
+														/* $sql_namep = select("distinct MenuMasterID","tblAdminMenuRole","RoleID='".$val['RoleID']."'");
+													foreach($sql_namep as $valp)
+														{
+															$sql_named = select("distinct SubmenuName"," tblAdminMenuMasters","MenuMasterID='".$valp['MenuMasterID'] ."'");
+														}
+														if($sql_named[0]['SubmenuName']=='Manage Customer')
+														{
+															?>
+																	<li><a href="ManageCustomers.php" title="Buttons"><span>Manage Customers</span></a></li>	
+															<?php
+														} */
+														
+														
+												
+												
+											
+											$DB->close();
+												unset($menu);
+											?>
+											</ul>	
+										</div>
+									</li>
+									<li><a href="" title="SMS"><i class="glyph-icon icon-linecons-note"></i><span>Customer Appointment</span></a>
+										<div class="sidebar-submenu">
+											<ul>
+											<?php 
+											$DB = Connect();
+											$sql_name = select("distinct MenuMasterID","tblAdminMenuRole","RoleID='36'");
+											foreach($sql_name as $val)
+											{
+												//print_r($val);
+												$menu[]=$val['MenuMasterID'];
+											}
+											for($i=0;$i<count($menu);$i++)
+											{
+												$sql_named = select("distinct SubmenuName"," tblAdminMenuMasters","MenuMasterID='".$menu[$i] ."'");
+														if($sql_named[0]['SubmenuName']=="Manage Customer")
+														{
+															?>
+																	<li><a href="ManageCustomers.php" title="Buttons"><span>Manage Customers</span></a></li>	
+															<?php
+														}
+														
+														if($sql_named[0]['SubmenuName']=="Manage Appointments")
+														{
+															?>
+																		<li><a href="ManageAppointments.php" title="Buttons"><span>Today's Appointments</span></a></li>
+															<?php
+														}
+															if($sql_named[0]['SubmenuName']=="All Appointments")
+														{
+															?>
+																		<li><a href="ViewAppointments.php" title="Buttons"><span>All Appointments</span></a></li>
+															<?php
+														}
+														if($sql_named[0]['SubmenuName']=="Quick Appointment")
+														{
+															?>
+																		<li><a href="ManageCustomers2.php" title="Buttons"><span>Quick Appointments</span></a></li>
+															<?php
+														}
+											}
+												
+														/* $sql_namep = select("distinct MenuMasterID","tblAdminMenuRole","RoleID='".$val['RoleID']."'");
+													foreach($sql_namep as $valp)
+														{
+															$sql_named = select("distinct SubmenuName"," tblAdminMenuMasters","MenuMasterID='".$valp['MenuMasterID'] ."'");
+														}
+														if($sql_named[0]['SubmenuName']=='Manage Customer')
+														{
+															?>
+																	<li><a href="ManageCustomers.php" title="Buttons"><span>Manage Customers</span></a></li>	
+															<?php
+														} */
+														
+														
+												
+												
+											
+											$DB->close();
+												unset($menu);
+											?>
+											</ul>	
+										</div>
+									</li>
+									<li><a href="" title="SMS"><i class="glyph-icon icon-linecons-database"></i><span>POS Invoices</span></a>
+										<div class="sidebar-submenu">
+											<ul>
+											<?php 
+											$DB = Connect();
+											$sql_name = select("distinct MenuMasterID","tblAdminMenuRole","RoleID='36'");
+											foreach($sql_name as $val)
+											{
+												//print_r($val);
+												$menu[]=$val['MenuMasterID'];
+											}
+											for($i=0;$i<count($menu);$i++)
+											{
+												$sql_named = select("distinct SubmenuName"," tblAdminMenuMasters","MenuMasterID='".$menu[$i] ."'");
+														if($sql_named[0]['SubmenuName']=="Invoices")
+														{
+															?>
+																	<li><a href="appointment_invoice.php" title="Stores"><span>View Invoice</span></a></li>
+															<?php
+														}
+														if($sql_named[0]['SubmenuName']=="Reconciliation Pending Invoices")
+														{
+															?>
+																	<li><a href="InvoiceApproval.php" title="Stores"><span>Reconciliation Pending Invoices</span></a></li>
+															<?php
+														}
+														if($sql_named[0]['SubmenuName']=="View Delete Invoices")
+														{
+															?>
+																	<li><a href="ManageDeletedInvoices.php" title="View Delete Invoices"><span>View Delete Invoices</span></a></li>
+															<?php
+														}
+														if($sql_named[0]['SubmenuName']=="Sales Reconciliation")
+														{
+															?>
+																	<li><a href="Reconciliation.php" title="Sales Reconciliation"><span>Reconciliation</span></a></li>
+															<?php
+														}
+											}
+														/* $sql_namep = select("distinct MenuMasterID","tblAdminMenuRole","RoleID='".$val['RoleID']."'");
+													foreach($sql_namep as $valp)
+														{
+															$sql_named = select("distinct SubmenuName"," tblAdminMenuMasters","MenuMasterID='".$valp['MenuMasterID'] ."'");
+														}
+														if($sql_named[0]['SubmenuName']=='Manage Customer')
+														{
+															?>
+																	<li><a href="ManageCustomers.php" title="Buttons"><span>Manage Customers</span></a></li>	
+															<?php
+														} */
+											$DB->close();
+												unset($menu);
+											?>
+											
+											</ul>	
+										</div>
+									</li>
+									<li><a href="" title="SMS"><i class="glyph-icon icon-linecons-money"></i><span>Expenses</span></a>
+										<div class="sidebar-submenu">
+											<ul>
+											<?php 
+											$DB = Connect();
+											$sql_name = select("distinct MenuMasterID","tblAdminMenuRole","RoleID='36'");
+											// print_r($sql_name);
+											foreach($sql_name as $val)
+											{
+												$menu[]=$val['MenuMasterID'];												
+											}
+											for($i=0;$i<count($menu);$i++)
+											{
+												$sql_named = select("distinct SubmenuName"," tblAdminMenuMasters","MenuMasterID='".$menu[$i] ."'");
+												if($sql_named[0]['SubmenuName']=='Balance')
+												{
+													?>
+															<li><a href="ManageExpensesBalance.php" title="Buttons"><span>Petty Cash Balance</span></a></li>	
+													<?php
+												}
+												
+												
+												if($sql_named[0]['SubmenuName']=='Cash/CC Report')
+												{
+													?>
+														<li><a href="ReportCashCC.php" title="Buttons"><span>Cash/CC Report</span></a></li>	
+													<?php
+												}
+												
+											}
+											$DB->close();
+											unset($menu);	
+											?>
+											
+											</ul>	
+										</div>
+									</li>
+									<li><a href="" title="SMS"><i class="glyph-icon icon-linecons-paper-plane"></i><span>Analytics & Reports</span></a>
+										<div class="sidebar-submenu">
+											<ul>
+											<?php 
+											$DB = Connect();
+											$sql_name = select("distinct MenuMasterID","tblAdminMenuRole","RoleID='36'");
+											foreach($sql_name as $val)
+											{
+												//print_r($val);
+												$menu[]=$val['MenuMasterID'];
+											}
+											for($i=0;$i<count($menu);$i++)
+											{
+												$sql_named = select("distinct SubmenuName"," tblAdminMenuMasters","MenuMasterID='".$menu[$i] ."'");
+												if($sql_named[0]['SubmenuName']=='Customer Feedback')
+												{
+?>
+													<li><a href="CustomerFeedBack.php" title="CustomerFeedBack"><span>Customer Rating & Feedback</span></a></li>	
+<?php
+												}
+												if($sql_named[0]['SubmenuName']=='Client Conversion On Appointment')
+												{
+?>
+													<li><a href="ReportClientConversionOnAppointment.php" title="ReportClientConversionOnAppointment"><span>Client Conversion On Appointment</span></a></li>	
+<?php
+												}
+												if($sql_named[0]['SubmenuName']=='Daily Attendance')
+												{
+?>
+													<li><a href="AttendanceReport.php" title="AttendanceReport"><span>Daily Employee Attendance</span></a></li>	
+													<li><a href="ReportEmployeeLeaves.php" title="AttendanceReport"><span>Employee Leave</span></a></li>	
+													
+<?php
+												}
+												if($sql_named[0]['SubmenuName']=='Appointment Delay')
+												{
+?>
+													<li><a href="ReportAppointmentDelayed.php" title="ReportAppointmentDelayed"><span>Appointment Delayed</span></a></li>	
+<?php
+												}
+												if($sql_named[0]['SubmenuName']=='Daily Sales Audit')
+												{
+?>
+													<li><a href="ReportDailySalesAudit.php" title="ReportDailySalesAudit"><span>Daily Sales Audit</span></a></li>	
+<?php
+												}
+												if($sql_named[0]['SubmenuName']=='Bill Reconciliation')
+												{
+?>
+													<li><a href="ReportBillReconciliation.php" title="ReportBillReconciliation"><span>Bill Reconciliation</span></a></li>	
+<?php
+												}
+												if($sql_named[0]['SubmenuName']=="Average Revenue per client")
+												{
+													?>
+															<li><a href="ReportAverageRevenueperclient.php" title="Average Revenue per client"><span>Average Revenue per client</span></a></li>
+													<?php
+												}
+												if($sql_named[0]['SubmenuName']=='Petty Cash Report')
+												{
+?>
+													<li><a href="ReportPettyCash.php" title="Sales"><span>Petty Cash Report</span></a></li>	
+<?php
+												}
+												if($sql_named[0]['SubmenuName']=="Content (Pics & Videos) Recieved Per Salon")
+												{
+													?>
+															<li><a href="ReportContentReceivedPerSalon.php" title="Content (Pics & Videos) Recieved Per Salon"><span>Content Recieved Per Salon</span></a></li>
+													<?php
+													
+												}
+												if($sql_named[0]['SubmenuName']=="Product Orders")
+												{
+													?>
+															<li><a href="ReportProductOrders.php" title="Product Orders"><span>Product Orders</span></a></li>
+													<?php
+													
+												}
+												if($sql_named[0]['SubmenuName']=="Product Consumption")
+												{
+													?>
+															<li><a href="ReportProductConsumption.php" title="Product Consumption"><span>Product Consumption</span></a></li>
+													<?php
+														
+
+
+												}
+													if($sql_named[0]['SubmenuName']=="Vendor Order")
+												{
+													?>
+															<li><a href="ReportVendorOrder.php" title="Vendor Order"><span>Vendor Order</span></a></li>
+													<?php
+														
+
+
+												}
+													if($sql_named[0]['SubmenuName']=="Report Membership")
+												{
+													?>
+															<li><a href="ReportMembership.php" title="Report Membership"><span>Membership</span></a></li>
+													<?php
+														
+
+
+												}
+												if($sql_named[0]['SubmenuName']=='Outstanding payment')
+												{
+													?>
+															<li><a href="ReportPayments.php" title="Outstanding Payment"><span>Outstanding Payment</span></a></li>	
+													<?php
+												}
+												if($sql_named[0]['SubmenuName']=='Sales')
+												{
+													?>
+															<li><a href="ReportSale.php" title="Report Sale"><span>Report Sale</span></a></li>
+                                                            <li><a href="ReportCustomerRetentionAnalysis.php" title="Report Customer RetentionAnalysis"><span>Customer Retention</span></a></li>
+															<li><a href="CommissionAnalysisUpdateCumulative.php" title="Employee Commission Cumulative"><span>Employee Commission Cumulative</span></a></li>
+															<li><a href="ReportServiceSalesCategoryBase.php" title="Service Sale Category"><span>Report Service Sale Category</span></a></li>
+															<li><a href="ReportServiceAnalysis.php" title="Service Analysis"><span>Report Service Analysis</span></a></li>		
+                                                            <li><a href="ReportEmployeePerformance.php" title="Service Analysis"><span>Report Employee Performance</span></a></li>	
+															<li><a href="ReportNonVisiters.php" title="Non Visiters"><span>Report Non Visiters</span></a></li>
+                                                            <li><a href="ReportDiscount.php" title="Report Discount"><span>Report Discount</span></a></li>															
+													<?php
+												}
+												
+												/* if($sql_named[0]['SubmenuName']=='Customers Report')
+												{
+?>
+													<li><a href="ReportCustomerData.php" title="Customers"><span>Customers Report</span></a></li>	
+<?php
+												}
+												if($sql_named[0]['SubmenuName']=='Sales Report')
+												{
+?>
+													<li><a href="ReportServiceSales.php" title="Sales"><span>Sales Report</span></a></li>	
+<?php
+												}
+												if($sql_named[0]['SubmenuName']=='Petty Cash Report')
+												{
+?>
+													<li><a href="ReportPettyCash.php" title="Sales"><span>Petty Cash Report</span></a></li>	
+<?php
+												}
+												if($sql_named[0]['SubmenuName']=="Sales By Service Category")
+												{
+													?>
+														<li><a href="ReportServiceSales.php" title="Sales By Service Category"><span>Sales By Service Category</span></a></li>
+													<?php
+												}
+												if($sql_named[0]['SubmenuName']=='Discount Report')
+												{
+?>
+													<li><a href="ReportDiscount.php" title="Discount"><span>Discount Report</span></a></li>	
+<?php
+												}
+												
+												if($sql_named[0]['SubmenuName']=='Employee Sale Achieved')
+												{
+?>
+													<li><a href="EmployeeSaleAchieve
+													d.php" title="Employee Sale Achieved"><span>Employee Sale Achieved</span></a></li>	
+<?php
+												} */
+												if($sql_named[0]['SubmenuName']=='Employee Commission')
+												{
+?>
+													<li><a href="CommissionAnalysisUpdate.php" title="Employee Commission"><span>Employee Commission</span></a></li>	
+<?php
+												}
+												/* if($sql_named[0]['SubmenuName']=='Membership Sold')
+												{
+?>
+													<li><a href="ReportMembershipSold.php" title="Void Bills"><span>Membership Sold</span></a></li>	
+<?php
+												}
+												if($sql_named[0]['SubmenuName']=="Non Visiting Customers")
+												{
+													?>
+																<li><a href="ReportNonVisitingCustomers.php" title="Buttons"><span>Non Visiting Customers</span></a></li>
+													<?php
+												}
+												if($sql_named[0]['SubmenuName']=="New Clients")
+												{
+													?>
+																<li><a href="ManageNewClients.php" title="Buttons"><span>New Clients</span></a></li>
+													<?php
+												}
+												if($sql_named[0]['SubmenuName']=="Gift Voucher Sold")
+												{
+													?>
+																<li><a href="ReportGiftVoucherSold.php" title="Buttons"><span>Gift Voucher Sold</span></a></li>
+													<?php
+												}
+												if($sql_named[0]['SubmenuName']=="Offer Sold")
+												{
+													?>
+																<li><a href="ReportOfferMarketingSold.php" title="Buttons"><span>Offer Sold</span></a></li>
+													<?php
+												}
+												if($sql_named[0]['SubmenuName']=="Offer Wise Redemptions")
+												{
+													?>
+															<li><a href="ReportOfferWiseRedemptions.php" title="Offer Wise Redemptions"><span>Offer Wise Redemptions</span></a></li>
+													<?php
+												}
+												if($sql_named[0]['SubmenuName']=="Customer Retention Analysis")
+												{
+													?>
+															<li><a href="ReportCustomerRetentionAnalysis.php" title="Customer Retention Analysis"><span>Customer Retention Analysis</span></a></li>
+													<?php
+												}
+												if($sql_named[0]['SubmenuName']=="Average Revenue per client")
+												{
+													?>
+															<li><a href="ReportAverageRevenueperclient.php" title="Average Revenue per client"><span>Average Revenue per client</span></a></li>
+													<?php
+												}
+												if($sql_named[0]['SubmenuName']=="Employee Attendance")
+												{
+													?>
+														<li><a href="ReportEmployeeAttendance.php" title="Employee Attendance"><span>Employee Attendance</span></a></li>	
+													<?php
+												}
+												if($sql_named[0]['SubmenuName']=='Appointment Delayed')
+												{
+													?>
+														<li><a href="ReportAppointmentDelayed.php" title="Appointment Delayed"><span>Appointment Delayed</span></a></li>	
+													<?php
+												}
+												 */
+												
+												// if($sql_named[0]['SubmenuName']=='View Discount Report')
+												// {
+?>
+													<!--0<li><a href="ReportDiscount.php" title="Buttons"><span>View Discount Report</span></a></li>-->
+													
+<?php
+												// }
+												
+											}
+											$DB->close();
+												unset($menu);
+												
+											?>
+												<li><a href="ReportAvgClientSpentTime.php" title="Buttons"><span>Average Client Time Spent</span></a></li>
+											</ul>	
+										</div>
+									</li>
+									<li><a href="" title="SMS"><i class="glyph-icon icon-linecons-globe"></i><span>Marketing</span></a>
+										<div class="sidebar-submenu">
+											<ul>
+											
+											<?php 
+											$DB = Connect();
+											$sql_name = select("distinct MenuMasterID","tblAdminMenuRole","RoleID='36'");
+											foreach($sql_name as $val)
+											{
+												//print_r($val);
+												$menu[]=$val['MenuMasterID'];
+											}
+											for($i=0;$i<count($menu);$i++)
+											{
+												$sql_named = select("distinct SubmenuName"," tblAdminMenuMasters","MenuMasterID='".$menu[$i] ."'");
+												if($sql_named[0]['SubmenuName']=="New Offers")
+												{
+?>
+													<li><a href="ManageOffers.php" title="New Offers"><span>New Offers</span></a></li>
+<?php
+												}
+												if($sql_named[0]['SubmenuName']=="Manage Events")
+												{
+?>
+															
+													<li><a href="ManageEvents.php" title="Manage Events"><span>Manage Events</span></a></li>
+<?php
+												}
+												if($sql_named[0]['SubmenuName']=='Manage Events')
+												{
+													?>
+															<li><a href="ManageGiftVoucherAmount.php" title="Buttons"><span>Manage Gift Voucher Amount</span></a></li>	
+													<?php
+												}
+												if($sql_named[0]['SubmenuName']=='Manage Events')
+												{
+													?>
+															<li><a href="ManagePackages.php" title="Buttons"><span>Manage Packages</span></a></li>	
+													<?php
+												}
+												// if($sql_named[0]['SubmenuName']=="SMS")
+												// {
+?>
+													<!--<li><a href="#" title="SMS"><span>SMS</span></a></li>-->
+<?php
+												// }
+												if($sql_named[0]['SubmenuName']=="Social Links")
+												{
+?>
+															
+													<li><a href="ManageSocial.php" title="Social Links"><span>Social Links</span></a></li>
+<?php
+												}
+												if($sql_named[0]['SubmenuName']=="Save Videos")
+												{
+?>
+													<li><a href="ManageMarketingVideo.php" title="Upload Videos"><span>Save Videos</span></a></li>
+<?php
+												}
+												if($sql_named[0]['SubmenuName']=="Save Images")
+												{
+?>
+															
+													<li><a href="ManageMarketingImg.php" title="Upload Videos"><span>Save Images</span></a></li>
+<?php
+												}
+												if($sql_named[0]['SubmenuName']=="SMS Approval")
+												{
+?>
+															
+													<li><a href="SMSApproval.php" title="Upload Videos"><span>SMS Approval</span></a></li>
+<?php
+												}
+												if($sql_named[0]['SubmenuName']=="Web Content")
+												{
+?>
+															
+													<li><a href="ManageWebContentApproval.php" title="Web Content"><span>Web Content</span></a></li>
+<?php
+												}
+											}
+												
+														/* $sql_namep = select("distinct MenuMasterID","tblAdminMenuRole","RoleID='".$val['RoleID']."'");
+													foreach($sql_namep as $valp)
+														{
+															$sql_named = select("distinct SubmenuName"," tblAdminMenuMasters","MenuMasterID='".$valp['MenuMasterID'] ."'");
+														}
+														if($sql_named[0]['SubmenuName']=='Manage Customer')
+														{
+															?>
+																	<li><a href="ManageCustomers.php" title="Buttons"><span>Manage Customers</span></a></li>	
+															<?php
+														} */
+														
+														
+											
+											$DB->close();
+											unset($menu);	
+											?>
+													<!--	<li><a href="#" title="Promotions"><span>Promotions</span></a></li>-->
+												
+											</ul>	
+										</div>
+									</li>
+									<!--<li><a href="" title="SMS"><i class="glyph-icon icon-linecons-wallet"></i><span>Analytics & Reports</span></a>
+										<div class="sidebar-submenu">
+											<ul>
+												<li><a href="#" title="Customer Report"><span>Customer Report</span></a></li>
+												<li><a href="#" title="Employee"><span>Employee</span></a></li>
+												<li><a href="#" title="Promotions"><span>Promotions</span></a></li>
+												<li><a href="#" title="Sales"><span>Sales</span></a></li>
+												<li><a href="#" title="Offers"><span>Offers</span></a></li>
+												<li><a href="#" title="Membership"><span>Membership</span></a></li>
+												<li><a href="#" title="Product"><span>Product</span></a></li>
+											</ul>	
+										</div>
+									</li>-->
+									<li><a href="" title="SMS"><i class="glyph-icon icon-linecons-shop"></i><span>Stores</span></a>
+										<div class="sidebar-submenu">
+											<ul>
+											
+											
+												<?php 
+											$DB = Connect();
+											$sql_name = select("distinct MenuMasterID","tblAdminMenuRole","RoleID='36'");
+											foreach($sql_name as $val)
+											{
+												//print_r($val);
+												$menu[]=$val['MenuMasterID'];
+											}
+											for($i=0;$i<count($menu);$i++)
+											{
+												$sql_named = select("distinct SubmenuName"," tblAdminMenuMasters","MenuMasterID='".$menu[$i] ."'");
+															if($sql_named[0]['SubmenuName']=="Manage Stores")
+														{
+															?>
+																	
+											<li><a href="ManageStores.php" title="Stores"><span>Manage Stores</span></a></li>
+															<?php
+														}
+														
+																if($sql_named[0]['SubmenuName']=="Manage Targets for Stores")
+														{
+															?>
+																	
+											<li><a href="ManageStoresTarget.php" title="Stores"><span>View Target for Stores</span></a></li>
+											<li><a href="ManageTarget.php" title="Stores"><span>Manage Target</span></a></li>
+											
+															<?php
+														}
+											}
+														/* $sql_namep = select("distinct MenuMasterID","tblAdminMenuRole","RoleID='".$val['RoleID']."'");
+													foreach($sql_namep as $valp)
+														{
+															$sql_named = select("distinct SubmenuName"," tblAdminMenuMasters","MenuMasterID='".$valp['MenuMasterID'] ."'");
+														}
+														if($sql_named[0]['SubmenuName']=='Manage Customer')
+														{
+															?>
+																	<li><a href="ManageCustomers.php" title="Buttons"><span>Manage Customers</span></a></li>	
+															<?php
+														} */
+											$DB->close();
+												unset($menu);
+											?>
+											</ul>	
+										</div>
+									</li>
+								<li><a href="" title="SMS"><i class="glyph-icon icon-linecons-tag"></i><span>Taxes</span></a>
+										<div class="sidebar-submenu">
+											<ul>
+											
+											<?php 
+											$DB = Connect();
+											$sql_name = select("distinct MenuMasterID","tblAdminMenuRole","RoleID='36'");
+											foreach($sql_name as $val)
+											{
+												//print_r($val);
+												$menu[]=$val['MenuMasterID'];
+											}
+											for($i=0;$i<count($menu);$i++)
+											{
+												$sql_named = select("distinct SubmenuName"," tblAdminMenuMasters","MenuMasterID='".$menu[$i] ."'");
+														if($sql_named[0]['SubmenuName']=="Total Charges")
+														{
+															?>
+																	
+										<li><a href="ManageCharges.php" title="Stores"><span>Total Charges</span></a></li>
+															<?php
+														}
+														
+														
+														if($sql_named[0]['SubmenuName']=="Manage Charge Names")
+														{
+															?>
+																	
+										<li><a href="ManageChargeNames.php" title="Stores"><span>Manage Charge Names</span></a></li>
+															<?php
+														}
+																if($sql_named[0]['SubmenuName']=="Manage Charge Sets")
+														{
+															?>
+																	
+									<li><a href="ManageChargeSets.php" title="Stores"><span>Manage Charge Sets</span></a></li>
+															<?php
+														}	
+											}
+												
+														/* $sql_namep = select("distinct MenuMasterID","tblAdminMenuRole","RoleID='".$val['RoleID']."'");
+													foreach($sql_namep as $valp)
+														{
+															$sql_named = select("distinct SubmenuName"," tblAdminMenuMasters","MenuMasterID='".$valp['MenuMasterID'] ."'");
+														}
+														if($sql_named[0]['SubmenuName']=='Manage Customer')
+														{
+															?>
+																	<li><a href="ManageCustomers.php" title="Buttons"><span>Manage Customers</span></a></li>	
+															<?php
+														} */
+											$DB->close();
+												unset($menu);
+											?>
+												
+											</ul>	
+										</div>
+								</li>
+									<!--<li><a href="" title="SMS"><i class="glyph-icon icon-linecons-wallet"></i><span>Operations</span></a>
+										<div class="sidebar-submenu">
+											<ul>
+											<?php 
+											// $DB = Connect();
+											// $sql_name = select("distinct MenuMasterID","tblAdminMenuRole","RoleID='36'");
+											// foreach($sql_name as $val)
+											// {
+												// print_r($val);
+												// $menu[]=$val['MenuMasterID'];
+											// }
+											// for($i=0;$i<count($menu);$i++)
+											// {
+												// $sql_named = select("distinct SubmenuName"," tblAdminMenuMasters","MenuMasterID='".$menu[$i] ."'");
+														// if($sql_named[0]['SubmenuName']=="Manage Operation")
+														// {
+															?>
+																	
+								<li><a href="ManageOperationsMasters.php" title="Stores"><span>Manage Operation</span></a></li>
+															<?php
+														// }
+													
+											// }
+														/* $sql_namep = select("distinct MenuMasterID","tblAdminMenuRole","RoleID='".$val['RoleID']."'");
+													foreach($sql_namep as $valp)
+														{
+															$sql_named = select("distinct SubmenuName"," tblAdminMenuMasters","MenuMasterID='".$valp['MenuMasterID'] ."'");
+														}
+														if($sql_named[0]['SubmenuName']=='Manage Customer')
+														{
+															?>
+																	<li><a href="ManageCustomers.php" title="Buttons"><span>Manage Customers</span></a></li>	
+															<?php
+														} */
+											// $DB->close();
+											// unset($menu);	
+											?>
+											</ul>	
+										</div>
+									</li>-->
+									<!--<li><a href="" title="SMS"><i class="glyph-icon icon-linecons-wallet"></i><span>Menu & Pages</span></a>
+										<div class="sidebar-submenu">
+											<ul>
+												<?php 
+											// $DB = Connect();
+											// $sql_name = select("distinct MenuMasterID","tblAdminMenuRole","RoleID='36'");
+											// foreach($sql_name as $val)
+											// {
+												// print_r($val);
+												// $menu[]=$val['MenuMasterID'];
+											// }
+											// for($i=0;$i<count($menu);$i++)
+											// {
+												// $sql_named = select("distinct SubmenuName"," tblAdminMenuMasters","MenuMasterID='".$menu[$i] ."'");
+												// if($sql_named[0]['SubmenuName']=="Manage Menu")
+												// {
+// ?>	
+													// <li><a href="ManageMenuMaster.php" title="Stores"><span>Manage Menu</span></a></li>
+// <?php
+												// }
+												// if($sql_named[0]['SubmenuName']=="Manage Pages")
+												// {
+// ?>	
+													// <li><a href="ManagePages.php" title="Stores"><span>Manage Pages</span></a></li>
+// <?php
+												// }
+												// if($sql_named[0]['SubmenuName']=="Manage Slider")
+												// {
+// ?>	
+													// <li><a href="ManageSlider.php" title="Stores"><span>Manage Slider</span></a></li>
+// <?php
+												// }
+														
+											// }
+														/* $sql_namep = select("distinct MenuMasterID","tblAdminMenuRole","RoleID='".$val['RoleID']."'");
+													foreach($sql_namep as $valp)
+														{
+															$sql_named = select("distinct SubmenuName"," tblAdminMenuMasters","MenuMasterID='".$valp['MenuMasterID'] ."'");
+														}
+														if($sql_named[0]['SubmenuName']=='Manage Customer')
+														{
+															?>
+																	<li><a href="ManageCustomers.php" title="Buttons"><span>Manage Customers</span></a></li>	
+															<?php
+														} */
+											// $DB->close();
+												// unset($menu);
+											?>
+										
+											
+											
+											
+																				
+											</ul>	
+										</div>
+									</li>-->
+										<!--<li><a href="" title="SMS"><i class="glyph-icon icon-linecons-wallet"></i><span>Total Orders</span></a>
+										<div class="sidebar-submenu">
+											<ul>
+											
+												<?php 
+											// $DB = Connect();
+											// $sql_name = select("distinct MenuMasterID","tblAdminMenuRole","RoleID='36'");
+											// foreach($sql_name as $val)
+											// {
+												// print_r($val);
+												// $menu[]=$val['MenuMasterID'];
+											// }
+											// for($i=0;$i<count($menu);$i++)
+											// {
+												// $sql_named = select("distinct SubmenuName"," tblAdminMenuMasters","MenuMasterID='".$menu[$i] ."'");
+															// if($sql_named[0]['SubmenuName']=="Manage Orders")
+														// {
+															?>
+																	
+									<li><a href="vieworders.php" title="Stores"><span>Manage Orders</span></a></li>
+															<?php
+														// }
+											// }
+														/* $sql_namep = select("distinct MenuMasterID","tblAdminMenuRole","RoleID='".$val['RoleID']."'");
+													foreach($sql_namep as $valp)
+														{
+															$sql_named = select("distinct SubmenuName"," tblAdminMenuMasters","MenuMasterID='".$valp['MenuMasterID'] ."'");
+														}
+														if($sql_named[0]['SubmenuName']=='Manage Customer')
+														{
+															?>
+																	<li><a href="ManageCustomers.php" title="Buttons"><span>Manage Customers</span></a></li>	
+															<?php
+														} */
+											// $DB->close();
+												// unset($menu);
+											?>
+									
+											
+											
+											</ul>	
+										</div>
+									</li>-->
+									<!--<li><a href="" title="SMS"><i class="glyph-icon icon-linecons-wallet"></i><span>Total Stores Wise Orders</span></a>
+										<div class="sidebar-submenu">
+											<ul>
+											
+													<?php 
+											// $DB = Connect();
+											// $sql_name = select("distinct MenuMasterID","tblAdminMenuRole","RoleID='36'");
+											// foreach($sql_name as $val)
+											// {
+												// print_r($val);
+												// $menu[]=$val['MenuMasterID'];
+											// }
+											// for($i=0;$i<count($menu);$i++)
+											// {
+												// $sql_named = select("distinct SubmenuName"," tblAdminMenuMasters","MenuMasterID='".$menu[$i] ."'");
+														// if($sql_named[0]['SubmenuName']=="Stores Names")
+														// {
+															// $sql_stores = select("*","tblStores","1");
+															// foreach($sql_stores as $val)
+															// {
+																//echo $val[StoreID];
+																// $getUID = EncodeQ($val[StoreID]);
+																//echo $getUID;
+																?>
+																	<li><a href="storewiseorders.php?storeid='<?//=$getUID ?>'" title="Stores"><span><?php //echo $val[StoreName]; ?></span></a></li>
+																<?php
+															// }
+														// }
+														
+											
+														
+														
+													
+											// }
+												
+														/* $sql_namep = select("distinct MenuMasterID","tblAdminMenuRole","RoleID='".$val['RoleID']."'");
+													foreach($sql_namep as $valp)
+														{
+															$sql_named = select("distinct SubmenuName"," tblAdminMenuMasters","MenuMasterID='".$valp['MenuMasterID'] ."'");
+														}
+														if($sql_named[0]['SubmenuName']=='Manage Customer')
+														{
+															?>
+																	<li><a href="ManageCustomers.php" title="Buttons"><span>Manage Customers</span></a></li>	
+															<?php
+														} */
+														
+														
+												
+												
+											
+											// $DB->close();
+												// unset($menu);
+											?>
+									
+											
+											
+										
+											
+												
+											
+											</ul>	
+										</div>
+									</li>-->
+									<!--<li><a href="" title="SMS"><i class="glyph-icon icon-linecons-wallet"></i><span>Widgets</span></a>
+										<div class="sidebar-submenu">
+											<ul>
+												<li><a href="ManageWidgetMasters.php" title="Stores"><span>Manage Widgets</span></a></li>
+											</ul>	
+										</div>
+									</li>-->
+									
+									<li><a href="TransferNewCenter.php" title="SMS"><i class="glyph-icon icon-linecons-paper-plane"></i><span>New Center Addition</span></a></li>
+									
+									<li><a href="" title="SMS"><i class="glyph-icon icon-bar-chart"></i><span>Graph</span></a>
+												<div class="sidebar-submenu">
+													<ul>	
+													<?php 
+													$DB = Connect();
+													$sql_name = select("distinct MenuMasterID","tblAdminMenuRole","RoleID='39'");
+													foreach($sql_name as $val)
+													{
+														//print_r($val);
+														$menu[]=$val['MenuMasterID'];
+													}
+													for($i=0;$i<count($menu);$i++)
+													{
+														$sql_named = select("distinct SubmenuName"," tblAdminMenuMasters","MenuMasterID='".$menu[$i] ."'");
+														if($sql_named[0]['SubmenuName']=='Customer Feedback')
+														{
+															?>
+																	
+																	<li><a href="GraphServiceCategoryAll.php" title="Buttons"><span>Monthly Service Category Revenue</span></a></li>
+																	
+																	<li><a href="GraphServiceRevenueAll.php" title="Buttons"><span>Monthly Service Wise Revenue </span></a></li>	
+	                                                                <li><a href="GraphCustomerRetention.php" title="Buttons"><span>Monthly Customer Retention Analysis </span></a></li>																		
+															<?php
+														}
+													
+													}
+													$DB->close();
+													unset($menu);
+													?>
+													
+													</ul>	
+												</div>
+											</li>
+								</ul>
+							</div>
+					<?php	
+					}
+					else if($AdminRoleID =='2')
+					{
+						//Marketing Dashboard
+?>					
+						<div class="scroll-sidebar">
+								<ul id="sidebar-menu">
+									<!-- <li class="header"><span>Overview</span></li> -->
+									<?php
+									$DB = Connect();
+									?>
+									<li><a href="Marketing-Dashboard.php" title="Dashboard"><i class="glyph-icon icon-linecons-tv"></i> <span>Dashboard<?//=$strAdminID?></span></a></li>
+									<li class="header"><span>Manage</span></li>								
+									
+									<li><a href="" title="SMS"><i class="glyph-icon icon-linecons-globe"></i><span>Marketing</span></a>
+										<div class="sidebar-submenu">
+											<ul>
+<?php 
+											
+											$sql_name = select("distinct MenuMasterID","tblAdminMenuRole","RoleID='2'");
+											foreach($sql_name as $val)
+											{
+												//print_r($val);
+												$menu[]=$val['MenuMasterID'];
+											}
+											for($i=0;$i<count($menu);$i++)
+											{
+												$sql_named = select("distinct SubmenuName"," tblAdminMenuMasters","MenuMasterID='".$menu[$i] ."'");
+												if($sql_named[0]['SubmenuName']=="Save Videos")
+												{
+?>
+															
+													<li><a href="ManageMarketingVideo.php" title="Upload Videos"><span>Save Videos</span></a></li>
+<?php
+												}
+												if($sql_named[0]['SubmenuName']=="Save Images")
+												{
+?>
+															
+													<li><a href="ManageMarketingImg.php" title="Upload Videos"><span>Save Images</span></a></li>
+<?php
+												}
+												if($sql_named[0]['SubmenuName']=="Web Content")
+												{
+?>
+															
+													<li><a href="ManageWebContentApproval.php" title="Web Content"><span>Web Content</span></a></li>
+<?php
+												}
+												if($sql_named[0]['SubmenuName']=="App Content")
+												{
+?>
+															
+													<li><a href="ManageAppContentApproval.php" title="Upload Videos"><span>App Content</span></a></li>
+<?php
+												}
+												if($sql_named[0]['SubmenuName']=="SMS Approval")
+												{
+?>
+															
+													<li><a href="SMSApproval.php" title="SMS Approval"><span>SMS Approval</span></a></li>
+													<li><a href="ManageEvents.php" title="Manage Events"><span>Manage Events</span></a></li>
+<?php
+												}
+														
+											}
+												
+														/* $sql_namep = select("distinct MenuMasterID","tblAdminMenuRole","RoleID='".$val['RoleID']."'");
+													foreach($sql_namep as $valp)
+														{
+															$sql_named = select("distinct SubmenuName"," tblAdminMenuMasters","MenuMasterID='".$valp['MenuMasterID'] ."'");
+														}
+														if($sql_named[0]['SubmenuName']=='Manage Customer')
+														{
+															?>
+																	<li><a href="ManageCustomers.php" title="Buttons"><span>Manage Customers</span></a></li>	
+															<?php
+														} */
+														
+														
+												
+												
+											
+											$DB->close();
+											unset($menu);	
+											?>
+											
+														<!--<li><a href="#" title="Promotions"><span>Promotions</span></a></li>-->
+												
+											</ul>	
+										</div>
+									</li>
+									<li><a href="" title="SMS"><i class="glyph-icon icon-linecons-paper-plane"></i><span>Analytics & Reports</span></a>
+										<div class="sidebar-submenu">
+											<ul>
+											<?php 
+											$DB = Connect();
+											$sql_name = select("distinct MenuMasterID","tblAdminMenuRole","RoleID='2'");
+											foreach($sql_name as $val)
+											{
+												//print_r($val);
+												$menu[]=$val['MenuMasterID'];
+											}
+											for($i=0;$i<count($menu);$i++)
+											{
+												$sql_named = select("distinct SubmenuName"," tblAdminMenuMasters","MenuMasterID='".$menu[$i] ."'");
+												if($sql_named[0]['SubmenuName']=="Content (Pics & Videos) Recieved Per Salon")
+												{
+													?>
+															<li><a href="ReportContentReceivedPerSalon.php" title="Content (Pics & Videos) Recieved Per Salon"><span>Content Recieved Per Salon</span></a></li>
+															<li><a href="ReportDiscount.php" title="Report Discount"><span>Report Discount</span></a></li>
+													<?php
+													
+												}
+												//print_r($sql_named);
+												/* if($sql_named[0]['SubmenuName']=='Customers Report')
+												{
+?>
+													<li><a href="ReportCustomerData.php" title="Customers"><span>Customers Report</span></a></li>	
+<?php
+												}
+											if($sql_named[0]['SubmenuName']=="New Clients")
+												{
+													?>
+																<li><a href="ManageNewClients.php" title="Buttons"><span>New Clients</span></a></li>
+													<?php
+												}
+												if($sql_named[0]['SubmenuName']=="Content Recieved")
+												{
+												
+													?>
+																<li><a href="ReportContentReceived.php" title="Buttons"><span>Content Recieved</span></a></li>
+													<?php
+												}
+												if($sql_named[0]['SubmenuName']=="Promotional sms")
+												{
+												
+													?>
+																<li><a href="ReportPromotionalSms.php" title="Buttons"><span>Promotional sms</span></a></li>
+													<?php
+												}
+												if($sql_named[0]['SubmenuName']=="Client Aquisition Analysis Spend wise")
+												{
+													?>
+																<li><a href="ReportClientAquisitionSpent.php" title="Client Aquisition Analysis Spend wise"><span>Client Aquisition Analysis</span></a></li>
+													<?php
+												} */
+												// if($sql_named[0]['SubmenuName']=='View Discount Report')
+												// {
+?>
+													<!--0<li><a href="ReportDiscount.php" title="Buttons"><span>View Discount Report</span></a></li>-->
+<?php
+												// }
+											}
+											$DB->close();
+												unset($menu);
+											?>
+												
+											</ul>	
+										</div>
+									</li>
+									<li><a href="" title="SMS"><i class="glyph-icon icon-linecons-note"></i><span>Customer Appointment</span></a>
+										<div class="sidebar-submenu">
+											<ul>
+											<?php 
+											$DB = Connect();
+											$sql_name = select("distinct MenuMasterID","tblAdminMenuRole","RoleID='36'");
+											foreach($sql_name as $val)
+											{
+												//print_r($val);
+												$menu[]=$val['MenuMasterID'];
+											}
+											for($i=0;$i<count($menu);$i++)
+											{
+												$sql_named = select("distinct SubmenuName"," tblAdminMenuMasters","MenuMasterID='".$menu[$i] ."'");
+													if($sql_named[0]['SubmenuName']=="Manage Appointments")
+														{
+															?>
+																		<li><a href="ManageAppointments.php" title="Buttons"><span>Today's Appointments</span></a></li>
+															<?php
+														}
+															if($sql_named[0]['SubmenuName']=="All Appointments")
+														{
+															?>
+																		<li><a href="ViewAppointments.php" title="Buttons"><span>All Appointments</span></a></li>
+															<?php
+														}
+														
+											}
+												
+														/* $sql_namep = select("distinct MenuMasterID","tblAdminMenuRole","RoleID='".$val['RoleID']."'");
+													foreach($sql_namep as $valp)
+														{
+															$sql_named = select("distinct SubmenuName"," tblAdminMenuMasters","MenuMasterID='".$valp['MenuMasterID'] ."'");
+														}
+														if($sql_named[0]['SubmenuName']=='Manage Customer')
+														{
+															?>
+																	<li><a href="ManageCustomers.php" title="Buttons"><span>Manage Customers</span></a></li>	
+															<?php
+														} */
+														
+														
+												
+												
+											
+											$DB->close();
+												unset($menu);
+											?>
+											</ul>	
+										</div>
+									</li>
+								</ul>
+							</div>
+<?php							
+					}
+					else if($AdminRoleID =='1')
+					{
+?>					
+						<div class="scroll-sidebar">
+								<ul id="sidebar-menu">
+									<!-- <li class="header"><span>Overview</span></li> -->
+									<li><a href="Marketing-Dashboard.php" title="Dashboard"><i class="glyph-icon icon-linecons-tv"></i> <span>Dashboard</span></a></li>
+									<li class="header"><span>Manage</span></li>								
+									
+									<li><a href="" title="SMS"><i class="glyph-icon icon-linecons-star"></i><span>Customers</span></a>
+										<div class="sidebar-submenu">
+											<ul>
+											
+												
+											<?php 
+											$DB = Connect();
+											$sql_name = select("distinct MenuMasterID","tblAdminMenuRole","RoleID='1'");
+											foreach($sql_name as $val)
+											{
+												//print_r($val);
+												$menu[]=$val['MenuMasterID'];
+											}
+											for($i=0;$i<count($menu);$i++)
+											{
+												$sql_named = select("distinct SubmenuName"," tblAdminMenuMasters","MenuMasterID='".$menu[$i] ."'");
+												
+												if($sql_named[0]['SubmenuName']=='All Appointments')
+														{
+															?>
+																	<li><a href="ViewAppointments.php" title="Buttons"><span>All Appointments</span></a></li>
+															<?php
+														}
+											
+														if($sql_named[0]['SubmenuName']=='Manage Appointments')
+														{
+															?>
+																	<li><a href="ManageAppointments.php" title="Buttons"><span>Today's Appointments</span></a></li>
+															<?php
+														}
+														if($sql_named[0]['SubmenuName']=='Manage Membership')
+														{
+															?>
+																	<!--<li><a href="ManageMemberships.php" title="Buttons"><span>Manage Membership</span></a></li>-->
+															<?php
+														}
+											}
+												
+														/* $sql_namep = select("distinct MenuMasterID","tblAdminMenuRole","RoleID='".$val['RoleID']."'");
+													foreach($sql_namep as $valp)
+														{
+															$sql_named = select("distinct SubmenuName"," tblAdminMenuMasters","MenuMasterID='".$valp['MenuMasterID'] ."'");
+														}
+														if($sql_named[0]['SubmenuName']=='Manage Customer')
+														{
+															?>
+																	<li><a href="ManageCustomers.php" title="Buttons"><span>Manage Customers</span></a></li>	
+															<?php
+														} */											
+											$DB->close();
+												
+												unset($menu);
+											?>
+											</ul>	
+										</div>
+									</li>
+								</ul>
+							</div>
+<?php							
+					}
+					
+					elseif($AdminRoleID =='4')
+					{
+						?>
+						<div class="scroll-sidebar">
+								<ul id="sidebar-menu">
+									<!-- <li class="header"><span>Overview</span></li> -->
+									<li><a href="Operation-Dashboard.php" title="Dashboard"><i class="glyph-icon icon-linecons-tv"></i> <span>Dashboard</span></a></li>
+									<li class="header"><span>Manage</span></li>	
+									<!--<li><a href="" title="Inventory"><i class="glyph-icon icon-linecons-doc"></i><span>Inventory</span></a>
+										<div class="sidebar-submenu">
+											<ul>
+<?php 
+											$DB = Connect();
+											$sql_name = select("distinct MenuMasterID","tblAdminMenuRole","RoleID='4'");
+											// foreach($sql_name as $val)
+											// {
+												// print_r($val);
+												// $menu[]=$val['MenuMasterID'];
+											// }
+											// for($i=0;$i<count($menu);$i++)
+											// {
+												// $sql_named = select("distinct SubmenuName"," tblAdminMenuMasters","MenuMasterID='".$menu[$i] ."'");
+												
+
+												// if($sql_named[0]['SubmenuName']=='Manage Product Master')
+												// {
+?>
+													<li><a href="ManageProductsMaster.php" title="Product"><span>Manage Product Master</span></a></li>
+<?php
+												// }
+												// if($sql_named[0]['SubmenuName']=='Manage Brand/Vendor Master')
+												// {
+?>
+													<li><a href="ManageBrandMaster.php" title="Product"><span>Manage Brand/Vendor Master</span></a></li>
+<?php
+												// }
+											 	// if($sql_named[0]['SubmenuName']=='View Product Store Wise')
+														// {
+															?>
+																<li><a href="ManageProductStoreWise.php" title="Product"><span>View Product Store Wise</span></a></li>
+															<?php
+														// }
+												// if($sql_named[0]['SubmenuName']=="Manage Product Stock")
+												// {
+// ?>
+																<!--<li><a href="ManageProductsStock.php" title="Stock"><span>Manage Product Stock</span></a></li>-->
+<?php
+												// }
+											// }
+														/* $sql_namep = select("distinct MenuMasterID","tblAdminMenuRole","RoleID='".$val['RoleID']."'");
+													foreach($sql_namep as $valp)
+														{
+															$sql_named = select("distinct SubmenuName"," tblAdminMenuMasters","MenuMasterID='".$valp['MenuMasterID'] ."'");
+														}
+														if($sql_named[0]['SubmenuName']=='Manage Customer')
+														{
+															?>
+																	<li><a href="ManageCustomers.php" title="Buttons"><span>Manage Customers</span></a></li>	
+															<?php
+														} */
+											// $DB->close();
+												// unset($menu);
+											?>
+												<!-- <li><a href="ManageAdminRoles.php" title="Buttons"><span>Manage Admin Role</span></a></li>									
+												<li><a href="ManageAdminMenuMasters.php" title="Buttons"><span>Manage Master Admin Menu</span></a></li>	
+												<li><a href="ManageAdminMenuRoles.php" title="Buttons"><span>Manage Admin Menu Roles</span></a></li> -->
+										<!--	</ul>	
+										</div>
+									</li>-->
+																	
+									<li><a href="#" title="Manage Employee"><i class="glyph-icon icon-linecons-user"></i><span>Employee Management</span></a>
+										<div class="sidebar-submenu">
+											<ul>
+											<?php 
+											$DB = Connect();
+											$sql_name = select("distinct MenuMasterID","tblAdminMenuRole","RoleID='4'");
+											foreach($sql_name as $val)
+											{
+												//print_r($val);
+												$menu[]=$val['MenuMasterID'];
+											}
+											for($i=0;$i<count($menu);$i++)
+											{
+												$sql_named = select("distinct SubmenuName"," tblAdminMenuMasters","MenuMasterID='".$menu[$i] ."'");
+												if($sql_named[0]['SubmenuName']=="Manage Attendance")
+												{
+													?>
+														<li><a href="ManageAttendance.php" title="Attendance"><span>Employees Attendance</span></a></li>	
+													<?php
+												}
+											}
+												
+														/* $sql_namep = select("distinct MenuMasterID","tblAdminMenuRole","RoleID='".$val['RoleID']."'");
+													foreach($sql_namep as $valp)
+														{
+															$sql_named = select("distinct SubmenuName"," tblAdminMenuMasters","MenuMasterID='".$valp['MenuMasterID'] ."'");
+														}
+														if($sql_named[0]['SubmenuName']=='Manage Customer')
+														{
+															?>
+																	<li><a href="ManageCustomers.php" title="Buttons"><span>Manage Customers</span></a></li>	
+															<?php
+														} */
+											$DB->close();
+												unset($menu);
+											?>
+												<!--<li><a href="#" title="Report"><span>Employee Report</span></a></li>-->
+												<!--<li><a href="#" title="Admin Role"><span>Employees With Admin Roles</span></a></li>-->
+																		
+												<!--<li><a href="ManageAdminMenuMasters.php" title="Buttons"><span>Manage Master Admin Menu</span></a></li>	
+												<li><a href="ManageAdminMenuRoles.php" title="Buttons"><span>Manage Admin Menu Roles</span></a></li>-->
+											</ul>	
+										</div>
+									</li>
+									
+									<li><a href="" title="SMS"><i class="glyph-icon icon-linecons-note"></i><span>Customer Appointment</span></a>
+										<div class="sidebar-submenu">
+											<ul>
+											<?php 
+											$DB = Connect();
+											$sql_name = select("distinct MenuMasterID","tblAdminMenuRole","RoleID='4'");
+											foreach($sql_name as $val)
+											{
+												//print_r($val);
+												$menu[]=$val['MenuMasterID'];
+											}
+											for($i=0;$i<count($menu);$i++)
+											{
+												$sql_named = select("distinct SubmenuName"," tblAdminMenuMasters","MenuMasterID='".$menu[$i] ."'");
+														if($sql_named[0]['SubmenuName']=="Manage Appointments")
+														{
+															?>
+																		<li><a href="ManageAppointments.php" title="Buttons"><span>Today's Appointments</span></a></li>
+															<?php
+														}
+														if($sql_named[0]['SubmenuName']=="Customer Feedback")
+														{
+															?>
+																		<li><a href="CustomerFeedBack.php" title="Buttons"><span>Customer FeedBack</span></a></li>
+															<?php
+														}
+														if($sql_named[0]['SubmenuName']=="All Appointments")
+														{
+															?>
+																		<li><a href="ViewAppointments.php" title="Buttons"><span>All Appointments</span></a></li>
+																		<li><a href="45AppointmentConfirm.php" title="Buttons"><span>45 Minute Reminder Appt Confirm</span></a></li>
+															<?php
+														}
+											}
+											
+											$DB->close();
+												unset($menu);
+											?>
+											</ul>	
+										</div>
+									</li>
+									
+									<li><a href="" title="SMS"><i class="glyph-icon icon-linecons-money"></i><span>Expenses</span></a>
+										<div class="sidebar-submenu">
+											<ul>
+											<?php 
+											$DB = Connect();
+											$sql_name = select("distinct MenuMasterID","tblAdminMenuRole","RoleID='4'");
+											foreach($sql_name as $val)
+											{
+												//print_r($val);
+												$menu[]=$val['MenuMasterID'];
+											}
+											for($i=0;$i<count($menu);$i++)
+											{
+												$sql_named = select("distinct SubmenuName"," tblAdminMenuMasters","MenuMasterID='".$menu[$i] ."'");
+												if($sql_named[0]['SubmenuName']=='Balance')
+												{
+													?>
+															<li><a href="ManageExpensesBalance.php" title="Buttons"><span>Balance</span></a></li>	
+													<?php
+												}
+											}
+														/* $sql_namep = select("distinct MenuMasterID","tblAdminMenuRole","RoleID='".$val['RoleID']."'");
+													foreach($sql_namep as $valp)
+														{
+															$sql_named = select("distinct SubmenuName"," tblAdminMenuMasters","MenuMasterID='".$valp['MenuMasterID'] ."'");
+														}
+														if($sql_named[0]['SubmenuName']=='Manage Customer')
+														{
+															?>
+																	<li><a href="ManageCustomers.php" title="Buttons"><span>Manage Customers</span></a></li>	
+															<?php
+														} */
+											$DB->close();
+											unset($menu);
+											?>
+											</ul>	
+										</div>
+									</li>
+									
+									<li><a href="#" title="POS Invoices"><i class="glyph-icon icon-linecons-database"></i><span>POS Invoices</span></a>
+										<div class="sidebar-submenu">
+											<ul>
+											<?php 
+											$DB = Connect();
+											$sql_name = select("distinct MenuMasterID","tblAdminMenuRole","RoleID='4'");
+											foreach($sql_name as $val)
+											{
+												//print_r($val);
+												$menu[]=$val['MenuMasterID'];
+											}
+											for($i=0;$i<count($menu);$i++)
+											{
+												$sql_named = select("distinct SubmenuName"," tblAdminMenuMasters","MenuMasterID='".$menu[$i] ."'");
+													if($sql_named[0]['SubmenuName']=="Reconciliation Pending Invoices")
+													{
+														?>
+															<li><a href="InvoiceApproval.php" title="Attendance"><span>Reconciliation Pending Invoices</span></a></li>	
+														<?php
+													}
+													if($sql_named[0]['SubmenuName']=='View Outstanding Invoices')
+													{
+														?>
+																<li><a href="OutstandingPayment.php" title="Buttons"><span>View Outstanding</span></a></li>	
+														<?php
+													}
+											}
+											$DB->close();
+											unset($menu);
+											?>
+											</ul>	
+										</div>
+									</li>
+									<li><a href="" title="SMS"><i class="glyph-icon icon-linecons-megaphone"></i><span>Orders</span>
+<?php
+											$selp=select("count(ID)","tblOrder","Status='1'");
+											$CNT=$selp[0]['count(ID)'];
+											if($CNT>0)
+											{
+?>
+												<span class="bs-label badge-yellow">NEW</span>
+<?php
+											}
+?>						
+										</a>
+										<div class="sidebar-submenu">
+											<ul>
+											<?php 
+											$DB = Connect();
+											$sql_name = select("distinct MenuMasterID","tblAdminMenuRole","RoleID='4'");
+											foreach($sql_name as $val)
+											{
+												//print_r($val);
+												$menu[]=$val['MenuMasterID'];
+											}
+											for($i=0;$i<count($menu);$i++)
+											{
+												$sql_named = select("distinct SubmenuName"," tblAdminMenuMasters","MenuMasterID='".$menu[$i] ."'");
+												if($sql_named[0]['SubmenuName']=='Manage Storewise Orders')
+												{
+													?>
+															<li><a href="ManageHOOrders.php" title="Buttons"><span>Order Request</span></a></li>	
+													<?php
+												}
+												if($sql_named[0]['SubmenuName']=='Manage New Orders')
+												{
+													?>
+															<li><a href="ManageNewOrders.php" title="Buttons"><span>Manage New Orders</span></a></li>	
+													<?php
+												}
+											}
+														/* $sql_namep = select("distinct MenuMasterID","tblAdminMenuRole","RoleID='".$val['RoleID']."'");
+													foreach($sql_namep as $valp)
+														{
+															$sql_named = select("distinct SubmenuName"," tblAdminMenuMasters","MenuMasterID='".$valp['MenuMasterID'] ."'");
+														}
+														if($sql_named[0]['SubmenuName']=='Manage Customer')
+														{
+															?>
+																	<li><a href="ManageCustomers.php" title="Buttons"><span>Manage Customers</span></a></li>	
+															<?php
+														} */
+											$DB->close();
+											unset($menu);
+											?>
+											</ul>	
+										</div>
+									</li>
+									<li><a href="" title="SMS"><i class="glyph-icon icon-linecons-attach"></i><span>Sales Record</span></a>
+										<div class="sidebar-submenu">
+											<ul>
+											<?php 
+											$DB = Connect();
+											$sql_name = select("distinct MenuMasterID","tblAdminMenuRole","RoleID='4'");
+											foreach($sql_name as $val)
+											{
+												//print_r($val);
+												$menu[]=$val['MenuMasterID'];
+											}
+											for($i=0;$i<count($menu);$i++)
+											{
+												$sql_named = select("distinct SubmenuName"," tblAdminMenuMasters","MenuMasterID='".$menu[$i] ."'");
+												if($sql_named[0]['SubmenuName']=='Verify Daily Sales')
+												{
+													?>
+															<li><a href="EnvelopeCreateandVerify.php" title="Buttons"><span>Verify Daily Sales</span></a></li>	
+													<?php
+												}
+											}
+														/* $sql_namep = select("distinct MenuMasterID","tblAdminMenuRole","RoleID='".$val['RoleID']."'");
+													foreach($sql_namep as $valp)
+														{
+															$sql_named = select("distinct SubmenuName"," tblAdminMenuMasters","MenuMasterID='".$valp['MenuMasterID'] ."'");
+														}
+														if($sql_named[0]['SubmenuName']=='Manage Customer')
+														{
+															?>
+																	<li><a href="ManageCustomers.php" title="Buttons"><span>Manage Customers</span></a></li>	
+															<?php
+														} */
+											$DB->close();
+											unset($menu);
+											?>
+											</ul>	
+										</div>
+									</li>
+									
+									<li><a href="" title="SMS"><i class="glyph-icon icon-linecons-paper-plane"></i><span>Analytics & Reports</span></a>
+										<div class="sidebar-submenu">
+											<ul>
+											<?php 
+											$DB = Connect();
+											$sql_name = select("distinct MenuMasterID","tblAdminMenuRole","RoleID='4'");
+											foreach($sql_name as $val)
+											{
+												// print_r($val);
+												$menu[]=$val['MenuMasterID'];
+											}
+											for($i=0;$i<count($menu);$i++)
+											{
+												$sql_named = select("distinct SubmenuName"," tblAdminMenuMasters","MenuMasterID='".$menu[$i] ."'");
+												if($sql_named[0]['SubmenuName']=='Customer Feedback')
+												{
+?>
+													<li><a href="CustomerFeedBack.php" title="CustomerFeedBack"><span>Customer Rating & Feedback</span></a></li>	
+<?php
+												}
+												if($sql_named[0]['SubmenuName']=='Client Conversion On Appointment')
+												{
+?>
+													<li><a href="ReportClientConversionOnAppointment.php" title="ReportClientConversionOnAppointment"><span>Client Conversion On Appointment</span></a></li>	
+<?php
+												}
+												if($sql_named[0]['SubmenuName']=='Daily Attendance')
+												{
+?>
+													<li><a href="AttendanceReport.php" title="AttendanceReport"><span>Daily Employee Attendance</span></a></li>	
+<?php
+												}
+												if($sql_named[0]['SubmenuName']=='Appointment Delay')
+												{
+?>
+													<li><a href="ReportAppointmentDelayed.php" title="ReportAppointmentDelayed"><span>Appointment Delayed</span></a></li>	
+														<li><a href="ReportNonVisiters.php" title="Non Visiters"><span>Report Non Visiters</span></a></li>	
+<?php
+												}
+												/* if($sql_named[0]['SubmenuName']=='Cash/CC Report')
+												{
+													?>
+														<li><a href="ReportCashCC.php" title="Buttons"><span>Cash/CC Report</span></a></li>
+													<?php
+												}
+												if($sql_named[0]['SubmenuName']=='Customers Report')
+												{
+?>
+													<li><a href="ReportCustomerData.php" title="Customers"><span>Customers Report</span></a></li>
+<?php
+												}
+												if($sql_named[0]['SubmenuName']=='Sales Report')
+												{
+?>
+													<li><a href="ReportServiceSales.php" title="Sales"><span>Sales Report</span></a></li>
+<?php
+												}
+												if($sql_named[0]['SubmenuName']=='Discount Report')
+												{
+// ?>
+													<li><a href="ReportDiscount.php" title="Discount"><span>Discount Report</span></a></li>
+<?php
+												}
+												
+												if($sql_named[0]['SubmenuName']=='Employee Sale Achieved')
+												{
+// ?>
+													<li><a href="EmployeeSaleAchieved.php" title="Void Bills"><span>Employee Sale Achieved</span></a></li>
+<?php
+												}
+												if($sql_named[0]['SubmenuName']=='Membership Sold')
+												{
+?>
+												<li><a href="ReportMembershipSold.php" title="Void Bills"><span>Membership Sold</span></a></li>
+<?php
+												}
+												if($sql_named[0]['SubmenuName']=="Non Visiting Customers")
+												{
+													?>
+																<li><a href="ReportNonVisitingCustomers.php" title="Buttons"><span>Non Visiting Customers</span></a></li>
+													<?php
+												}
+												if($sql_named[0]['SubmenuName']=="New Clients")
+												{
+													?>
+																<li><a href="ManageNewClients.php" title="Buttons"><span>New Clients</span></a></li>
+													<?php
+												}
+												if($sql_named[0]['SubmenuName']=="Gift Voucher Sold")
+												{
+													?>
+																<li><a href="ReportGiftVoucherSold.php" title="Buttons"><span>Gift Voucher Sold</span></a></li>
+													<?php
+												}
+												if($sql_named[0]['SubmenuName']=="Offer Sold")
+												{
+													?>
+																<li><a href="ReportOfferSold.php" title="Buttons"><span>Offer Sold</span></a></li>
+													<?php
+												}
+												if($sql_named[0]['SubmenuName']=="Client Aquisition Analysis Spend wise")
+												{
+													?>
+																<li><a href="ReportClientAquisitionAnalysis.php" title="Buttons"><span>Client Aquisition Analysis Spend wise</span></a></li>
+													<?php
+												}
+												if($sql_named[0]['SubmenuName']=="Appointments Cancelled")
+												{
+													?>
+																<li><a href="ReportCancelledAppointments.php" title="Buttons"><span>Cancelled Appointments</span></a></li>
+													<?php
+												}
+												if($sql_named[0]['SubmenuName']=="Appointments Confirm")
+												{
+													?>
+															<li><a href="ReportDoneAppointments.php" title="Buttons"><span>Appointments Confirm</span></a></li>
+													<?php
+												}
+												if($sql_named[0]['SubmenuName']=='Outstanding payment')
+												{
+													?>
+														<li><a href="ReportPayments.php" title="Buttons"><span>Outstanding payment</span></a></li>	
+													<?php
+												}
+												if($sql_named[0]['SubmenuName']=='Appointment Delayed')
+												{
+													?>
+														<li><a href="ReportAppointmentDelayed.php" title="Appointment Delayed"><span>Appointment Delayed</span></a></li>
+													<?php
+												} */
+											}
+											$DB->close();
+											unset($menu);
+											?>
+											</ul>	
+										</div>
+									</li>
+											
+									
+									
+								</ul>
+							</div>
+						<?php
+					}
+					elseif($AdminRoleID =='39')
+					{
+						?>
+						<div class="scroll-sidebar">
+								<ul id="sidebar-menu">
+									<!-- <li class="header"><span>Overview</span></li> -->
+									<li><a href="Dashboard.php" title="Admin-Dashboard"><i class="glyph-icon icon-linecons-tv"></i> <span>Dashboard</span></a></li>
+									
+									<li class="header"><span>Manage</span></li>
+									
+									<li><a href="" title="Inventory"><i class="glyph-icon icon-linecons-doc"></i><span>Inventory</span></a>
+										<div class="sidebar-submenu">
+											<ul>
+<?php 
+											$DB = Connect();
+											$sql_name = select("distinct MenuMasterID","tblAdminMenuRole","RoleID='39'");
+											foreach($sql_name as $val)
+											{
+												//print_r($val);
+												$menu[]=$val['MenuMasterID'];
+											}
+											for($i=0;$i<count($menu);$i++)
+											{
+												$sql_named = select("distinct SubmenuName"," tblAdminMenuMasters","MenuMasterID='".$menu[$i] ."'");
+												
+
+												if($sql_named[0]['SubmenuName']=='Manage Product Master')
+												{
+?>
+													<li><a href="ManageProductsMaster.php" title="Product"><span>Manage Product Master</span></a></li>
+<?php
+												}
+												if($sql_named[0]['SubmenuName']=='Manage Brand/Vendor Master')
+												{
+?>
+													<li><a href="ManageBrandMaster.php" title="Product"><span>Manage Brand/Vendor Master</span></a></li>
+<?php
+												}
+											 	if($sql_named[0]['SubmenuName']=='View Product Store Wise')
+														{
+															?>
+																<li><a href="ManageProductStoreWise.php" title="Product"><span>View Product Store Wise</span></a></li>
+															<?php
+														}
+												// if($sql_named[0]['SubmenuName']=="Manage Product Stock")
+												// {
+// ?>
+																<!--<li><a href="ManageProductsStock.php" title="Stock"><span>Manage Product Stock</span></a></li>-->
+<?php
+												// }
+											}
+														/* $sql_namep = select("distinct MenuMasterID","tblAdminMenuRole","RoleID='".$val['RoleID']."'");
+													foreach($sql_namep as $valp)
+														{
+															$sql_named = select("distinct SubmenuName"," tblAdminMenuMasters","MenuMasterID='".$valp['MenuMasterID'] ."'");
+														}
+														if($sql_named[0]['SubmenuName']=='Manage Customer')
+														{
+															?>
+																	<li><a href="ManageCustomers.php" title="Buttons"><span>Manage Customers</span></a></li>	
+															<?php
+														} */
+											$DB->close();
+												unset($menu);
+											?>
+												<!-- <li><a href="ManageAdminRoles.php" title="Buttons"><span>Manage Admin Role</span></a></li>									
+												<li><a href="ManageAdminMenuMasters.php" title="Buttons"><span>Manage Master Admin Menu</span></a></li>	
+												<li><a href="ManageAdminMenuRoles.php" title="Buttons"><span>Manage Admin Menu Roles</span></a></li> -->
+											</ul>	
+										</div>
+									</li>
+									
+									
+									<li><a href="" title="Services"><i class="glyph-icon icon-linecons-graduation-cap"></i><span>Services</span></a>
+										<div class="sidebar-submenu">
+											<ul>
+											<?php 
+											$DB = Connect();
+											$sql_name = select("distinct MenuMasterID","tblAdminMenuRole","RoleID='39'");
+											foreach($sql_name as $val)
+											{
+												//print_r($val);
+												$menu[]=$val['MenuMasterID'];
+											}
+											for($i=0;$i<count($menu);$i++)
+											{
+												$sql_named = select("distinct SubmenuName"," tblAdminMenuMasters","MenuMasterID='".$menu[$i] ."'");
+													if($sql_named[0]['SubmenuName']=="Manage Services")
+														{
+															?>
+																<li><a href="ManageServices.php" title="Buttons"><span>Manage Services</span></a></li>
+															<?php
+														}
+														
+																if($sql_named[0]['SubmenuName']=="Manage Categories")
+														{
+															?>
+																	<li><a href="ManageCategories.php" title="Buttons"><span>Manage Categories</span></a></li>
+															<?php
+														}
+											}
+														/* $sql_namep = select("distinct MenuMasterID","tblAdminMenuRole","RoleID='".$val['RoleID']."'");
+													foreach($sql_namep as $valp)
+														{
+															$sql_named = select("distinct SubmenuName"," tblAdminMenuMasters","MenuMasterID='".$valp['MenuMasterID'] ."'");
+														}
+														if($sql_named[0]['SubmenuName']=='Manage Customer')
+														{
+															?>
+																	<li><a href="ManageCustomers.php" title="Buttons"><span>Manage Customers</span></a></li>	
+															<?php
+														} */
+											$DB->close();
+												unset($menu);
+											?>
+												<!-- <li><a href="ManageProductsStock.php" title="Buttons"><span>Manage Product Stock</span></a></li> -->
+												<!-- <li><a href="ManageAdminRoles.php" title="Buttons"><span>Manage Admin Role</span></a></li>									
+												<li><a href="ManageAdminMenuMasters.php" title="Buttons"><span>Manage Master Admin Menu</span></a></li>	
+												<li><a href="ManageAdminMenuRoles.php" title="Buttons"><span>Manage Admin Menu Roles</span></a></li> -->
+											</ul>	
+										</div>
+									</li>
+									
+									<li><a href="#" title="Manage Employee"><i class="glyph-icon icon-linecons-user"></i><span>Employee Management</span></a>
+										<div class="sidebar-submenu">
+											<ul>
+											<?php 
+											$DB = Connect();
+											$sql_name = select("distinct MenuMasterID","tblAdminMenuRole","RoleID='39'");
+											foreach($sql_name as $val)
+											{
+												//print_r($val);
+												$menu[]=$val['MenuMasterID'];
+											}
+											for($i=0;$i<count($menu);$i++)
+											{
+												$sql_named = select("distinct SubmenuName"," tblAdminMenuMasters","MenuMasterID='".$menu[$i] ."'");
+														if($sql_named[0]['SubmenuName']=="Register Employee")
+														{
+															?>
+															<li><a href="ManageEmployees.php" title="Register"><span>Register</span></a></li>
+															<?php
+														}
+														
+															if($sql_named[0]['SubmenuName']=="Manage Attendance")
+														{
+															?>
+																<li><a href="ManageAttendance.php" title="Attendance"><span>Employees Attendance</span></a></li>	
+															<?php
+														}
+														if($sql_named[0]['SubmenuName']=="Manage Employee Categories")
+														{
+															?>
+																<li><a href="ManageMasterEmployeeCategory.php" title="Attendance"><span>Employee Categories</span></a></li>	
+															<?php
+														}
+														if($sql_named[0]['SubmenuName']=="Manage Employee Target")
+														{
+															?>
+																<li><a href="ManageEmployeeTarget.php" title="Attendance"><span>Manage Employee Target</span></a></li>	
+																<li><a href="ManageEmployeeWeekoff.php" title="Attendance"><span>Manage Weekoff</span></a></li>	
+															<?php
+														}
+											}
+												
+														/* $sql_namep = select("distinct MenuMasterID","tblAdminMenuRole","RoleID='".$val['RoleID']."'");
+													foreach($sql_namep as $valp)
+														{
+															$sql_named = select("distinct SubmenuName"," tblAdminMenuMasters","MenuMasterID='".$valp['MenuMasterID'] ."'");
+														}
+														if($sql_named[0]['SubmenuName']=='Manage Customer')
+														{
+															?>
+																	<li><a href="ManageCustomers.php" title="Buttons"><span>Manage Customers</span></a></li>	
+															<?php
+														} */
+											$DB->close();
+												unset($menu);
+											?>
+												<!--<li><a href="#" title="Report"><span>Employee Report</span></a></li>-->
+												<!--<li><a href="#" title="Admin Role"><span>Employees With Admin Roles</span></a></li>-->
+																		
+												<!--<li><a href="ManageAdminMenuMasters.php" title="Buttons"><span>Manage Master Admin Menu</span></a></li>	
+												<li><a href="ManageAdminMenuRoles.php" title="Buttons"><span>Manage Admin Menu Roles</span></a></li>-->
+											</ul>	
+										</div>
+									</li>
+									<li><a href="" title="SMS"><i class="glyph-icon icon-linecons-star"></i><span>Customers</span></a>
+										<div class="sidebar-submenu">
+											<ul>
+											<?php 
+											$DB = Connect();
+											$sql_name = select("distinct MenuMasterID","tblAdminMenuRole","RoleID='39'");
+											foreach($sql_name as $val)
+											{
+												//print_r($val);
+												$menu[]=$val['MenuMasterID'];
+											}
+											for($i=0;$i<count($menu);$i++)
+											{
+												$sql_named = select("distinct SubmenuName"," tblAdminMenuMasters","MenuMasterID='".$menu[$i] ."'");
+												if($sql_named[0]['SubmenuName']=="Manage Membership")
+												{
+													?>
+																<!--<li><a href="ManageMemberships.php" title="Buttons"><span>Manage Membership</span></a></li>-->
+													<?php
+												}
+														
+											}
+											?>
+											<li><a href="ManageCustomers2.php" title="Appointments"><span>Quick Appointments</span></a></li>
+											<?
+											$DB->close();
+												unset($menu);
+											?>
+											</ul>	
+										</div>
+									</li>
+									<li><a href="" title="SMS"><i class="glyph-icon icon-linecons-note"></i><span>Customer Appointment</span></a>
+										<div class="sidebar-submenu">
+											<ul>
+											<?php 
+											$DB = Connect();
+											$sql_name = select("distinct MenuMasterID","tblAdminMenuRole","RoleID='39'");
+											foreach($sql_name as $val)
+											{
+												//print_r($val);
+												$menu[]=$val['MenuMasterID'];
+											}
+											for($i=0;$i<count($menu);$i++)
+											{
+												$sql_named = select("distinct SubmenuName"," tblAdminMenuMasters","MenuMasterID='".$menu[$i] ."'");
+														if($sql_named[0]['SubmenuName']=="Manage Appointments")
+														{
+															?>
+																		<li><a href="ManageAppointments.php" title="Buttons"><span>Today's Appointments</span></a></li>
+															<?php
+														}
+															if($sql_named[0]['SubmenuName']=="All Appointments")
+														{
+															?>
+																		<li><a href="ViewAppointments.php" title="Buttons"><span>All Appointments</span></a></li>
+																		<li><a href="45AppointmentConfirm.php" title="Buttons"><span>45 Minute Reminder Appt Confirm</span></a></li>
+															<?php
+														}
+											}
+											$DB->close();
+												unset($menu);
+											?>
+											</ul>	
+										</div>
+									</li>
+									<li><a href="" title="SMS"><i class="glyph-icon icon-linecons-money"></i><span>Expenses</span></a>
+										<div class="sidebar-submenu">
+											<ul>
+									<?php 
+											$DB = Connect();
+											$sql_name = select("distinct MenuMasterID","tblAdminMenuRole","RoleID='39'");
+											foreach($sql_name as $val)
+											{
+												//print_r($val);
+												$menu[]=$val['MenuMasterID'];
+											}
+											for($i=0;$i<count($menu);$i++)
+											{
+												$sql_named = select("distinct SubmenuName"," tblAdminMenuMasters","MenuMasterID='".$menu[$i] ."'");
+												if($sql_named[0]['SubmenuName']=="Petty Cash Spent and Balance")
+												{
+?>
+													<li><a href="Petty-Cash-Spent-and-Balance.php" title="New Offers"><span>Petty Cash Spent and Balance</span></a></li>
+<?php
+												}	
+											}
+											$DB->close();
+											unset($menu);	
+											?>
+												
+											</ul>	
+										</div>
+									</li>
+									<li><a href="" title="SMS"><i class="glyph-icon icon-linecons-shop"></i><span>Stores</span></a>
+										<div class="sidebar-submenu">
+											<ul>
+											
+											
+												<?php 
+											$DB = Connect();
+											$sql_name = select("distinct MenuMasterID","tblAdminMenuRole","RoleID='36'");
+											foreach($sql_name as $val)
+											{
+												//print_r($val);
+												$menu[]=$val['MenuMasterID'];
+											}
+											for($i=0;$i<count($menu);$i++)
+											{
+												$sql_named = select("distinct SubmenuName"," tblAdminMenuMasters","MenuMasterID='".$menu[$i] ."'");
+															if($sql_named[0]['SubmenuName']=="Manage Stores")
+														{
+															?>
+																	
+											<li><a href="ManageStores.php" title="Stores"><span>Manage Stores</span></a></li>
+															<?php
+														}
+														
+																if($sql_named[0]['SubmenuName']=="Manage Targets for Stores")
+														{
+															?>
+																	
+											<li><a href="ManageStoresTarget.php" title="Stores"><span>View Target for Stores</span></a></li>
+															<?php
+														}
+											}
+														/* $sql_namep = select("distinct MenuMasterID","tblAdminMenuRole","RoleID='".$val['RoleID']."'");
+													foreach($sql_namep as $valp)
+														{
+															$sql_named = select("distinct SubmenuName"," tblAdminMenuMasters","MenuMasterID='".$valp['MenuMasterID'] ."'");
+														}
+														if($sql_named[0]['SubmenuName']=='Manage Customer')
+														{
+															?>
+																	<li><a href="ManageCustomers.php" title="Buttons"><span>Manage Customers</span></a></li>	
+															<?php
+														} */
+											$DB->close();
+												unset($menu);
+											?>
+											</ul>	
+										</div>
+									</li>	
+									<li><a href="" title="SMS"><i class="glyph-icon icon-linecons-tag"></i><span>Taxes</span></a>
+										<div class="sidebar-submenu">
+											<ul>
+											
+											<?php 
+											$DB = Connect();
+											$sql_name = select("distinct MenuMasterID","tblAdminMenuRole","RoleID='39'");
+											foreach($sql_name as $val)
+											{
+												//print_r($val);
+												$menu[]=$val['MenuMasterID'];
+											}
+											for($i=0;$i<count($menu);$i++)
+											{
+												$sql_named = select("distinct SubmenuName"," tblAdminMenuMasters","MenuMasterID='".$menu[$i] ."'");
+														if($sql_named[0]['SubmenuName']=="Total Charges")
+														{
+															?>
+																<li><a href="ManageCharges.php" title="Stores"><span>Total Charges</span></a></li>
+															<?php
+														}
+														
+														
+														if($sql_named[0]['SubmenuName']=="Manage Charge Names")
+														{
+															?>	
+																<li><a href="ManageChargeNames.php" title="Stores"><span>Manage Charge Names</span></a></li>
+															<?php
+														}
+														if($sql_named[0]['SubmenuName']=="Manage Charge Sets")
+														{
+															?>	
+																<li><a href="ManageChargeSets.php" title="Stores"><span>Manage Charge Sets</span></a></li>
+															<?php
+														}	
+											}
+												
+														/* $sql_namep = select("distinct MenuMasterID","tblAdminMenuRole","RoleID='".$val['RoleID']."'");
+													foreach($sql_namep as $valp)
+														{
+															$sql_named = select("distinct SubmenuName"," tblAdminMenuMasters","MenuMasterID='".$valp['MenuMasterID'] ."'");
+														}
+														if($sql_named[0]['SubmenuName']=='Manage Customer')
+														{
+															?>
+																	<li><a href="ManageCustomers.php" title="Buttons"><span>Manage Customers</span></a></li>	
+															<?php
+														} */
+											$DB->close();
+												unset($menu);
+											?>
+												
+											</ul>	
+										</div>
+									</li>
+									<li><a href="" title="SMS"><i class="glyph-icon icon-linecons-database"></i><span>POS Invoices</span></a>
+										<div class="sidebar-submenu">
+											<ul>
+											
+												
+											<?php 
+											$DB = Connect();
+											$sql_name = select("distinct MenuMasterID","tblAdminMenuRole","RoleID='39'");
+											foreach($sql_name as $val)
+											{
+												//print_r($val);
+												$menu[]=$val['MenuMasterID'];
+											}
+											for($i=0;$i<count($menu);$i++)
+											{
+												$sql_named = select("distinct SubmenuName"," tblAdminMenuMasters","MenuMasterID='".$menu[$i] ."'");
+												if($sql_named[0]['SubmenuName']=='Reconciliation Pending Invoices')
+												{
+													?>
+															<li><a href="InvoiceApproval.php" title="Buttons"><span>Reconciliation Pending Invoices</span></a></li>
+													<?php
+												}
+												if($sql_named[0]['SubmenuName']=='View Outstanding Invoices')
+												{
+													?>
+															<li><a href="OutstandingPayment.php" title="Buttons"><span>View Outstanding</span></a></li>	
+													<?php
+												}
+												if($sql_named[0]['SubmenuName']=="Invoices")
+												{
+													?>
+															<li><a href="appointment_invoice.php" title="Stores"><span>View Invoice</span></a></li>
+													<?php
+												}
+												if($sql_named[0]['SubmenuName']=="View Delete Invoices")
+												{
+													?>
+															<li><a href="ManageDeletedInvoices.php" title="View Delete Invoices"><span>View Delete Invoices</span></a></li>
+													<?php
+												}
+												
+											}
+											$DB->close();
+											unset($menu);
+											?>
+											
+											</ul>	
+										</div>
+									</li>
+									
+									<li><a href="" title="SMS"><i class="glyph-icon icon-linecons-megaphone"></i><span>Orders</span>
+<?php
+											$selp=select("count(ID)","tblOrder","Status='1'");
+											$CNT=$selp[0]['count(ID)'];
+											if($CNT>0)
+											{
+?>
+												<span class="bs-label badge-yellow">NEW</span>
+<?php
+											}
+?>						
+										</a>
+										<div class="sidebar-submenu">
+											<ul>
+											<?php 
+											$DB = Connect();
+											$sql_name = select("distinct MenuMasterID","tblAdminMenuRole","RoleID='4'");
+											foreach($sql_name as $val)
+											{
+												//print_r($val);
+												$menu[]=$val['MenuMasterID'];
+											}
+											for($i=0;$i<count($menu);$i++)
+											{
+												$sql_named = select("distinct SubmenuName"," tblAdminMenuMasters","MenuMasterID='".$menu[$i] ."'");
+												if($sql_named[0]['SubmenuName']=='Manage Storewise Orders')
+												{
+													?>
+															<li><a href="ManageHOOrders.php" title="Buttons"><span>Order Request</span></a></li>	
+													<?php
+												}
+												if($sql_named[0]['SubmenuName']=='Manage New Orders')
+												{
+													?>
+															<li><a href="ManageNewOrders.php" title="Buttons"><span>Manage New Orders</span></a></li>	
+													<?php
+												}
+											}
+														/* $sql_namep = select("distinct MenuMasterID","tblAdminMenuRole","RoleID='".$val['RoleID']."'");
+													foreach($sql_namep as $valp)
+														{
+															$sql_named = select("distinct SubmenuName"," tblAdminMenuMasters","MenuMasterID='".$valp['MenuMasterID'] ."'");
+														}
+														if($sql_named[0]['SubmenuName']=='Manage Customer')
+														{
+															?>
+																	<li><a href="ManageCustomers.php" title="Buttons"><span>Manage Customers</span></a></li>	
+															<?php
+														} */
+											$DB->close();
+											unset($menu);
+											?>
+											</ul>	
+										</div>
+									</li>
+								
+									<li><a href="" title="SMS"><i class="glyph-icon icon-linecons-globe"></i><span>Marketing</span></a>
+										<div class="sidebar-submenu">
+											<ul>
+											
+											<?php 
+											$DB = Connect();
+											$sql_name = select("distinct MenuMasterID","tblAdminMenuRole","RoleID='39'");
+											foreach($sql_name as $val)
+											{
+												//print_r($val);
+												$menu[]=$val['MenuMasterID'];
+											}
+											for($i=0;$i<count($menu);$i++)
+											{
+												$sql_named = select("distinct SubmenuName"," tblAdminMenuMasters","MenuMasterID='".$menu[$i] ."'");
+												if($sql_named[0]['SubmenuName']=="New Offers")
+												{
+?>
+													<li><a href="ManageOffers.php" title="New Offers"><span>New Offers</span></a></li>
+<?php
+												}
+												if($sql_named[0]['SubmenuName']=="Manage Events")
+												{
+?>		
+													<li><a href="ManageEvents.php" title="Manage Events"><span>Manage Events</span></a></li>
+<?php
+												}
+												if($sql_named[0]['SubmenuName']=="Social Links")
+												{
+?>	
+													<li><a href="ManageSocial.php" title="Social Links"><span>Social Links</span></a></li>
+<?php
+												}
+												if($sql_named[0]['SubmenuName']=="Save Videos")
+												{
+?>		
+													<li><a href="ManageMarketingVideo.php" title="Save Videos"><span>Save Videos</span></a></li>
+<?php
+												}
+												if($sql_named[0]['SubmenuName']=="Save Images")
+												{
+?>	
+													<li><a href="ManageMarketingImg.php" title="Save Images"><span>Save Images</span></a></li>
+<?php
+												}
+												if($sql_named[0]['SubmenuName']=="Web Content")
+												{
+?>		
+													<li><a href="ManageWebContentApproval.php" title="Web Content"><span>Web Content</span></a></li>
+<?php
+												}
+												if($sql_named[0]['SubmenuName']=="App Content")
+												{
+?>	
+													<li><a href="ManageAppContentApproval.php" title="App Content"><span>App Content</span></a></li>
+<?php
+												}
+												if($sql_named[0]['SubmenuName']=="SMS Approval")
+												{
+?>	
+													<li><a href="SMSApproval.php" title="SMS Approval"><span>SMS Approval</span></a></li>
+<?php
+												}
+												
+												
+												
+												
+												
+											}
+											?>
+											
+											<?
+											$DB->close();
+											unset($menu);	
+											?>
+												<li><a href="ManagePackages.php" title="Manage Packages"><span>Manage Packages</span></a></li>
+												<li><a href="ManageGiftVoucherAmount.php" title="Manage Gift Voucher"><span>Manage Gift Voucher</span></a></li>
+												
+											</ul>	
+										</div>
+									</li>
+									
+											<li><a href="" title="SMS"><i class="glyph-icon icon-bar-chart"></i><span>Graph</span></a>
+												<div class="sidebar-submenu">
+													<ul>	
+													<?php 
+													$DB = Connect();
+													$sql_name = select("distinct MenuMasterID","tblAdminMenuRole","RoleID='39'");
+													foreach($sql_name as $val)
+													{
+														//print_r($val);
+														$menu[]=$val['MenuMasterID'];
+													}
+													for($i=0;$i<count($menu);$i++)
+													{
+														$sql_named = select("distinct SubmenuName"," tblAdminMenuMasters","MenuMasterID='".$menu[$i] ."'");
+														if($sql_named[0]['SubmenuName']=='Reconciliation Pending Invoices')
+														{
+															?>
+																	<li><a href="ViewEmployeeTargetAll.php" title="Buttons"><span>Employee Sale Target Achieved per day</span></a></li>
+															<?php
+														}
+														if($sql_named[0]['SubmenuName']=='View Outstanding Invoices')
+														{
+															?>
+																	<li><a href="ViewProductAll.php" title="Buttons"><span>Products Used</span></a></li>	
+															<?php
+														}
+													
+													}
+													$DB->close();
+													unset($menu);
+													?>
+													
+													</ul>	
+												</div>
+											</li>
+									<!--<li><a href="" title="SMS"><i class="glyph-icon icon-linecons-wallet"></i><span>Total Stores Wise Orders</span></a>
+										<div class="sidebar-submenu">
+											<ul>
+											
+													<?php 
+											// $DB = Connect();
+											// $sql_name = select("distinct MenuMasterID","tblAdminMenuRole","RoleID='39'");
+											// foreach($sql_name as $val)
+											// {
+												// print_r($val);
+												// $menu[]=$val['MenuMasterID'];
+											// }
+											// for($i=0;$i<count($menu);$i++)
+											// {
+												// $sql_named = select("distinct SubmenuName"," tblAdminMenuMasters","MenuMasterID='".$menu[$i] ."'");
+														// if($sql_named[0]['SubmenuName']=="Stores Names")
+														// {
+															// $sql_stores = select("*","tblStores","1");
+															// foreach($sql_stores as $val)
+															// {
+																// echo $val[StoreID];
+																// $getUID = EncodeQ($val[StoreID]);
+																// echo $getUID;
+																// ?>
+																	<li><a href="storewiseorders.php?storeid='<?//=$getUID ?>'" title="Stores"><span><?php //echo $val[StoreName]; ?></span></a></li>
+																// <?php
+															// }
+														// }
+											// }
+											
+											// $DB->close();
+												// unset($menu);
+											?>
+											</ul>	
+										</div>
+									</li>-->
+									<li><a href="" title="SMS"><i class="glyph-icon icon-linecons-paper-plane"></i><span>Analytics & Reports</span></a>
+										<div class="sidebar-submenu">
+											<ul>
+											<?php 
+											$DB = Connect();
+											$sql_name = select("distinct MenuMasterID","tblAdminMenuRole","RoleID='39'");
+											foreach($sql_name as $val)
+											{
+												//print_r($val);
+												$menu[]=$val['MenuMasterID'];
+											}
+											for($i=0;$i<count($menu);$i++)
+											{
+												
+												$sql_named = select("distinct SubmenuName"," tblAdminMenuMasters","MenuMasterID='".$menu[$i] ."'");
+												if($sql_named[0]['SubmenuName']=='Customer Feedback')
+												{
+?>
+													<li><a href="CustomerFeedBack.php" title="CustomerFeedBack"><span>Customer Rating & Feedback</span></a></li>	
+<?php
+												}
+												if($sql_named[0]['SubmenuName']=='Client Conversion On Appointment')
+												{
+?>
+													<li><a href="ReportClientConversionOnAppointment.php" title="ReportClientConversionOnAppointment"><span>Client Conversion On Appointment</span></a></li>	
+<?php
+												}
+													if($sql_named[0]['SubmenuName']=='Daily Attendance')
+												{
+?>
+													<li><a href="AttendanceReport.php" title="AttendanceReport"><span>Daily Employee Attendance</span></a></li>	
+<?php
+												}
+												if($sql_named[0]['SubmenuName']=='Appointment Delay')
+												{
+?>
+													<li><a href="ReportAppointmentDelayed.php" title="ReportAppointmentDelayed"><span>Appointment Delayed</span></a></li>	
+<?php
+												}
+												if($sql_named[0]['SubmenuName']=='Daily Sales Audit')
+												{
+?>
+													<li><a href="ReportDailySalesAudit.php" title="ReportDailySalesAudit"><span>Daily Sales Audit</span></a></li>	
+<?php
+												}
+												if($sql_named[0]['SubmenuName']=='Bill Reconciliation')
+												{
+?>
+													<li><a href="ReportBillReconciliation.php" title="ReportBillReconciliation"><span>Bill Reconciliation</span></a></li>	
+<?php
+												}
+												if($sql_named[0]['SubmenuName']=='Petty Cash Report')
+												{
+?>
+													<li><a href="ReportPettyCash.php" title="Sales"><span>Petty Cash Report</span></a></li>	
+<?php
+												}
+												if($sql_named[0]['SubmenuName']=="Content (Pics & Videos) Recieved Per Salon")
+												{
+													?>
+															<li><a href="ReportContentReceivedPerSalon.php" title="Content (Pics & Videos) Recieved Per Salon"><span>Content Recieved Per Salon</span></a></li>
+													<?php
+													
+												}
+												if($sql_named[0]['SubmenuName']=="Product Orders")
+												{
+													?>
+															<li><a href="ReportProductOrders.php" title="Product Orders"><span>Product Orders</span></a></li>
+													<?php
+													
+												}
+												if($sql_named[0]['SubmenuName']=="Product Consumption")
+												{
+													?>
+															<li><a href="ReportProductConsumption.php" title="Product Consumption"><span>Product Consumption</span></a></li>
+													<?php
+														
+
+
+												}
+													if($sql_named[0]['SubmenuName']=="Vendor Order")
+												{
+													?>
+															<li><a href="ReportVendorOrder.php" title="Vendor Order"><span>Vendor Order</span></a></li>
+													<?php
+														
+
+
+												}
+													if($sql_named[0]['SubmenuName']=="Report Membership")
+												{
+													?>
+															<li><a href="ReportMembership.php" title="Report Membership"><span>Membership</span></a></li>
+													<?php
+														
+
+
+												}
+													if($sql_named[0]['SubmenuName']=='Employee Commission')
+												{
+													?>
+															<li><a href="CommissionAnalysisUpdate.php" title="Discount Report"><span>Employee Commission</span></a></li>	
+															<li><a href="CommissionAnalysisUpdateCumulative.php" title="Employee Commission Cumulative"><span>Employee Commission Cumulative</span></a></li>
+													<?php
+												}
+												if($sql_named[0]['SubmenuName']=='Outstanding payment')
+												{
+													?>
+															<li><a href="ReportPayments.php" title="Outstanding Payment"><span>Outstanding Payment</span></a></li>	
+													<?php
+												}
+													if($sql_named[0]['SubmenuName']=='Sales')
+												{
+													?>
+															<li><a href="ReportSale.php" title="Report Sale"><span>Report Sale</span></a></li>	
+															  <li><a href="ReportCustomerRetentionAnalysis.php" title="Report Customer RetentionAnalysis"><span>Customer Retention</span></a></li>
+															    <li><a href="ReportServiceSalesCategoryBase.php" title="Service Sale Category"><span>Report Service Sale Category</span></a></li>
+															<li><a href="ReportServiceAnalysis.php" title="Service Analysis"><span>Report Service Analysis</span></a></li>	
+															<li><a href="ReportNonVisiters.php" title="Non Visiters"><span>Report Non Visiters</span></a></li>	
+															<li><a href="ReportDiscount.php" title="Report Discount"><span>Report Discount</span></a></li>
+													<?php
+												}
+												?>
+												
+<?												
+												/* if($sql_named[0]['SubmenuName']=="Employee Sale Achieved")
+												{
+													?>
+																<li><a href="EmployeeSaleAchieved.php" title="Buttons"><span>Employee Sale Achieved</span></a></li>
+													<?php
+												}
+												if($sql_named[0]['SubmenuName']=='Employee Commission')
+												{
+													?>
+															<li><a href="EmployeeCommission.php" title="Discount Report"><span>Employee Commission</span></a></li>	
+													<?php
+												}
+												if($sql_named[0]['SubmenuName']=="Employee Attendance")
+												{
+													?>
+																<li><a href="ReportEmployeeAttendance.php" title="Buttons"><span>Employee Attendance</span></a></li>
+													<?php
+												}
+												if($sql_named[0]['SubmenuName']=='Cash/CC Report')
+												{
+?>
+													<li><a href="ReportCashCC.php" title="Customers"><span>Cash/CC Report</span></a></li>	
+<?php
+												}
+												if($sql_named[0]['SubmenuName']=='Membership Sold')
+												{
+?>
+													<li><a href="ReportMembershipSold.php" title="Void Bills"><span>Membership Sold</span></a></li>	
+<?php
+												}
+												if($sql_named[0]['SubmenuName']=='Offer Sold')
+												{
+?>
+													<li><a href="ReportOfferSold.php" title="Void Bills"><span>Offer Sold</span></a></li>	
+<?php
+												}
+												if($sql_named[0]['SubmenuName']=="Product Used")
+												{
+													?>
+																<li><a href="ReportProductUsed.php" title="Buttons"><span>Product Used</span></a></li>
+													<?php
+												}
+												if($sql_named[0]['SubmenuName']=='Outstanding payment')
+												{
+													?>
+															<li><a href="ReportPayments.php" title="Outstanding Payment"><span>Outstanding Payment</span></a></li>	
+													<?php
+												}
+												if($sql_named[0]['SubmenuName']=='Sales Report')
+												{
+													?>
+															<li><a href="ReportServiceSales.php" title="Sales Report"><span>Sales Report</span></a></li>	
+													<?php
+												}
+												if($sql_named[0]['SubmenuName']=='Discount Report')
+												{
+													?>
+															<li><a href="ReportDiscount.php" title="Discount Report"><span>Discount Report</span></a></li>	
+													<?php
+												}
+												if($sql_named[0]['SubmenuName']=='Client Aquisition Analysis Spend wise')
+												{
+													?>
+															<li><a href="ReportClientAquisitionAnalysis.php" title="Client Aquisition Analysis Spend wise"><span>Client Aquisition Analysis Spend wise</span></a></li>	
+													<?php
+												}
+												if($sql_named[0]['SubmenuName']=='Gift Voucher Sold')
+												{
+													?>
+															<li><a href="ReportGiftVoucherSold.php" title="Gift Voucher Sold"><span>Gift Voucher Sold</span></a></li>	
+													<?php
+												}
+												if($sql_named[0]['SubmenuName']=='New Walkins')
+												{
+													?>
+															<li><a href="ReportNewWalkins.php" title="Gift Voucher Sold"><span>New Walkins</span></a></li>	
+													<?php
+												} */
+											}
+											$DB->close();
+											unset($menu);
+											?>
+											</ul>	
+										</div>
+									</li>
+									
+									<li><a href="EmployeeCommission-old.php" title="SMS"><i class="glyph-icon icon-linecons-paper-plane"></i><span>2016 Dec Comm Report</span></a></li>
+								
+									
+								</ul>
+							</div>
+						<?php
+					}
+					elseif($AdminRoleID =='38')
+					{
+						?>
+						<div class="scroll-sidebar">
+								<ul id="sidebar-menu">
+									<!-- <li class="header"><span>Overview</span></li> -->
+									<li><a href="Audit-Dashboard.php" title="Dashboard"><i class="glyph-icon icon-linecons-tv"></i> <span>Dashboard</span></a></li>
+									<li class="header"><span>Manage</span></li>								
+									
+									<li><a href="" title="Inventory"><i class="glyph-icon icon-linecons-doc"></i><span>Inventory</span></a>
+										<div class="sidebar-submenu">
+											<ul>
+<?php 
+											$DB = Connect();
+											$sql_name = select("distinct MenuMasterID","tblAdminMenuRole","RoleID='38'");
+											foreach($sql_name as $val)
+											{
+												//print_r($val);
+												$menu[]=$val['MenuMasterID'];
+											}
+											for($i=0;$i<count($menu);$i++)
+											{
+												$sql_named = select("distinct SubmenuName"," tblAdminMenuMasters","MenuMasterID='".$menu[$i] ."'");
+												
+
+												if($sql_named[0]['SubmenuName']=='Manage Product Master')
+												{
+?>
+													<li><a href="ManageProductsMaster.php" title="Product"><span>Manage Product Master</span></a></li>
+<?php
+												}
+												if($sql_named[0]['SubmenuName']=='Manage Brand/Vendor Master')
+												{
+?>
+													<li><a href="ManageBrandMaster.php" title="Product"><span>Manage Brand/Vendor Master</span></a></li>
+<?php
+												}
+											 	if($sql_named[0]['SubmenuName']=='View Product Store Wise')
+														{
+															?>
+																<li><a href="ManageProductStoreWise.php" title="Product"><span>View Product Store Wise</span></a></li>
+															<?php
+														}
+											}
+														
+											$DB->close();
+												unset($menu);
+											?>
+												<!-- <li><a href="ManageAdminRoles.php" title="Buttons"><span>Manage Admin Role</span></a></li>									
+												<li><a href="ManageAdminMenuMasters.php" title="Buttons"><span>Manage Master Admin Menu</span></a></li>	
+												<li><a href="ManageAdminMenuRoles.php" title="Buttons"><span>Manage Admin Menu Roles</span></a></li> -->
+											</ul>	
+										</div>
+									</li>
+									
+									
+									
+									<li><a href="#" title="Manage Employee"><i class="glyph-icon icon-linecons-money"></i><span>Expenses</span></a>
+										<div class="sidebar-submenu">
+											<ul>
+											<?php 
+											$DB = Connect();
+											$sql_name = select("distinct MenuMasterID","tblAdminMenuRole","RoleID='38'");
+											foreach($sql_name as $val)
+											{
+												//print_r($val);
+												$menu[]=$val['MenuMasterID'];
+											}
+											for($i=0;$i<count($menu);$i++)
+											{
+												$sql_named = select("distinct SubmenuName"," tblAdminMenuMasters","MenuMasterID='".$menu[$i] ."'");
+												if($sql_named[0]['SubmenuName']=='Petty Cash Spent and Balance')
+												{
+?>
+														<li><a href="Petty-Cash-Spent-and-Balance.php" title="Petty Cash Spent & Balance"><span>Petty Cash Spent & Balance</span></a></li>	
+														<li><a href="PettyCashAudit.php" title="Petty Cash Spent & Balance Report"><span>Petty Cash Spent & Balance Report</span></a></li>
+<?php
+												}
+												if($sql_named[0]['SubmenuName']=='Balance')
+												{
+													?>
+															<li><a href="ManageExpensesBalance.php" title="Buttons"><span>Petty Cash Balance</span></a></li>	
+													<?php
+												}
+											}
+											$DB->close();
+											unset($menu);
+											?>
+												<!--<li><a href="#" title="Report"><span>Employee Report</span></a></li>-->
+												<!--<li><a href="#" title="Admin Role"><span>Employees With Admin Roles</span></a></li>-->
+																		
+												<!--<li><a href="ManageAdminMenuMasters.php" title="Buttons"><span>Manage Master Admin Menu</span></a></li>	
+												<li><a href="ManageAdminMenuRoles.php" title="Buttons"><span>Manage Admin Menu Roles</span></a></li>-->
+											</ul>	
+										</div>
+									</li>
+									
+									<li><a href="" title="SMS"><i class="glyph-icon icon-linecons-database"></i><span>POS Invoices</span></a>
+										<div class="sidebar-submenu">
+											<ul>
+											
+											<?php 
+											$DB = Connect();
+											$sql_name = select("distinct MenuMasterID","tblAdminMenuRole","RoleID='38'");
+											foreach($sql_name as $val)
+											{
+												//print_r($val);
+												$menu[]=$val['MenuMasterID'];
+											}
+											for($i=0;$i<count($menu);$i++)
+											{
+												$sql_named = select("distinct SubmenuName"," tblAdminMenuMasters","MenuMasterID='".$menu[$i] ."'");
+												if($sql_named[0]['SubmenuName']=='Delete Invoices')
+												{
+													?>
+															<li><a href="DeleteInvocies.php" title="Buttons"><span>Delete Invoices</span></a></li>
+													<?php
+												}if($sql_named[0]['SubmenuName']=='Reconciliation Pending Invoices')
+												{
+													?>
+														<li><a href="InvoiceApproval.php" title="Buttons"><span>Reconciliation Pending Invoices</span></a></li>	
+													<?php
+												}
+												if($sql_named[0]['SubmenuName']=='View Outstanding Invoices')
+												{
+													?>
+															<li><a href="OutstandingPayment.php" title="Buttons"><span>View Outstanding Invoices</span></a></li>	
+													<?php
+												}
+											}
+											$DB->close();
+											unset($menu);
+											?>
+											
+											</ul>	
+										</div>
+									</li>
+									<!--<li><a href="" title="SMS"><i class="glyph-icon icon-linecons-wallet"></i><span>Total Orders</span></a>
+										<div class="sidebar-submenu">
+											<ul>
+											
+												<?php 
+											// $DB = Connect();
+											// $sql_name = select("distinct MenuMasterID","tblAdminMenuRole","RoleID='39'");
+											// foreach($sql_name as $val)
+											// {
+												// print_r($val);
+												// $menu[]=$val['MenuMasterID'];
+											// }
+											// for($i=0;$i<count($menu);$i++)
+											// {
+												// $sql_named = select("distinct SubmenuName"," tblAdminMenuMasters","MenuMasterID='".$menu[$i] ."'");
+															// if($sql_named[0]['SubmenuName']=="Manage Orders")
+														// {
+															// ?>
+																// <li><a href="vieworders.php" title="Stores"><span>Manage Orders</span></a></li>
+															// <?php
+														// }
+											// }
+											// $DB->close();
+												// unset($menu);
+											?>
+									
+											
+											
+											</ul>	
+										</div>
+									</li>-->
+									
+									<!--<li><a href="" title="SMS"><i class="glyph-icon icon-linecons-wallet"></i><span>Total Stores Wise Orders</span></a>
+										<div class="sidebar-submenu">
+											<ul>
+											
+													<?php 
+											// $DB = Connect();
+											// $sql_name = select("distinct MenuMasterID","tblAdminMenuRole","RoleID='38'");
+											// foreach($sql_name as $val)
+											// {
+												//print_r($val);
+												// $menu[]=$val['MenuMasterID'];
+											// }
+											// for($i=0;$i<count($menu);$i++)
+											// {
+												// $sql_named = select("distinct SubmenuName"," tblAdminMenuMasters","MenuMasterID='".$menu[$i] ."'");
+														// if($sql_named[0]['SubmenuName']=="Stores Names")
+														// {
+															// $sql_stores = select("*","tblStores","1");
+															// foreach($sql_stores as $val)
+															// {
+																//echo $val[StoreID];
+																// $getUID = EncodeQ($val[StoreID]);
+																//echo $getUID;
+																// ?>
+																	// <li><a href="storewiseorders.php?storeid='<?//=$getUID ?>'" title="Stores"><span><?php// echo $val[StoreName]; ?></span></a></li>
+																// <?php
+															// }
+														// }
+											// }
+											
+											// $DB->close();
+												// unset($menu);
+											?>
+											</ul>	
+										</div>
+									</li>-->
+									
+									
+									<li><a href="" title="SMS"><i class="glyph-icon icon-linecons-paper-plane"></i><span>Analytics & Reports</span></a>
+										<div class="sidebar-submenu">
+											<ul>
+											<?php 
+											$DB = Connect();
+											$sql_name = select("distinct MenuMasterID","tblAdminMenuRole","RoleID='38'");
+											foreach($sql_name as $val)
+											{
+												//print_r($val);
+												$menu[]=$val['MenuMasterID'];
+											}
+											for($i=0;$i<count($menu);$i++)
+											{
+												$sql_named = select("distinct SubmenuName"," tblAdminMenuMasters","MenuMasterID='".$menu[$i] ."'");
+												if($sql_named[0]['SubmenuName']=='Petty Cash Report')
+												{
+?>
+													<li><a href="ReportPettyCash.php" title="Sales"><span>Petty Cash Report</span></a></li>	
+<?php
+												}
+													if($sql_named[0]['SubmenuName']=="Product Orders")
+												{
+													?>
+															<li><a href="ReportProductOrders.php" title="Product Orders"><span>Product Orders</span></a></li>
+													<?php
+													
+												}
+												if($sql_named[0]['SubmenuName']=="Product Consumption")
+												{
+													?>
+															<li><a href="ReportProductConsumption.php" title="Product Consumption"><span>Product Consumption</span></a></li>
+													<?php
+														
+
+
+												}
+													if($sql_named[0]['SubmenuName']=="Vendor Order")
+												{
+													?>
+															<li><a href="ReportVendorOrder.php" title="Vendor Order"><span>Vendor Order</span></a></li>
+													<?php
+														
+
+
+												}
+												if($sql_named[0]['SubmenuName']=="Report Membership")
+												{
+													?>
+															<li><a href="ReportMembership.php" title="Report Membership"><span>Membership</span></a></li>
+													<?php
+														
+
+
+												}
+												if($sql_named[0]['SubmenuName']=='Outstanding payment')
+												{
+													?>
+															<li><a href="ReportPayments.php" title="Outstanding Payment"><span>Outstanding Payment</span></a></li>	
+													<?php
+												}
+												if($sql_named[0]['SubmenuName']=='Daily Sales Audit')
+												{
+?>
+													<li><a href="ReportDailySalesAudit.php" title="ReportDailySalesAudit"><span>Daily Sales Audit</span></a></li>	
+<?php
+												}
+													if($sql_named[0]['SubmenuName']=='Bill Reconciliation')
+												{
+?>
+													<li><a href="ReportBillReconciliation.php" title="ReportBillReconciliation"><span>Bill Reconciliation</span></a></li>	
+<?php
+												}
+												if($sql_named[0]['SubmenuName']=='Sales')
+												{
+													?>
+															<li><a href="ReportSale.php" title="Report Sale"><span>Report Sale</span></a></li>	
+															  <li><a href="ReportCustomerRetentionAnalysis.php" title="Report Customer RetentionAnalysis"><span>Customer Retention</span></a></li>
+															  <li><a href="ReportServiceSalesCategoryBase.php" title="Service Sale Category"><span>Report Service Sale Category</span></a></li>
+															<li><a href="ReportServiceAnalysis.php" title="Service Analysis"><span>Report Service Analysis</span></a></li>		
+															<li><a href="CommissionAnalysisUpdate.php" title="Employee Commission"><span>Employee Commission</span></a></li>	
+															<li><a href="ReportDiscount.php" title="Report Discount"><span>Report Discount</span></a></li>
+													<?php
+												}
+												/* if($sql_named[0]['SubmenuName']=='Offer Sold')
+												{
+												?>
+													<li><a href="ReportOfferSold.php" title="Offer Sold"><span>Offer Sold</span></a></li>	
+												<?php
+												}
+												if($sql_named[0]['SubmenuName']=='Sales Report')
+												{
+?>
+													<li><a href="ReportServiceSales.php" title="Sales"><span>Sales Report</span></a></li>	
+<?php
+												}
+												if($sql_named[0]['SubmenuName']=='Discount Report')
+												{
+?>
+													<li><a href="ReportDiscount.php" title="Discount"><span>Discount Report</span></a></li>	
+<?php
+												}
+												
+												if($sql_named[0]['SubmenuName']=='Employee Sale Achieved')
+												{
+?>
+													<li><a href="EmployeeSaleAchieved.php" title="Void Bills"><span>Employee Sale Achieved</span></a></li>	
+<?php
+												}
+												if($sql_named[0]['SubmenuName']=='Outstanding payment')
+												{
+													?>
+															<li><a href="ReportPayments.php" title="Outstanding Payment"><span>Outstanding Payment</span></a></li>	
+													<?php
+												}
+												if($sql_named[0]['SubmenuName']=='Membership Sold')
+												{
+?>
+													<li><a href="ReportMembershipSold.php" title="Void Bills"><span>Membership Sold</span></a></li>	
+<?php
+												}
+												if($sql_named[0]['SubmenuName']=='Gift Voucher Sold')
+												{
+													?>
+															<li><a href="ReportGiftVoucherSold.php" title="Gift Voucher Sold"><span>Gift Voucher Sold</span></a></li>	
+													<?php
+												}
+												if($sql_named[0]['SubmenuName']=='Product Used')
+												{
+													?>
+															<li><a href="ReportProductUsed.php" title="Buttons"><span>Product Used</span></a></li>
+													<?php
+												}
+												if($sql_named[0]['SubmenuName']=='Cash/CC Report')
+												{
+													?>
+															<li><a href="ReportCashCC.php" title="Buttons"><span>Cash/CC Report</span></a></li>
+													<?php
+												}
+												if($sql_named[0]['SubmenuName']=='Discount Given')
+												{
+													?>
+															<li><a href="ReportDiscount.php" title="Buttons"><span>Discount Given</span></a></li>
+													<?php
+												}
+												if($sql_named[0]['SubmenuName']=='Employee Attendance')
+												{
+													?>
+															<li><a href="ReportEmployeeAttendance.php" title="Buttons"><span>Employee Attendance</span></a></li>
+													<?php
+												}
+												if($sql_named[0]['SubmenuName']=='Sales Report')
+												{
+													?>
+															<li><a href="ReportServiceSales.php" title="Sales Report"><span>Sales Report</span></a></li>	
+													<?php
+												} */
+												
+												// if($sql_named[0]['SubmenuName']=='View Discount Report')
+												// {
+?>
+													<!--0<li><a href="ReportDiscount.php" title="Buttons"><span>View Discount Report</span></a></li>-->
+<?php
+												// }
+												
+											}
+											$DB->close();
+												unset($menu);
+											?>
+												
+											</ul>	
+										</div>
+									</li>
+									<li><a href="EmployeeCommission-old.php" title="SMS"><i class="glyph-icon icon-linecons-paper-plane"></i><span>2016 Dec Comm Report</span></a></li>
+									
+								</ul>
+							</div>
+						<?php
+					}
+					elseif($AdminRoleID =='6')
+					{
+						?>
+						<div class="scroll-sidebar">
+								<ul id="sidebar-menu">
+									<!-- <li class="header"><span>Overview</span></li> -->
+									<li><a href="Salon-Dashboard.php" title="Dashboard"><i class="glyph-icon icon-linecons-tv"></i> <span>Dashboard</span></a></li>
+									<li class="header"><span>Manage</span></li>	
+									
+									<li><a href="#" title="Employee Management"><i class="glyph-icon icon-linecons-user"></i><span>Employee Management</span></a>
+										<div class="sidebar-submenu">
+											<ul>
+											<?php 
+												$DB = Connect();
+											$sql_name = select("distinct MenuMasterID","tblAdminMenuRole","RoleID='6'");
+											foreach($sql_name as $val)
+											{
+												//print_r($val);
+												$menu[]=$val['MenuMasterID'];
+											}
+											for($i=0;$i<count($menu);$i++)
+											{
+												$sql_named = select("distinct SubmenuName"," tblAdminMenuMasters","MenuMasterID='".$menu[$i] ."'");
+												if($sql_named[0]['SubmenuName']=="Manage Attendance")
+												{
+													?>
+														<li><a href="ManageAttendance.php" title="Employee Attendance"><span>Employee Attendance</span></a></li>
+                                                        <li><a href="ManageEmployeeWeekoff.php" title="Attendance"><span>Manage Weekoff</span></a></li>															
+													<?php
+												}
+											}
+												
+														/* $sql_namep = select("distinct MenuMasterID","tblAdminMenuRole","RoleID='".$val['RoleID']."'");
+													foreach($sql_namep as $valp)
+														{
+															$sql_named = select("distinct SubmenuName"," tblAdminMenuMasters","MenuMasterID='".$valp['MenuMasterID'] ."'");
+														}
+														if($sql_named[0]['SubmenuName']=='Manage Customer')
+														{
+															?>
+																	<li><a href="ManageCustomers.php" title="Buttons"><span>Manage Customers</span></a></li>	
+															<?php
+														} */
+											$DB->close();
+												unset($menu);
+											?>
+												<!--<li><a href="#" title="Report"><span>Employee Report</span></a></li>-->
+												<!--<li><a href="#" title="Admin Role"><span>Employees With Admin Roles</span></a></li>-->
+																		
+												<!--<li><a href="ManageAdminMenuMasters.php" title="Buttons"><span>Manage Master Admin Menu</span></a></li>	
+												<li><a href="ManageAdminMenuRoles.php" title="Buttons"><span>Manage Admin Menu Roles</span></a></li>-->
+											</ul>	
+										</div>
+									</li>
+<?php
+											$DB = Connect();
+											$Thisdate=date("y-m-d");
+											$FindStore="Select StoreID from tblAdminStore where AdminID=$strAdminID";
+												// echo $FindStore."<br>";
+												$RSf = $DB->query($FindStore);
+												if ($RSf->num_rows > 0) 
+												{
+													while($rowf = $RSf->fetch_assoc())
+													{
+														$strStoreID = $rowf["StoreID"];
+														// echo $strStoreID;
+														// echo "Hello";
+													}
+												}
+											$closeselect="SELECT CloseTime FROM `tblOpenNClose` WHERE `DateNTime`='$Thisdate' and StoreID='$strStoreID'";
+												// echo $closeselect."<br>";
+											$RSf = $DB->query($closeselect);
+											if ($RSf->num_rows > 0) 
+											{
+												while($rowf = $RSf->fetch_assoc())
+												{
+													$CloseTime = $rowf["CloseTime"];
+													// echo $CloseTime."<br>";
+												}
+											}
+											if($CloseTime=='0000-00-00 00:00:00')			
+											{
+?>									
+												<!--<li><a href="" title="SMS"><i class="glyph-icon icon-linecons-note"></i><span>Customers</span></a>-->
+													<div class="sidebar-submenu">
+														<ul>
+														<?php 
+														
+														$sql_name = select("distinct MenuMasterID","tblAdminMenuRole","RoleID='6'");
+														foreach($sql_name as $val)
+														{
+															//print_r($val);
+															$menu[]=$val['MenuMasterID'];
+														}
+													
+														
+														for($i=0;$i<count($menu);$i++)
+														{
+															$sql_named = select("distinct SubmenuName"," tblAdminMenuMasters","MenuMasterID='".$menu[$i] ."'");
+																
+														}
+															
+														for($i=0;$i<count($menu);$i++)
+														{
+														
+															$sql_named = select("distinct SubmenuName"," tblAdminMenuMasters","MenuMasterID='".$menu[$i] ."'");
+															
+															if($sql_named[0]['SubmenuName']=="Manage Membership")
+															{
+																?>
+																			<!--<li><a href="ManageMemberships.php" title="Manage Membership"><span>Manage Membership</span></a></li>-->
+																<?php
+															}
+														}
+														
+															
+																	/* $sql_namep = select("distinct MenuMasterID","tblAdminMenuRole","RoleID='".$val['RoleID']."'");
+																foreach($sql_namep as $valp)
+																	{
+																		$sql_named = select("distinct SubmenuName"," tblAdminMenuMasters","MenuMasterID='".$valp['MenuMasterID'] ."'");
+																	}
+																	if($sql_named[0]['SubmenuName']=='Manage Customer')
+																	{
+																		?>
+																				<li><a href="ManageCustomers.php" title="Buttons"><span>Manage Customers</span></a></li>	
+																		<?php
+																	} */
+														
+														$DB->close();
+															unset($menu);
+														?>
+															
+														</ul>	
+													</div>
+												</li>
+												<li><a href="" title="SMS"><i class="glyph-icon icon-linecons-note"></i><span>Customer Appointment</span></a>
+													<div class="sidebar-submenu">
+														<ul>
+														<?php 
+														
+														$sql_name = select("distinct MenuMasterID","tblAdminMenuRole","RoleID='6'");
+														foreach($sql_name as $val)
+														{
+															//print_r($val);
+															$menu[]=$val['MenuMasterID'];
+														}
+													
+														
+														for($i=0;$i<count($menu);$i++)
+														{
+															$sql_named = select("distinct SubmenuName"," tblAdminMenuMasters","MenuMasterID='".$menu[$i] ."'");
+																
+																if($sql_named[0]['SubmenuName']=="Manage Customer")
+																{
+																			// echo $CloseTime."<br>";
+			?>
+																	<!--<li><a href="ManageCustomers.php" title="Manage Customers"><span>Manage Customers</span></a></li>	-->
+			<?php
+																		
+																}
+														}
+															
+														for($i=0;$i<count($menu);$i++)
+														{
+														
+															$sql_named = select("distinct SubmenuName"," tblAdminMenuMasters","MenuMasterID='".$menu[$i] ."'");
+															
+															if($sql_named[0]['SubmenuName']=="Manage Appointments")
+															{
+																?>
+																			<li><a href="ManageAppointments.php" title="Today's Appointments"><span>Today's Appointments</span></a></li>
+																<?php
+															}
+															if($sql_named[0]['SubmenuName']=="All Appointments")
+															{
+																?>
+																			<li><a href="ViewAppointments.php" title="All Appointments"><span>All Appointments</span></a></li>
+																<?php
+															}
+															if($sql_named[0]['SubmenuName']=='Service Reminder')
+															{
+																?>
+																		<li><a href="ManageServiceReminder.php" title="Service Reminder"><span>Manage Service Reminder</span></a></li>	
+																<?php
+															}
+																if($sql_named[0]['SubmenuName']=="Quick Appointment")
+																{
+																
+																	?>
+																				<li><a href="ManageCustomers2.php" title="Buttons"><span>Quick Appointments</span></a></li>
+																	<?php
+																}
+														}
+														
+															
+																	/* $sql_namep = select("distinct MenuMasterID","tblAdminMenuRole","RoleID='".$val['RoleID']."'");
+																foreach($sql_namep as $valp)
+																	{
+																		$sql_named = select("distinct SubmenuName"," tblAdminMenuMasters","MenuMasterID='".$valp['MenuMasterID'] ."'");
+																	}
+																	if($sql_named[0]['SubmenuName']=='Manage Customer')
+																	{
+																		?>
+																				<li><a href="ManageCustomers.php" title="Buttons"><span>Manage Customers</span></a></li>	
+																		<?php
+																	} */
+														
+														$DB->close();
+															unset($menu);
+														?>
+															
+														</ul>	
+													</div>
+												</li>
+<?php
+											}
+											elseif($CloseTime!='0000-00-00 00:00:00')
+											{							
+											}
+?>												
+									
+									<li><a href="" title="Orders"><i class="glyph-icon icon-linecons-megaphone"></i><span>Products Orders</span></a>
+										<div class="sidebar-submenu">
+											<ul>
+											<?php 
+											$DB = Connect();
+											$sql_name = select("distinct MenuMasterID","tblAdminMenuRole","RoleID='6'");
+											foreach($sql_name as $val)
+											{
+												//print_r($val);
+												$menu[]=$val['MenuMasterID'];
+											}
+											for($i=0;$i<count($menu);$i++)
+											{
+												$sql_named = select("distinct SubmenuName"," tblAdminMenuMasters","MenuMasterID='".$menu[$i] ."'");
+												if($sql_named[0]['SubmenuName']=='Manage Storewise Orders')
+												{
+													?>
+															<li><a href="manageorders.php" title="Order Request"><span>Order Request</span></a></li>	
+													<?php
+												}
+													if($sql_named[0]['SubmenuName']=='Manage Storewise Orders')
+												{
+													?>
+															<li><a href="pendingorders.php" title="View Pending Orders"><span>View Pending Orders</span></a></li>	
+													<?php
+												}
+												if($sql_named[0]['SubmenuName']=='Manage Storewise Orders')
+												{
+													?>
+															<li><a href="IssueOrders.php" title="View Issue Orders"><span>View Issue Orders</span></a></li>	
+													<?php
+												}
+												if($sql_named[0]['SubmenuName']=='Manage Storewise Orders')
+												{
+													?>
+															<li><a href="ViewTransfer.php" title="View Transfer Orders"><span>View Transfer Orders</span></a></li>
+													<?php
+												}
+												if($sql_named[0]['SubmenuName']=='Cancel Orders')
+												{
+													?>
+															<li><a href="CancelOrders.php" title="Cancel Orders"><span>Cancel Orders</span></a></li>
+													<?php
+												}
+?>												
+<?php												
+											}
+?>											
+											<li><a href="ViewOrderHistory.php" title="View Orders"><span>View Orders History</span></a></li>
+											<!--<li><a href="ViewOrders.php" title="View Orders"><span>View Orders</span></a></li>-->
+											
+<?php												
+														/* $sql_namep = select("distinct MenuMasterID","tblAdminMenuRole","RoleID='".$val['RoleID']."'");
+													foreach($sql_namep as $valp)
+														{
+															$sql_named = select("distinct SubmenuName"," tblAdminMenuMasters","MenuMasterID='".$valp['MenuMasterID'] ."'");
+														}
+														if($sql_named[0]['SubmenuName']=='Manage Customer')
+														{
+															?>
+																	<li><a href="ManageCustomers.php" title="Buttons"><span>Manage Customers</span></a></li>	
+															<?php
+														} */
+											$DB->close();
+											unset($menu);
+											?>
+											</ul>	
+										</div>
+									</li>
+									<li><a href="" title="Reports"><i class="glyph-icon icon-linecons-paper-plane"></i><span>Analytics & Reports</span></a>
+										<div class="sidebar-submenu">
+											<ul>
+											<?php 
+											$DB = Connect();
+											$sql_name = select("distinct MenuMasterID","tblAdminMenuRole","RoleID='6'");
+											foreach($sql_name as $val)
+											{
+												//print_r($val);
+												$menu[]=$val['MenuMasterID'];
+											}
+											for($i=0;$i<count($menu);$i++)
+											{
+												$sql_named = select("distinct SubmenuName"," tblAdminMenuMasters","MenuMasterID='".$menu[$i] ."'");
+												
+												/* if($sql_named[0]['SubmenuName']=="Non Visiting Customers")
+												{
+													?>
+																<li><a href="ReportNonVisitingCustomers.php" title="Non Visiting Customers"><span>Non Visiting Customers</span></a></li>
+													<?php
+												} */
+												if($sql_named[0]['SubmenuName']=='Employee Commission')
+												{
+?>
+													<li><a href="CommissionAnalysisUpdate.php" title="Employee Commission"><span>Employee Commission</span></a></li>	
+													<li><a href="CommissionAnalysisUpdateCumulative.php" title="Employee Commission Cumulative"><span>Employee Commission Cumulative</span></a></li>
+<?php
+												}
+												if($sql_named[0]['SubmenuName']=='Customer Feedback')
+												{
+?>
+													<li><a href="CustomerFeedBack.php" title="CustomerFeedBack"><span>Customer Rating & Feedback</span></a></li>	
+<?php
+												}
+												/* if($sql_named[0]['SubmenuName']=='Outstanding payment')
+												{
+													?>
+															<li><a href="ReportOutstandingPayments.php" title="Outstanding Payment"><span>Outstanding Payment</span></a></li>	
+													<?php
+												} */
+											}
+											$DB->close();
+												unset($menu);
+											?>
+												
+											</ul>	
+										</div>
+									</li>
+									<li><a href="" title="Inventory"><i class="glyph-icon icon-linecons-doc"></i><span>Inventory</span></a>
+										<div class="sidebar-submenu">
+											<ul>
+											<?php 
+											$DB = Connect();
+											$sql_name = select("distinct MenuMasterID","tblAdminMenuRole","RoleID='6'");
+											foreach($sql_name as $val)
+											{
+												//print_r($val);
+												$menu[]=$val['MenuMasterID'];
+											}
+											for($i=0;$i<count($menu);$i++)
+											{
+												$sql_named = select("distinct SubmenuName"," tblAdminMenuMasters","MenuMasterID='".$menu[$i] ."'");
+												if($sql_named[0]['SubmenuName']=='View Stock')
+												{
+													?>
+															<li><a href="ViewStoreStock.php" title="View Stock"><span>View Stock</span></a></li>	
+													<?php
+												}
+														
+											}
+														/* $sql_namep = select("distinct MenuMasterID","tblAdminMenuRole","RoleID='".$val['RoleID']."'");
+													foreach($sql_namep as $valp)
+														{
+															$sql_named = select("distinct SubmenuName"," tblAdminMenuMasters","MenuMasterID='".$valp['MenuMasterID'] ."'");
+														}
+														if($sql_named[0]['SubmenuName']=='Manage Customer')
+														{
+															?>
+																	<li><a href="ManageCustomers.php" title="Buttons"><span>Manage Customers</span></a></li>	
+															<?php
+														} */
+												$DB->close();
+												unset($menu);
+											?>
+											</ul>	
+										</div>
+									</li>
+<?php
+								if($CloseTime=='0000-00-00 00:00:00')			
+								{
+?>									
+									<li><a href="" title="SMS"><i class="glyph-icon icon-linecons-database"></i><span>POS Invoices</span></a>
+										<div class="sidebar-submenu">
+											<ul>
+											<?php 
+											$DB = Connect();
+											$sql_name = select("distinct MenuMasterID","tblAdminMenuRole","RoleID='6'");
+											foreach($sql_name as $val)
+											{
+												//print_r($val);
+												$menu[]=$val['MenuMasterID'];
+											}
+											for($i=0;$i<count($menu);$i++)
+											{
+												$sql_named = select("distinct SubmenuName"," tblAdminMenuMasters","MenuMasterID='".$menu[$i] ."'");
+												if($sql_named[0]['SubmenuName']=='View Invoice')
+												{
+													?>
+															<li><a href="appointment_invoice.php" title="View Invoice"><span>View Invoice(s)</span></a></li>	
+													<?php
+												}
+												if($sql_named[0]['SubmenuName']=='View Outstanding Invoices')
+												{
+													?>
+															<li><a href="ViewOutstandingInvoices.php" title="Outstanding Payment"><span>View Outstanding Invoices</span></a></li>	
+													<?php
+												}
+												if($sql_named[0]['SubmenuName']=='Reconciliation Pending Invoices')
+												{
+													?>
+															<li><a href="InvoiceApproval.php" title="Outstanding Payment"><span>Reconciliation Pending Invoices</span></a></li>	
+													<?php
+												}	
+												if($sql_named[0]['SubmenuName']=='Sales Reconciliation')
+												{
+													?>
+															<li><a href="Reconciliation.php" title="Sales Reconciliation"><span>Sales Reconciliation</span></a></li>	
+													<?php
+												}													
+											}
+											$DB->close();
+											unset($menu);
+											?>
+											</ul>	
+										</div>
+									</li>
+<?php
+								}
+								else
+								{
+									
+								}
+?>									
+									<li><a href="" title="SMS"><i class="glyph-icon icon-linecons-money"></i><span>Expenses</span></a>
+										<div class="sidebar-submenu">
+											<ul>
+											<?php 
+											$DB = Connect();
+											$sql_name = select("distinct MenuMasterID","tblAdminMenuRole","RoleID='6'");
+											foreach($sql_name as $val)
+											{
+												//print_r($val);
+												$menu[]=$val['MenuMasterID'];
+											}
+											for($i=0;$i<count($menu);$i++)
+											{
+												$sql_named = select("distinct SubmenuName"," tblAdminMenuMasters","MenuMasterID='".$menu[$i] ."'");
+												if($sql_named[0]['SubmenuName']=='Petty Cash Spent and Balance')
+												{
+													?>
+															<li><a href="Petty-Cash-Spent-and-Balance.php" title="Petty Cash Spent and Balance"><span>Petty Cash Spent and Balance</span></a></li>	
+													<?php
+												}
+														
+											}
+														/* $sql_namep = select("distinct MenuMasterID","tblAdminMenuRole","RoleID='".$val['RoleID']."'");
+													foreach($sql_namep as $valp)
+														{
+															$sql_named = select("distinct SubmenuName"," tblAdminMenuMasters","MenuMasterID='".$valp['MenuMasterID'] ."'");
+														}
+														if($sql_named[0]['SubmenuName']=='Manage Customer')
+														{
+															?>
+																	<li><a href="ManageCustomers.php" title="Buttons"><span>Manage Customers</span></a></li>	
+															<?php
+														} */
+												$DB->close();
+												unset($menu);
+											?>
+											</ul>	
+										</div>
+									</li>	
+									<li><a href="EmployeeCommission-old.php" title="SMS"><i class="glyph-icon icon-linecons-paper-plane"></i><span>2016 Dec Comm Report</span></a></li>
+								</ul>
+							</div>
+						<?php
+					}
+					elseif($AdminRoleID =='6')
+					{
+						?>
+						<div class="scroll-sidebar">
+								<ul id="sidebar-menu">
+									<!-- <li class="header"><span>Overview</span></li> -->
+									<li><a href="Marketing-Dashboard.php" title="Dashboard"><i class="glyph-icon icon-linecons-tv"></i> <span>Dashboard</span></a></li>
+									<li class="header"><span>Manage</span></li>	
+										
+										
+									<li><a href="#" title="Manage Employee"><i class="glyph-icon icon-linecons-lightbulb"></i><span>Employee Management</span></a>
+										<div class="sidebar-submenu">
+											<ul>
+											<?php 
+											$DB = Connect();
+											$sql_name = select("distinct MenuMasterID","tblAdminMenuRole","RoleID='6'");
+											foreach($sql_name as $val)
+											{
+												//print_r($val);
+												$menu[]=$val['MenuMasterID'];
+											}
+											for($i=0;$i<count($menu);$i++)
+											{
+												$sql_named = select("distinct SubmenuName"," tblAdminMenuMasters","MenuMasterID='".$menu[$i] ."'");
+												if($sql_named[0]['SubmenuName']=="Manage Attendance")
+												{
+													?>
+														<li><a href="ManageAttendance.php" title="Attendance"><span>Employees Attendance</span></a></li>
+                                                           <li><a href="ManageEmployeeWeekoff.php" title="Attendance"><span>Manage Weekoff</span></a></li>															
+													<?php
+												}
+											}
+												
+														/* $sql_namep = select("distinct MenuMasterID","tblAdminMenuRole","RoleID='".$val['RoleID']."'");
+													foreach($sql_namep as $valp)
+														{
+															$sql_named = select("distinct SubmenuName"," tblAdminMenuMasters","MenuMasterID='".$valp['MenuMasterID'] ."'");
+														}
+														if($sql_named[0]['SubmenuName']=='Manage Customer')
+														{
+															?>
+																	<li><a href="ManageCustomers.php" title="Buttons"><span>Manage Customers</span></a></li>	
+															<?php
+														} */
+											$DB->close();
+												unset($menu);
+											?>
+												<!--<li><a href="#" title="Report"><span>Employee Report</span></a></li>-->
+												<!--<li><a href="#" title="Admin Role"><span>Employees With Admin Roles</span></a></li>-->
+																		
+												<!--<li><a href="ManageAdminMenuMasters.php" title="Buttons"><span>Manage Master Admin Menu</span></a></li>	
+												<li><a href="ManageAdminMenuRoles.php" title="Buttons"><span>Manage Admin Menu Roles</span></a></li>-->
+											</ul>	
+										</div>
+									</li>
+									<li><a href="" title="SMS"><i class="glyph-icon icon-linecons-paper-plane"></i><span>Customers</span></a>
+										<div class="sidebar-submenu">
+											<ul>
+											<?php 
+											$DB = Connect();
+											$sql_name = select("distinct MenuMasterID","tblAdminMenuRole","RoleID='6'");
+											foreach($sql_name as $val)
+											{
+												//print_r($val);
+												$menu[]=$val['MenuMasterID'];
+											}
+											for($i=0;$i<count($menu);$i++)
+											{
+												$sql_named = select("distinct SubmenuName"," tblAdminMenuMasters","MenuMasterID='".$menu[$i] ."'");
+												
+												// $closeselect="SELECT CloseTime FROM `tblOpenNClose` WHERE `DateNTime`='$Thisdate' and StoreID='$strStoreID'";
+												// echo $closeselect."<br>";
+											
+												
+												if($sql_named[0]['SubmenuName']=="Manage Appointments")
+												{
+													?>
+																<li><a href="ManageAppointments.php" title="Buttons"><span>Today's Appointments</span></a></li>
+													<?php
+												}
+												if($sql_named[0]['SubmenuName']=="All Appointments")
+												{
+													?>
+																<li><a href="ViewAppointments.php" title="Buttons"><span>All Appointments</span></a></li>
+													<?php
+												}
+												if($sql_named[0]['SubmenuName']=="Manage Membership")
+												{
+													?>
+																<!--<li><a href="ManageMemberships.php" title="Buttons"><span>Manage Membership</span></a></li>-->
+													<?php
+												}
+											
+											}
+											
+											$DB->close();
+												unset($menu);
+											?>
+												
+											</ul>	
+										</div>
+									</li>
+									<li><a href="" title="SMS"><i class="glyph-icon icon-linecons-wallet"></i><span>Marketing</span></a>
+										<div class="sidebar-submenu">
+											<ul>
+											
+											<?php 
+											$DB = Connect();
+											$sql_name = select("distinct MenuMasterID","tblAdminMenuRole","RoleID='6'");
+											foreach($sql_name as $val)
+											{
+												//print_r($val);
+												$menu[]=$val['MenuMasterID'];
+											}
+											for($i=0;$i<count($menu);$i++)
+											{
+												$sql_named = select("distinct SubmenuName"," tblAdminMenuMasters","MenuMasterID='".$menu[$i] ."'");
+												if($sql_named[0]['SubmenuName']=="Save Videos")
+												{
+?>
+													<li><a href="ManageMarketingVideo.php" title="Upload Videos"><span>Save Videos</span></a></li>
+<?php
+												}
+												if($sql_named[0]['SubmenuName']=="Save Images")
+												{
+?>
+															
+													<li><a href="ManageMarketingImg.php" title="Upload Videos"><span>Save Images</span></a></li>
+<?php
+												}
+											}
+												
+														/* $sql_namep = select("distinct MenuMasterID","tblAdminMenuRole","RoleID='".$val['RoleID']."'");
+													foreach($sql_namep as $valp)
+														{
+															$sql_named = select("distinct SubmenuName"," tblAdminMenuMasters","MenuMasterID='".$valp['MenuMasterID'] ."'");
+														}
+														if($sql_named[0]['SubmenuName']=='Manage Customer')
+														{
+															?>
+																	<li><a href="ManageCustomers.php" title="Buttons"><span>Manage Customers</span></a></li>	
+															<?php
+														} */
+														
+											$DB->close();
+											unset($menu);	
+											?>
+											
+											</ul>	
+										</div>
+									</li>
+									<li><a href="" title="SMS"><i class="glyph-icon icon-linecons-paper-plane"></i><span>Orders</span></a>
+										<div class="sidebar-submenu">
+											<ul>
+											<?php 
+											$DB = Connect();
+											$sql_name = select("distinct MenuMasterID","tblAdminMenuRole","RoleID='6'");
+											foreach($sql_name as $val)
+											{
+												//print_r($val);
+												$menu[]=$val['MenuMasterID'];
+											}
+											for($i=0;$i<count($menu);$i++)
+											{
+												$sql_named = select("distinct SubmenuName"," tblAdminMenuMasters","MenuMasterID='".$menu[$i] ."'");
+												if($sql_named[0]['SubmenuName']=='Manage Storewise Orders')
+												{
+													?>
+															<li><a href="manageorders.php" title="Buttons"><span>Order Request</span></a></li>	
+													<?php
+												}
+													if($sql_named[0]['SubmenuName']=='Manage Storewise Orders')
+												{
+													?>
+															<li><a href="pendingorders.php" title="Buttons"><span>View Pending Orders</span></a></li>	
+													<?php
+												}
+												if($sql_named[0]['SubmenuName']=='Manage Storewise Orders')
+												{
+													?>
+															<li><a href="IssueOrders.php" title="Buttons"><span>View Issue Orders</span></a></li>	
+													<?php
+												}
+												if($sql_named[0]['SubmenuName']=='Manage Storewise Orders')
+												{
+													?>
+															<li><a href="ViewTransfer.php" title="Buttons"><span>View Transfer Orders</span></a></li>	
+													<?php
+												}
+												if($sql_named[0]['SubmenuName']=='Cancel Orders')
+												{
+													?>
+															<li><a href="CancelOrders.php" title="Buttons"><span>Cancel Orders</span></a></li>	
+													<?php
+												}
+?>												
+<?php												
+											}
+?>											
+											<li><a href="ViewOrders.php" title="Buttons"><span>View Orders</span></a></li>
+											
+<?php												
+														/* $sql_namep = select("distinct MenuMasterID","tblAdminMenuRole","RoleID='".$val['RoleID']."'");
+													foreach($sql_namep as $valp)
+														{
+															$sql_named = select("distinct SubmenuName"," tblAdminMenuMasters","MenuMasterID='".$valp['MenuMasterID'] ."'");
+														}
+														if($sql_named[0]['SubmenuName']=='Manage Customer')
+														{
+															?>
+																	<li><a href="ManageCustomers.php" title="Buttons"><span>Manage Customers</span></a></li>	
+															<?php
+														} */
+											$DB->close();
+											unset($menu);
+											?>
+											</ul>	
+										</div>
+									</li>
+									<li><a href="" title="SMS"><i class="glyph-icon icon-linecons-doc"></i><span>Inventory</span></a>
+										<div class="sidebar-submenu">
+											<ul>
+											<?php 
+											$DB = Connect();
+											$sql_name = select("distinct MenuMasterID","tblAdminMenuRole","RoleID='6'");
+											foreach($sql_name as $val)
+											{
+												//print_r($val);
+												$menu[]=$val['MenuMasterID'];
+											}
+											for($i=0;$i<count($menu);$i++)
+											{
+												$sql_named = select("distinct SubmenuName"," tblAdminMenuMasters","MenuMasterID='".$menu[$i] ."'");
+												if($sql_named[0]['SubmenuName']=='View Stock')
+												{
+													?>
+															<li><a href="ViewStoreStock.php" title="Buttons"><span>View Stock</span></a></li>	
+													<?php
+												}
+														
+											}
+														/* $sql_namep = select("distinct MenuMasterID","tblAdminMenuRole","RoleID='".$val['RoleID']."'");
+													foreach($sql_namep as $valp)
+														{
+															$sql_named = select("distinct SubmenuName"," tblAdminMenuMasters","MenuMasterID='".$valp['MenuMasterID'] ."'");
+														}
+														if($sql_named[0]['SubmenuName']=='Manage Customer')
+														{
+															?>
+																	<li><a href="ManageCustomers.php" title="Buttons"><span>Manage Customers</span></a></li>	
+															<?php
+														} */
+												$DB->close();
+												unset($menu);
+											?>
+											</ul>	
+										</div>
+									</li>
+									<li><a href="" title="SMS"><i class="glyph-icon icon-linecons-paper-plane"></i><span>POS Invoices</span></a>
+										<div class="sidebar-submenu">
+											<ul>
+											<?php 
+											$DB = Connect();
+											$sql_name = select("distinct MenuMasterID","tblAdminMenuRole","RoleID='6'");
+											foreach($sql_name as $val)
+											{
+												//print_r($val);
+												$menu[]=$val['MenuMasterID'];
+											}
+											for($i=0;$i<count($menu);$i++)
+											{
+												$sql_named = select("distinct SubmenuName"," tblAdminMenuMasters","MenuMasterID='".$menu[$i] ."'");
+												
+												if($sql_named[0]['SubmenuName']=='Reconciliation Pending Invoices')
+												{
+													?>
+															<li><a href="Reconciliation-Pending-Invoices.php" title="Buttons"><span>Reconciliation Pending Invoices</span></a></li>	
+													<?php
+												}
+												if($sql_named[0]['SubmenuName']=='View Outstanding Invoices')
+												{
+													?>
+															<li><a href="ViewOutstandingInvoices.php" title="Buttons"><span>View Outstanding</span></a></li>	
+													<?php
+												}
+												if($sql_named[0]['SubmenuName']=='Sales Reconciliation')
+												{
+													?>
+															<li><a href="Reconciliation.php" title="Sales Reconciliation"><span>Sales Reconciliation</span></a></li>	
+													<?php
+												}
+														
+											}
+														/* $sql_namep = select("distinct MenuMasterID","tblAdminMenuRole","RoleID='".$val['RoleID']."'");
+													foreach($sql_namep as $valp)
+														{
+															$sql_named = select("distinct SubmenuName"," tblAdminMenuMasters","MenuMasterID='".$valp['MenuMasterID'] ."'");
+														}
+														if($sql_named[0]['SubmenuName']=='Manage Customer')
+														{
+															?>
+																	<li><a href="ManageCustomers.php" title="Buttons"><span>Manage Customers</span></a></li>	
+															<?php
+														} */
+												$DB->close();
+												unset($menu);
+											?>
+											</ul>	
+										</div>
+									</li>
+									<li><a href="" title="SMS"><i class="glyph-icon icon-linecons-paper-plane"></i><span>Expenses</span></a>
+										<div class="sidebar-submenu">
+											<ul>
+											<?php 
+											$DB = Connect();
+											$sql_name = select("distinct MenuMasterID","tblAdminMenuRole","RoleID='6'");
+											foreach($sql_name as $val)
+											{
+												//print_r($val);
+												$menu[]=$val['MenuMasterID'];
+											}
+											for($i=0;$i<count($menu);$i++)
+											{
+												$sql_named = select("distinct SubmenuName"," tblAdminMenuMasters","MenuMasterID='".$menu[$i] ."'");
+												if($sql_named[0]['SubmenuName']=='Petty Cash Spent and Balance')
+												{
+													?>
+															<li><a href="Petty-Cash-Spent-and-Balance.php" title="Buttons"><span>Petty Cash Spent and Balance</span></a></li>	
+															
+													<?php
+												}
+														
+											}
+														/* $sql_namep = select("distinct MenuMasterID","tblAdminMenuRole","RoleID='".$val['RoleID']."'");
+													foreach($sql_namep as $valp)
+														{
+															$sql_named = select("distinct SubmenuName"," tblAdminMenuMasters","MenuMasterID='".$valp['MenuMasterID'] ."'");
+														}
+														if($sql_named[0]['SubmenuName']=='Manage Customer')
+														{
+															?>
+																	<li><a href="ManageCustomers.php" title="Buttons"><span>Manage Customers</span></a></li>	
+															<?php
+														} */
+												$DB->close();
+												unset($menu);
+											?>
+											</ul>	
+										</div>
+									</li>	
+											<li><a href="EmployeeCommission-old.php" title="SMS"><i class="glyph-icon icon-linecons-paper-plane"></i><span>2016 Dec Comm Report</span></a></li>									
+								</ul>
+							</div>
+						<?php
+					}
+					
+				}					
+			?>
+			
+			</div>
+			

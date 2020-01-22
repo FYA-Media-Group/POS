@@ -1,0 +1,649 @@
+    <style>	
+        #loading .svg-icon-loader {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            margin: -50px 0 0 -50px;
+        }
+    </style>
+    <meta charset="UTF-8">
+    <!--[if IE]><meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'><![endif]-->
+    <title><?=$strPageTitle?></title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="assets/images/icons/App-Icon114x114.jpg">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="assets/images/icons/App-Icon114x114.jpg">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="assets/images/icons/App-Icon72x72.jpg">
+    <link rel="apple-touch-icon-precomposed" href="assets/images/icons/App-Icon57x57.jpg">
+    <link rel="shortcut icon" href="assets/images/icons/favicon.png">
+    <link rel="stylesheet" type="text/css" href="assets/helpers/animate.css">
+    <link rel="stylesheet" type="text/css" href="assets/helpers/boilerplate.css">
+    <link rel="stylesheet" type="text/css" href="assets/helpers/border-radius.css">
+    <link rel="stylesheet" type="text/css" href="assets/helpers/grid.css">
+    <link rel="stylesheet" type="text/css" href="assets/helpers/page-transitions.css">
+    <link rel="stylesheet" type="text/css" href="assets/helpers/spacing.css">
+    <link rel="stylesheet" type="text/css" href="assets/helpers/typography.css">
+    <link rel="stylesheet" type="text/css" href="assets/helpers/utils.css">
+    <link rel="stylesheet" type="text/css" href="assets/helpers/colors.css">
+    <link rel="stylesheet" type="text/css" href="assets/material/ripple.css">
+    <link rel="stylesheet" type="text/css" href="assets/elements/badges.css">
+    <link rel="stylesheet" type="text/css" href="assets/elements/buttons.css">
+    <link rel="stylesheet" type="text/css" href="assets/elements/content-box.css">
+    <link rel="stylesheet" type="text/css" href="assets/elements/dashboard-box.css">
+    <link rel="stylesheet" type="text/css" href="assets/elements/forms.css">
+    <link rel="stylesheet" type="text/css" href="assets/elements/images.css">
+    <link rel="stylesheet" type="text/css" href="assets/elements/info-box.css">
+    <link rel="stylesheet" type="text/css" href="assets/elements/invoice.css">
+    <link rel="stylesheet" type="text/css" href="assets/elements/loading-indicators.css">
+    <link rel="stylesheet" type="text/css" href="assets/elements/menus.css">
+    <link rel="stylesheet" type="text/css" href="assets/elements/panel-box.css">
+    <link rel="stylesheet" type="text/css" href="assets/elements/response-messages.css">
+    <link rel="stylesheet" type="text/css" href="assets/elements/responsive-tables.css">
+    <link rel="stylesheet" type="text/css" href="assets/elements/ribbon.css">
+    <link rel="stylesheet" type="text/css" href="assets/elements/social-box.css">
+    <link rel="stylesheet" type="text/css" href="assets/elements/tables.css">
+    <link rel="stylesheet" type="text/css" href="assets/elements/tile-box.css">
+    <link rel="stylesheet" type="text/css" href="assets/elements/timeline.css">
+    <link rel="stylesheet" type="text/css" href="assets/icons/fontawesome/fontawesome.css">
+    <link rel="stylesheet" type="text/css" href="assets/icons/linecons/linecons.css">
+    <link rel="stylesheet" type="text/css" href="assets/icons/spinnericon/spinnericon.css">
+    <link rel="stylesheet" type="text/css" href="assets/widgets/accordion-ui/accordion.css">
+    <link rel="stylesheet" type="text/css" href="assets/widgets/calendar/calendar.css">
+    <link rel="stylesheet" type="text/css" href="assets/widgets/carousel/carousel.css">
+    <link rel="stylesheet" type="text/css" href="assets/widgets/charts/justgage/justgage.css">
+    <link rel="stylesheet" type="text/css" href="assets/widgets/charts/morris/morris.css">
+    <link rel="stylesheet" type="text/css" href="assets/widgets/charts/piegage/piegage.css">
+    <link rel="stylesheet" type="text/css" href="assets/widgets/charts/xcharts/xcharts.css">
+    <link rel="stylesheet" type="text/css" href="assets/widgets/chosen/chosen.css">
+    <link rel="stylesheet" type="text/css" href="assets/widgets/colorpicker/colorpicker.css">
+    <link rel="stylesheet" type="text/css" href="assets/widgets/datatable/datatable.css">
+    <link rel="stylesheet" type="text/css" href="assets/widgets/datepicker/datepicker.css">
+    <link rel="stylesheet" type="text/css" href="assets/widgets/datepicker-ui/datepicker.css">
+    <link rel="stylesheet" type="text/css" href="assets/widgets/daterangepicker/daterangepicker.css">
+    <link rel="stylesheet" type="text/css" href="assets/widgets/dialog/dialog.css">
+    <link rel="stylesheet" type="text/css" href="assets/widgets/dropdown/dropdown.css">
+    <link rel="stylesheet" type="text/css" href="assets/widgets/dropzone/dropzone.css">
+    <link rel="stylesheet" type="text/css" href="assets/widgets/file-input/fileinput.css">
+    <link rel="stylesheet" type="text/css" href="assets/widgets/input-switch/inputswitch.css">
+    <link rel="stylesheet" type="text/css" href="assets/widgets/input-switch/inputswitch-alt.css">
+    <link rel="stylesheet" type="text/css" href="assets/widgets/ionrangeslider/ionrangeslider.css">
+    <link rel="stylesheet" type="text/css" href="assets/widgets/jcrop/jcrop.css">
+    <link rel="stylesheet" type="text/css" href="assets/widgets/jgrowl-notifications/jgrowl.css">
+    <link rel="stylesheet" type="text/css" href="assets/widgets/loading-bar/loadingbar.css">
+    <link rel="stylesheet" type="text/css" href="assets/widgets/maps/vector-maps/vectormaps.css">
+    <link rel="stylesheet" type="text/css" href="assets/widgets/markdown/markdown.css">
+    <link rel="stylesheet" type="text/css" href="assets/widgets/modal/modal.css">
+    <link rel="stylesheet" type="text/css" href="assets/widgets/multi-select/multiselect.css">
+    <link rel="stylesheet" type="text/css" href="assets/widgets/multi-upload/fileupload.css">
+    <link rel="stylesheet" type="text/css" href="assets/widgets/nestable/nestable.css">
+    <link rel="stylesheet" type="text/css" href="assets/widgets/noty-notifications/noty.css">
+    <link rel="stylesheet" type="text/css" href="assets/widgets/popover/popover.css">
+    <link rel="stylesheet" type="text/css" href="assets/widgets/pretty-photo/prettyphoto.css">
+    <link rel="stylesheet" type="text/css" href="assets/widgets/progressbar/progressbar.css">
+    <link rel="stylesheet" type="text/css" href="assets/widgets/range-slider/rangeslider.css">
+    <link rel="stylesheet" type="text/css" href="assets/widgets/slidebars/slidebars.css">
+    <link rel="stylesheet" type="text/css" href="assets/widgets/slider-ui/slider.css">
+    <link rel="stylesheet" type="text/css" href="assets/widgets/summernote-wysiwyg/summernote-wysiwyg.css">
+    <link rel="stylesheet" type="text/css" href="assets/widgets/tabs-ui/tabs.css">
+    <link rel="stylesheet" type="text/css" href="assets/widgets/timepicker/timepicker.css">
+    <link rel="stylesheet" type="text/css" href="assets/widgets/tocify/tocify.css">
+    <link rel="stylesheet" type="text/css" href="assets/widgets/tooltip/tooltip.css">
+    <link rel="stylesheet" type="text/css" href="assets/widgets/touchspin/touchspin.css">
+    <link rel="stylesheet" type="text/css" href="assets/widgets/uniform/uniform.css">
+    <link rel="stylesheet" type="text/css" href="assets/widgets/wizard/wizard.css">
+    <link rel="stylesheet" type="text/css" href="assets/widgets/xeditable/xeditable.css">
+    <link rel="stylesheet" type="text/css" href="assets/snippets/chat.css">
+    <link rel="stylesheet" type="text/css" href="assets/snippets/files-box.css">
+    <link rel="stylesheet" type="text/css" href="assets/snippets/login-box.css">
+    <link rel="stylesheet" type="text/css" href="assets/snippets/notification-box.css">
+    <link rel="stylesheet" type="text/css" href="assets/snippets/progress-box.css">
+    <link rel="stylesheet" type="text/css" href="assets/snippets/todo.css">
+    <link rel="stylesheet" type="text/css" href="assets/snippets/user-profile.css">
+    <link rel="stylesheet" type="text/css" href="assets/snippets/mobile-navigation.css">
+    <link rel="stylesheet" type="text/css" href="assets/applications/mailbox.css">
+    <link rel="stylesheet" type="text/css" href="assets/themes/admin/layout.css">
+    <link rel="stylesheet" type="text/css" href="assets/themes/admin/color-schemes/default.css">
+    <link rel="stylesheet" type="text/css" href="assets/themes/components/default.css">
+    <link rel="stylesheet" type="text/css" href="assets/themes/components/border-radius.css">
+    <link rel="stylesheet" type="text/css" href="assets/helpers/responsive-elements.css">
+    <link rel="stylesheet" type="text/css" href="assets/helpers/admin-responsive.css">
+    <link rel="stylesheet" type="text/css" href="assets/widgets/modal/modal.css">
+	
+    <script type="text/javascript" src="assets/js-core/jquery-core.js"></script>
+    <script type="text/javascript" src="assets/js-core/jquery-ui-core.js"></script>
+    <script type="text/javascript" src="assets/js-core/jquery-ui-widget.js"></script>
+    <script type="text/javascript" src="assets/js-core/jquery-ui-mouse.js"></script>
+    <script type="text/javascript" src="assets/js-core/jquery-ui-position.js"></script>
+    <script type="text/javascript" src="assets/js-core/transition.js"></script>
+    <script type="text/javascript" src="assets/js-core/modernizr.js"></script>
+    <script type="text/javascript" src="assets/js-core/jquery-cookie.js"></script>
+	<script type="text/javascript" src="assets/js-init/widgets-init.js"></script>
+	<script type="text/javascript" src="assets/widgets/modal/modal.js"></script>
+	  <script type="text/javascript" src="assets/widgets/daterangepicker/moment.js"></script>
+                    <script type="text/javascript" src="assets/widgets/calendar/calendar.js"></script>
+					 
+                  
+					   <script type="text/javascript" src="assets/widgets/datepicker/datepicker.js"></script>
+                    <script type="text/javascript">
+                        /* Datepicker bootstrap */
+
+                        $(function() {
+                            "use strict";
+                            $('.bootstrap-datepicker').bsdatepicker({
+                                format: 'mm-dd-yyyy'
+                            });
+                        });
+                    </script>
+                    <script type="text/javascript" src="assets/widgets/datepicker-ui/datepicker.js"></script>
+                    <script type="text/javascript" src="assets/widgets/datepicker-ui/datepicker-demo.js"></script>
+                    <script type="text/javascript" src="assets/widgets/daterangepicker/moment.js"></script>
+                    <script type="text/javascript" src="assets/widgets/daterangepicker/daterangepicker.js"></script>
+                    <script type="text/javascript" src="assets/widgets/daterangepicker/daterangepicker-demo.js"></script>
+                    <script type="text/javascript" src="assets/widgets/timepicker/timepicker.js"></script>
+                    <script type="text/javascript">
+                        /* Timepicker */
+
+                        $(function() {
+                            "use strict";
+                            $('.timepicker-example').timepicker();
+                        });
+                    </script>
+                    <script type="text/javascript" src="assets/widgets/colorpicker/colorpicker.js"></script>
+                    <script type="text/javascript" src="assets/widgets/colorpicker/colorpicker-demo.js"></script>
+	
+	<!-- Tabs related css and js start -->
+	<script type="text/javascript" src="assets/widgets/tabs-ui/tabs.js"></script>
+	<script type="text/javascript">
+		/* jQuery UI Tabs */
+
+		$(function() {
+			"use strict";
+			$(".tabs").tabs();
+		});
+
+		$(function() {
+			"use strict";
+			$(".tabs-hover").tabs({
+				event: "mouseover"
+			});
+		});
+	</script>
+	<script type="text/javascript" src="assets/widgets/tabs/tabs.js"></script>
+	<script type="text/javascript" src="assets/widgets/tabs/tabs-responsive.js"></script>
+	<script type="text/javascript">
+		/* Responsive tabs */
+		$(function() {
+			"use strict";
+			$('.nav-responsive').tabdrop();
+		});
+	</script>
+	<!-- Tabs related css and js end -->
+	
+	<!-- Responsive table related css and js start -->
+	<script type="text/javascript" src="assets/widgets/datatable/datatable.js"></script>
+	<script type="text/javascript" src="assets/widgets/datatable/datatable-bootstrap.js"></script>
+	<script type="text/javascript" src="assets/widgets/datatable/datatable-responsive.js"></script>
+	<script type="text/javascript">
+		/* Datatables responsive */
+
+		$(document).ready(function() {
+			$('#datatable-responsive').DataTable({
+				responsive: true
+			});
+		});
+
+		$(document).ready(function() {
+			$('.dataTables_filter input').attr("placeholder", "Search...");
+		});
+	</script>
+	<!-- Responsive table related css and js end -->
+	
+	
+	<!-- Form elements related css and js start -->
+	<script type="text/javascript" src="assets/widgets/spinner/spinner.js"></script>
+	<script type="text/javascript">
+		/* jQuery UI Spinner */
+
+		$(function() {
+			"use strict";
+			$(".spinner-input").spinner();
+		});
+	</script>
+	<script type="text/javascript" src="assets/widgets/autocomplete/autocomplete.js"></script>
+	<script type="text/javascript" src="assets/widgets/autocomplete/menu.js"></script>
+	<script type="text/javascript" src="assets/widgets/autocomplete/autocomplete-demo.js"></script>
+	<script type="text/javascript" src="assets/widgets/touchspin/touchspin.js"></script>
+	<script type="text/javascript" src="assets/widgets/touchspin/touchspin-demo.js"></script>
+	<script type="text/javascript" src="assets/widgets/input-switch/inputswitch.js"></script>
+	       
+	<script type="text/javascript">
+		/* Input switch */
+
+		$(function() {
+			"use strict";
+			$('.input-switch').bootstrapSwitch();
+		});
+	</script>
+	<script type="text/javascript" src="assets/widgets/textarea/textarea.js"></script>
+	<script type="text/javascript">
+		/* Textarea autoresize */
+
+		$(function() {
+			"use strict";
+			$('.textarea-autosize').autosize();
+		});
+	</script>
+	<script type="text/javascript" src="assets/widgets/multi-select/multiselect.js"></script>
+	<script type="text/javascript">
+		/* Multiselect inputs */
+
+		$(function() {
+			"use strict";
+			$(".multi-select").multiSelect();
+			$(".ms-container").append('<i class="glyph-icon icon-exchange"></i>');
+		});
+	</script>
+	<script type="text/javascript" src="assets/widgets/uniform/uniform.js"></script>
+	<script type="text/javascript" src="assets/widgets/uniform/uniform-demo.js"></script>
+	<script type="text/javascript" src="assets/widgets/chosen/chosen.js"></script>
+	<script type="text/javascript" src="assets/widgets/chosen/chosen-demo.js"></script>
+	<!-- Form elements related css and js end -->
+	
+	<script src="tinymce/tinymce.min.js"></script>
+    <script type="text/javascript">
+        $(window).load(function() {
+            setTimeout(function() {
+                $('#loading').fadeOut(400, "linear");
+            }, 300);
+        });
+    </script>
+	<style>
+		#overlay {
+			position: fixed;
+			left: 0;
+			top: 0;
+			bottom: 0;
+			right: 0;
+			//background: #BDB7B7;
+			color: #ccc;
+			border-color: #000;
+			background: #272634;
+
+			opacity: 0.8;
+			z-index: 9999;
+			filter: alpha(opacity=80);
+		}
+		#loadingsaif
+		{
+			position: absolute;
+		    top: 50%;
+		    left: 50%;
+		    margin: -28px 0 0 -25px;
+		}
+	</style>
+	
+
+	
+	<script>
+	
+		function Contains(data, contain)
+		{
+			if(data.indexOf(contain) > -1)
+			{
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+		}
+		function StartLoading() 
+		{
+	       // add the overlay with loading image to the page
+	
+	        var over = '<div id="overlay">' +
+							'<div id="loadingsaif" class="svg-icon-loader"><img src="assets/images/svg-loaders/ball-triangle.svg" width="40" alt=""></div>' +
+						'</div>';
+	        $(over).appendTo('body');
+		}
+
+
+		function EndLoading()
+		{
+			//alert("ho gaya");
+			$('#overlay').remove();
+		}
+
+		function ClearInfo(FormNameAndClass)
+		{
+			$('.'+FormNameAndClass).find('input[type="text"]').val('');
+			$('.'+FormNameAndClass).find('input[type="password"]').val('');
+			$('.'+FormNameAndClass).find('input[type="numbernumbertext"]').val('');
+			$('.'+FormNameAndClass).find('input[type="email"]').val('');
+			$('.'+FormNameAndClass).find('textarea').val('');
+			$('.'+FormNameAndClass).find('select').val('');
+		}
+
+		function ValidateEmail(email)
+		{
+
+			var atpos=email.indexOf("@");
+			var dotpos=email.lastIndexOf(".");
+			if (atpos<1 || dotpos<atpos+2 || dotpos+2>=email.length)
+			{
+				return false;
+			}
+			else
+			{
+				return true;
+			}
+
+
+		}
+
+
+
+		function proceed_formsubmit(FormClassName, ActionPageName, ActionResultClass, ValidateNumberClass, ValidateEmailClass, ValidatePasswordClass, ImageClass)
+		{
+
+	        var isValid = true;
+			var counter = 0;
+			var imageValue = "";
+	        $(FormClassName).find('.required').each(function() {
+	            if ($.trim($(this).val()) == '') {
+					counter ++;
+					if(counter==1)
+					{
+						$(this).focus();
+					}
+	                isValid = false;
+	                $(this).css({
+	                    "border": "1px solid red",
+	                    "color": "#000000"
+	                });
+	            }
+	            else {
+	                $(this).css({
+	                    "border": "",
+	                });
+	            }
+	        });
+	        if (isValid == false)
+			{ 
+				alert('Fields marked red are compulsory');
+				return false;
+			}
+
+
+			if(ValidateNumberClass=="" || ValidateNumberClass==null)
+			{
+			}	
+			else
+			{
+				counter = 0;
+		        $(FormClassName).find(ValidateNumberClass).each(function() {
+		            if (isNaN($.trim($(this).val()))) {
+						counter ++;
+						if(counter==1)
+						{
+							$(this).focus();
+						}
+		                isValid = false;
+		                $(this).css({
+		                    "border": "1px solid red",
+		                    "color": "#000000"
+		                });
+		            }
+		            else {
+		                $(this).css({
+		                    "border": "",
+		                });
+		            }
+		        });
+		        if (isValid == false)
+				{ 
+					alert('Please check the data entered');
+					return false;
+				}
+			}
+
+			if(ValidatePasswordClass=="" || ValidatePasswordClass==null)
+			{
+			}	
+			else
+			{
+				counter = 0;
+		        $(FormClassName).find(ValidatePasswordClass).each(function() {
+		            if ($.trim($(this).val()).length<8) {
+						counter ++;
+						if(counter==1)
+						{
+							$(this).focus();
+						}
+		                isValid = false;
+		                $(this).css({
+		                    "border": "1px solid red",
+		                    "color": "#000000"
+		                });
+		            }
+		            else {
+		                $(this).css({
+		                    "border": "",
+		                });
+		            }
+		        });
+		        if (isValid == false)
+				{ 
+					alert('Password must be minimum 8 characters');
+					return false;
+				}
+			}
+			
+			if(ValidateEmailClass=="" || ValidateEmailClass==null)
+			{
+			}	
+			else
+			{
+				counter = 0;
+		        $(FormClassName).find(ValidateEmailClass).each(function() {
+		            if (!ValidateEmail($.trim($(this).val()))) {
+						counter ++;
+						if(counter==1)
+						{
+							$(this).focus();
+						}
+		                isValid = false;
+		                $(this).css({
+		                    "border": "1px solid red",
+		                    "color": "#000000"
+		                });
+		            }
+		            else {
+		                $(this).css({
+		                    "border": "",
+		                });
+		            }
+		        });
+		        if (isValid == false)
+				{ 
+					alert('Please enter valid email');
+					return false;
+				}
+			}
+			
+			var data = new FormData();
+			if(ImageClass=="" || ImageClass==null)
+			{
+			}
+			else
+			{
+				$(FormClassName).find(ImageClass).each(function() {
+					imageValue = $(this).attr("data-source");
+					var numFiles = $($(this), this)[0].files.length;
+					for (var i=0; i<numFiles; i++)
+					{
+						if (numFiles>1)
+						{
+							data.append(imageValue+i, $(this)[0].files[i]);
+						}
+						else
+						{
+							data.append(imageValue, $(this)[0].files[i]);
+						}
+						
+					}
+					
+				});
+				
+			}	
+
+			var other_data = $(FormClassName).serializeArray();
+			$.each(other_data,function(key,input){
+				data.append(input.name,input.value);
+			});	
+		 
+			StartLoading();
+		    $.ajax({
+				type:'POST', 
+				url: '<?=FindHostAdmin()?>/'+ActionPageName, 
+				data: data,
+				cache: false,
+				contentType: false,
+				processData: false,
+				type: 'post',
+				success: function(response) 
+				{
+					EndLoading();
+					if(Contains(response, "Added Successfully") || Contains(response, "Image Updated Successfully") || Contains(response, "Video Updated Successfully") || Contains(response, "Image uploaded Successfully") || Contains(response, "Menu Updated Successfully"))
+					{
+						$(FormClassName).find('.result_message').html('<font color="green">'+response+'</font>');
+						location.reload();
+					}
+					else
+					{
+						$(FormClassName).find('.result_message').html('<font color="red">'+response+'</font>');  
+					}
+			    }
+			});
+
+
+		}
+		function DeleteData(Step,DataID,DeleteParamMessage, DeleteDivID)
+		{
+			var validatenow = confirm(DeleteParamMessage);
+			if(validatenow==true)
+			{
+				$(".form_result").html('<div class="alert alert-danger alert-dismissible fade in" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button><strong>Deleting Data</strong></div>');
+			    $.ajax({
+					type:'POST', 
+					url: '<?=FindHostAdmin()?>/ConfirmDelete.php', 
+					data: {
+					    dataid : DataID,
+					    step : Step
+					},
+					success: function(response) 
+					{
+					//alert(response)
+						$("#"+DeleteDivID).slideUp();
+						$(".form_result").slideDown();
+						$(".form_result").html('<div class="alert alert-danger alert-dismissible fade in" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button><strong>Deleted Successfully</strong></div>');
+						$(".form_result").delay(2000).slideUp();
+								//location.reload();
+				    }
+				});
+			}
+		}
+			function DeleteData1(Step,DataID,DeleteParamMessage, DeleteDivID,DataID1)
+		{
+		//alert(Step)
+		//alert(DataID)
+		//alert(DeleteParamMessage)
+		//alert(DeleteDivID)
+	//alert(DataID1)
+			var validatenow = confirm(DeleteParamMessage);
+			if(validatenow==true)
+			{
+				$(".form_result").html('<div class="alert alert-danger alert-dismissible fade in" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button><strong>Deleting Data</strong></div>');
+			    $.ajax({
+					type:'POST', 
+					url: '<?=FindHostAdmin()?>/ConfirmDelete.php', 
+					data: {
+					    dataid : DataID,
+					    step : Step,
+						dataid1 : DataID1
+					},
+					success: function(response) 
+					{
+					//alert(response)
+					//	$("#"+DeleteDivID).slideUp();
+						$(".form_result").slideDown();
+						$(".form_result").html('<div class="alert alert-danger alert-dismissible fade in" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button><strong>Deleted Successfully</strong></div>');
+						//$(".form_result").delay(2000).slideUp();
+					location.reload();
+				    }
+				});
+			}
+		}
+
+	tinymce.init({
+		selector: ".wysiwyg",
+		theme: "modern",
+		plugins: [
+			"advlist autolink lists link image charmap print preview hr anchor pagebreak spellchecker",
+			"searchreplace wordcount visualblocks visualchars code fullscreen insertdatetime media nonbreaking",
+			"insertdatetime media nonbreaking save table contextmenu directionality",
+			"emoticons template paste fullpage textcolor colorpicker textpattern imagetools"
+		],
+		toolbar1: "newdocument fullpage | bold italic underline strikethrough | alignleft aligncenter alignright alignjustify | styleselect formatselect fontselect fontsizeselect",
+		toolbar2: "cut copy paste | searchreplace | bullist numlist | outdent indent blockquote | undo redo | link unlink anchor image media code | insertdatetime preview | forecolor backcolor",
+		toolbar3: "table | hr removeformat | subscript superscript | charmap emoticons | print fullscreen | ltr rtl | spellchecker | visualchars visualblocks nonbreaking template pagebreak restoredraft",
+		image_advtab: true,
+		menubar: false,
+		toolbar_items_size: 'small',
+		
+		
+		force_br_newlines : true,
+		force_p_newlines : false,
+		forced_root_block : '',
+		
+		
+		style_formats: [
+			{title: 'Bold text', inline: 'b'},
+			{title: 'Red text', inline: 'span', styles: {color: '#ff0000'}},
+			{title: 'Red header', block: 'h1', styles: {color: '#ff0000'}},
+			{title: 'Line break', block: 'br', styles: {color: '#ff0000'}},
+			{title: 'Example 1', inline: 'span', classes: 'example1'},
+			{title: 'Example 2', inline: 'span', classes: 'example2'},
+			{title: 'Table styles'},
+			{title: 'Table row 1', selector: 'tr', classes: 'tablerow1'}
+		],
+
+		templates: [
+				{title: 'Test template 1', content: 'Test 1'},
+				{title: 'Test template 2', content: 'Test 2'}
+		],
+		setup: function (editor) {
+		editor.on('change', function () {
+			tinymce.triggerSave();
+		});
+		}
+		
+	});
+
+	</script>
+	
+	<script>
+		<script type="text/javascript" src="assets/widgets/jgrowl-notifications/jgrowl.js"></script>
+		<script type="text/javascript" src="assets/widgets/jgrowl-notifications/jgrowl-demo.js"></script>
+		<script type="text/javascript" src="assets/widgets/noty-notifications/noty.js"></script>
+		<script type="text/javascript" src="assets/widgets/noty-notifications/noty-demo.js"></script>
+	</script>
+
+	
+	
+	
+	
+	
+	
+	
+	

@@ -1,0 +1,100 @@
+<!-- Styles -->
+<style>
+#chartGiftVoucherdiv {
+  width: 100%;
+  height: 300px;
+}	
+</style>
+
+
+<!-- Chart code -->
+<script>
+var chart = AmCharts.makeChart( "chartGiftVoucherdiv", {
+  "type": "serial",
+  "addClassNames": true,
+  "theme": "light",
+  "autoMargins": false,
+  "marginLeft": 30,
+  "marginRight": 8,
+  "marginTop": 10,
+  "marginBottom": 26,
+  "balloon": {
+    "adjustBorderColor": false,
+    "horizontalPadding": 10,
+    "verticalPadding": 8,
+    "color": "#ffffff"
+  },
+  "dataProvider": [ 
+<?php
+		$DB=Connect();
+		$SelectStore="Select StoreID, StoreName from tblStores";
+		$RSCF = $DB->query($SelectStore);
+			if ($RSCF->num_rows > 0) 
+			{
+				while($rowS = $RSCF->fetch_assoc())
+				{
+					$StoreID = $rowS["StoreID"];
+					$strStoreName = $rowS["StoreName"];
+					$StoreName = substr($strStoreName, 0, 6);
+						$TotalGiftVouchersSold="Select (SELECT count(0) FROM `tblGiftVouchers` where Date(RedempedDateTime)>='$First' and Date(RedempedDateTime)<='$Last' and StoreID='$StoreID') as TotalGiftVoucherSolds";
+							// echo $TotalGiftVouchersSold."<br><br><br>";
+					
+						
+							$RSP= $DB->query($TotalGiftVouchersSold);
+							if($RSP->num_rows>0)
+							{
+								while($ROP=$RSP->fetch_assoc())
+								{
+									$TotalGiftVoucherSolds = $ROP["TotalGiftVoucherSolds"];
+									if($TotalGiftVoucherSolds=="")
+									{
+										$TotalGiftVoucherSolds='0';
+									}
+?>
+					  {
+						"year": "<?=$StoreName?>",
+						"income": <?=$TotalGiftVoucherSolds?>,
+					  }, 
+<?php					
+								}
+							}
+				}
+			}
+			else
+			{
+?>
+					{
+						"year": "0",
+						"income": 0,
+					}, 
+<?php				
+			}
+?>  
+		
+		   
+  ],
+  "valueAxes": [ {
+    "axisAlpha": 0,
+    "position": "left"
+  } ],
+  "startDuration": 1,
+  "graphs": [ {
+    "alphaField": "alpha",
+    "balloonText": "<span style='font-size:12px;'>[[title]] in [[category]]:<br><span style='font-size:20px;'>[[value]]</span> [[additional]]</span>",
+    "fillAlphas": 1,
+    "title": "Income",
+    "type": "column",
+    "valueField": "income",
+    "dashLengthField": "dashLengthColumn"
+  },],
+  "categoryField": "year",
+  "categoryAxis": {
+    "gridPosition": "start",
+    "axisAlpha": 0,
+    "tickLength": 0
+  },
+  "export": {
+    "enabled": true
+  }
+} );
+</script>

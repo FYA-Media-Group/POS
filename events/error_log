@@ -1,0 +1,55 @@
+[03-Sep-2016 05:39:41 Etc/GMT] PHP Warning:  include(events/dbConfig.php): failed to open stream: No such file or directory in /home/fyatedjh/public_html/nailspa/pos/admin/events/functions.php on line 185
+[03-Sep-2016 05:39:41 Etc/GMT] PHP Warning:  include(events/dbConfig.php): failed to open stream: No such file or directory in /home/fyatedjh/public_html/nailspa/pos/admin/events/functions.php on line 185
+[03-Sep-2016 05:39:41 Etc/GMT] PHP Warning:  include(): Failed opening 'events/dbConfig.php' for inclusion (include_path='.:/opt/alt/php54/usr/share/pear:/opt/alt/php54/usr/share/php') in /home/fyatedjh/public_html/nailspa/pos/admin/events/functions.php on line 185
+[03-Sep-2016 05:39:41 Etc/GMT] PHP Notice:  Undefined variable: db in /home/fyatedjh/public_html/nailspa/pos/admin/events/functions.php on line 189
+[03-Sep-2016 05:39:41 Etc/GMT] PHP Fatal error:  Call to a member function query() on a non-object in /home/fyatedjh/public_html/nailspa/pos/admin/events/functions.php on line 189
+[03-Sep-2016 05:39:42 Etc/GMT] PHP Warning:  include(events/dbConfig.php): failed to open stream: No such file or directory in /home/fyatedjh/public_html/nailspa/pos/admin/events/functions.php on line 185
+[03-Sep-2016 05:39:42 Etc/GMT] PHP Warning:  include(events/dbConfig.php): failed to open stream: No such file or directory in /home/fyatedjh/public_html/nailspa/pos/admin/events/functions.php on line 185
+[03-Sep-2016 05:39:42 Etc/GMT] PHP Warning:  include(): Failed opening 'events/dbConfig.php' for inclusion (include_path='.:/opt/alt/php54/usr/share/pear:/opt/alt/php54/usr/share/php') in /home/fyatedjh/public_html/nailspa/pos/admin/events/functions.php on line 185
+[03-Sep-2016 05:39:42 Etc/GMT] PHP Notice:  Undefined variable: db in /home/fyatedjh/public_html/nailspa/pos/admin/events/functions.php on line 189
+[03-Sep-2016 05:39:42 Etc/GMT] PHP Fatal error:  Call to a member function query() on a non-object in /home/fyatedjh/public_html/nailspa/pos/admin/events/functions.php on line 189
+[03-Sep-2016 05:39:42 Etc/GMT] PHP Warning:  include(events/dbConfig.php): failed to open stream: No such file or directory in /home/fyatedjh/public_html/nailspa/pos/admin/events/functions.php on line 185
+[03-Sep-2016 05:39:42 Etc/GMT] PHP Warning:  include(events/dbConfig.php): failed to open stream: No such file or directory in /home/fyatedjh/public_html/nailspa/pos/admin/events/functions.php on line 185
+[03-Sep-2016 05:39:42 Etc/GMT] PHP Warning:  include(): Failed opening 'events/dbConfig.php' for inclusion (include_path='.:/opt/alt/php54/usr/share/pear:/opt/alt/php54/usr/share/php') in /home/fyatedjh/public_html/nailspa/pos/admin/events/functions.php on line 185
+[03-Sep-2016 05:39:42 Etc/GMT] PHP Notice:  Undefined variable: db in /home/fyatedjh/public_html/nailspa/pos/admin/events/functions.php on line 189
+[03-Sep-2016 05:39:42 Etc/GMT] PHP Fatal error:  Call to a member function query() on a non-object in /home/fyatedjh/public_html/nailspa/pos/admin/events/functions.php on line 189
+[03-Sep-2016 05:41:31 Etc/GMT] PHP Warning:  include(events/dbConfig.php): failed to open stream: No such file or directory in /home/fyatedjh/public_html/nailspa/pos/admin/events/functions.php on line 185
+[03-Sep-2016 05:41:31 Etc/GMT] PHP Warning:  include(events/dbConfig.php): failed to open stream: No such file or directory in /home/fyatedjh/public_html/nailspa/pos/admin/events/functions.php on line 185
+[03-Sep-2016 05:41:31 Etc/GMT] PHP Warning:  include(): Failed opening 'events/dbConfig.php' for inclusion (include_path='.:/opt/alt/php54/usr/share/pear:/opt/alt/php54/usr/share/php') in /home/fyatedjh/public_html/nailspa/pos/admin/events/functions.php on line 185
+[03-Sep-2016 05:41:31 Etc/GMT] PHP Notice:  Undefined variable: db in /home/fyatedjh/public_html/nailspa/pos/admin/events/functions.php on line 189
+[03-Sep-2016 05:41:31 Etc/GMT] PHP Fatal error:  Call to a member function query() on a non-object in /home/fyatedjh/public_html/nailspa/pos/admin/events/functions.php on line 189
+[03-Sep-2016 05:41:32 Etc/GMT] PHP Warning:  include(events/dbConfig.php): failed to open stream: No such file or directory in /home/fyatedjh/public_html/nailspa/pos/admin/events/functions.php on line 185
+[03-Sep-2016 05:41:32 Etc/GMT] PHP Warning:  include(events/dbConfig.php): failed to open stream: No such file or directory in /home/fyatedjh/public_html/nailspa/pos/admin/events/functions.php on line 185
+[03-Sep-2016 05:41:32 Etc/GMT] PHP Warning:  include(): Failed opening 'events/dbConfig.php' for inclusion (include_path='.:/opt/alt/php54/usr/share/pear:/opt/alt/php54/usr/share/php') in /home/fyatedjh/public_html/nailspa/pos/admin/events/functions.php on line 185
+[03-Sep-2016 05:41:32 Etc/GMT] PHP Notice:  Undefined variable: db in /home/fyatedjh/public_html/nailspa/pos/admin/events/functions.php on line 189
+[03-Sep-2016 05:41:32 Etc/GMT] PHP Fatal error:  Call to a member function query() on a non-object in /home/fyatedjh/public_html/nailspa/pos/admin/events/functions.php on line 189
+[03-Sep-2016 05:41:33 Etc/GMT] PHP Warning:  include(events/dbConfig.php): failed to open stream: No such file or directory in /home/fyatedjh/public_html/nailspa/pos/admin/events/functions.php on line 185
+[03-Sep-2016 05:41:33 Etc/GMT] PHP Warning:  include(events/dbConfig.php): failed to open stream: No such file or directory in /home/fyatedjh/public_html/nailspa/pos/admin/events/functions.php on line 185
+[03-Sep-2016 05:41:33 Etc/GMT] PHP Warning:  include(): Failed opening 'events/dbConfig.php' for inclusion (include_path='.:/opt/alt/php54/usr/share/pear:/opt/alt/php54/usr/share/php') in /home/fyatedjh/public_html/nailspa/pos/admin/events/functions.php on line 185
+[03-Sep-2016 05:41:33 Etc/GMT] PHP Notice:  Undefined variable: db in /home/fyatedjh/public_html/nailspa/pos/admin/events/functions.php on line 189
+[03-Sep-2016 05:41:33 Etc/GMT] PHP Fatal error:  Call to a member function query() on a non-object in /home/fyatedjh/public_html/nailspa/pos/admin/events/functions.php on line 189
+[03-Sep-2016 05:41:33 Etc/GMT] PHP Warning:  include(events/dbConfig.php): failed to open stream: No such file or directory in /home/fyatedjh/public_html/nailspa/pos/admin/events/functions.php on line 185
+[03-Sep-2016 05:41:33 Etc/GMT] PHP Warning:  include(events/dbConfig.php): failed to open stream: No such file or directory in /home/fyatedjh/public_html/nailspa/pos/admin/events/functions.php on line 185
+[03-Sep-2016 05:41:33 Etc/GMT] PHP Warning:  include(): Failed opening 'events/dbConfig.php' for inclusion (include_path='.:/opt/alt/php54/usr/share/pear:/opt/alt/php54/usr/share/php') in /home/fyatedjh/public_html/nailspa/pos/admin/events/functions.php on line 185
+[03-Sep-2016 05:41:33 Etc/GMT] PHP Notice:  Undefined variable: db in /home/fyatedjh/public_html/nailspa/pos/admin/events/functions.php on line 189
+[03-Sep-2016 05:41:33 Etc/GMT] PHP Fatal error:  Call to a member function query() on a non-object in /home/fyatedjh/public_html/nailspa/pos/admin/events/functions.php on line 189
+[03-Sep-2016 05:41:33 Etc/GMT] PHP Warning:  include(events/dbConfig.php): failed to open stream: No such file or directory in /home/fyatedjh/public_html/nailspa/pos/admin/events/functions.php on line 185
+[03-Sep-2016 05:41:33 Etc/GMT] PHP Warning:  include(events/dbConfig.php): failed to open stream: No such file or directory in /home/fyatedjh/public_html/nailspa/pos/admin/events/functions.php on line 185
+[03-Sep-2016 05:41:33 Etc/GMT] PHP Warning:  include(): Failed opening 'events/dbConfig.php' for inclusion (include_path='.:/opt/alt/php54/usr/share/pear:/opt/alt/php54/usr/share/php') in /home/fyatedjh/public_html/nailspa/pos/admin/events/functions.php on line 185
+[03-Sep-2016 05:41:33 Etc/GMT] PHP Notice:  Undefined variable: db in /home/fyatedjh/public_html/nailspa/pos/admin/events/functions.php on line 189
+[03-Sep-2016 05:41:33 Etc/GMT] PHP Fatal error:  Call to a member function query() on a non-object in /home/fyatedjh/public_html/nailspa/pos/admin/events/functions.php on line 189
+[03-Sep-2016 05:41:33 Etc/GMT] PHP Warning:  include(events/dbConfig.php): failed to open stream: No such file or directory in /home/fyatedjh/public_html/nailspa/pos/admin/events/functions.php on line 185
+[03-Sep-2016 05:41:33 Etc/GMT] PHP Warning:  include(events/dbConfig.php): failed to open stream: No such file or directory in /home/fyatedjh/public_html/nailspa/pos/admin/events/functions.php on line 185
+[03-Sep-2016 05:41:33 Etc/GMT] PHP Warning:  include(): Failed opening 'events/dbConfig.php' for inclusion (include_path='.:/opt/alt/php54/usr/share/pear:/opt/alt/php54/usr/share/php') in /home/fyatedjh/public_html/nailspa/pos/admin/events/functions.php on line 185
+[03-Sep-2016 05:41:33 Etc/GMT] PHP Notice:  Undefined variable: db in /home/fyatedjh/public_html/nailspa/pos/admin/events/functions.php on line 189
+[03-Sep-2016 05:41:33 Etc/GMT] PHP Fatal error:  Call to a member function query() on a non-object in /home/fyatedjh/public_html/nailspa/pos/admin/events/functions.php on line 189
+[03-Sep-2016 05:41:33 Etc/GMT] PHP Warning:  include(events/dbConfig.php): failed to open stream: No such file or directory in /home/fyatedjh/public_html/nailspa/pos/admin/events/functions.php on line 185
+[03-Sep-2016 05:41:33 Etc/GMT] PHP Warning:  include(events/dbConfig.php): failed to open stream: No such file or directory in /home/fyatedjh/public_html/nailspa/pos/admin/events/functions.php on line 185
+[03-Sep-2016 05:41:33 Etc/GMT] PHP Warning:  include(): Failed opening 'events/dbConfig.php' for inclusion (include_path='.:/opt/alt/php54/usr/share/pear:/opt/alt/php54/usr/share/php') in /home/fyatedjh/public_html/nailspa/pos/admin/events/functions.php on line 185
+[03-Sep-2016 05:41:33 Etc/GMT] PHP Notice:  Undefined variable: db in /home/fyatedjh/public_html/nailspa/pos/admin/events/functions.php on line 189
+[03-Sep-2016 05:41:33 Etc/GMT] PHP Fatal error:  Call to a member function query() on a non-object in /home/fyatedjh/public_html/nailspa/pos/admin/events/functions.php on line 189
+[03-Sep-2016 05:41:33 Etc/GMT] PHP Warning:  include(events/dbConfig.php): failed to open stream: No such file or directory in /home/fyatedjh/public_html/nailspa/pos/admin/events/functions.php on line 185
+[03-Sep-2016 05:41:33 Etc/GMT] PHP Warning:  include(events/dbConfig.php): failed to open stream: No such file or directory in /home/fyatedjh/public_html/nailspa/pos/admin/events/functions.php on line 185
+[03-Sep-2016 05:41:33 Etc/GMT] PHP Warning:  include(): Failed opening 'events/dbConfig.php' for inclusion (include_path='.:/opt/alt/php54/usr/share/pear:/opt/alt/php54/usr/share/php') in /home/fyatedjh/public_html/nailspa/pos/admin/events/functions.php on line 185
+[03-Sep-2016 05:41:33 Etc/GMT] PHP Notice:  Undefined variable: db in /home/fyatedjh/public_html/nailspa/pos/admin/events/functions.php on line 189
+[03-Sep-2016 05:41:33 Etc/GMT] PHP Fatal error:  Call to a member function query() on a non-object in /home/fyatedjh/public_html/nailspa/pos/admin/events/functions.php on line 189

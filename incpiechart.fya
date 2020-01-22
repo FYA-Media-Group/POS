@@ -1,0 +1,81 @@
+<?php require_once("setting.fya"); ?>
+<?php require_once 'incFirewall.fya'; ?>
+<!-- Styles -->
+<style>
+#chartdiv1 {
+  width: 100%;
+  height: 300px;
+}
+</style>
+
+<!-- Resources -->
+<script src="https://www.amcharts.com/lib/3/amcharts.js"></script>
+<script src="https://www.amcharts.com/lib/3/pie.js"></script>
+<script src="https://www.amcharts.com/lib/3/plugins/export/export.min.js"></script>
+<link rel="stylesheet" href="https://www.amcharts.com/lib/3/plugins/export/export.css" type="text/css" media="all" />
+<script src="https://www.amcharts.com/lib/3/themes/light.js"></script>
+
+<!-- Chart code -->
+<script>
+var chart = AmCharts.makeChart( "chartdiv1", {
+  "type": "pie",
+  "theme": "light",
+  "dataProvider": [
+  
+	<?php
+		$DB = Connect();
+		$sqlgraph=select("FromDate,ToDate","tblGraphDateParameter","RoleID='".$strAdminRoleID."'");
+		$FromDate=$sqlgraph[0]['FromDate'];
+		$ToDate=$sqlgraph[0]['ToDate'];
+	    $First= $FromDate;
+		$Last= $ToDate;
+		
+		$date=date('Y-m-d');
+		$sqlst = "SELECT SUM(AmountPercentage) AS amtper,CategoryName,StoreName
+				FROM tblCronServiceCategoryBase
+				where StoreID!='0' and CategoryID!='0' group by CategoryID";
+			
+				
+		$RSst = $DB->query($sqlst);
+		if ($RSst->num_rows > 0) 
+		{
+			$counter = 0;
+
+			while($rowst = $RSst->fetch_assoc())
+			{
+				$counter ++;
+				$amtper = $rowst["amtper"];
+				$CategoryName = $rowst["CategoryName"];
+				
+	?>
+	                 {
+					"country": "<?=$CategoryName?>",
+					"value": <?=round($amtper,2)?>
+					}, 
+			<?php
+			}
+			
+		}
+		else
+		{
+	?>
+					{
+					"country": "No sales found for any store for this month",
+					"value": 0
+					}, 
+	<?php
+		}
+		$DB->close();
+	?>		
+	],
+  "valueField": "value",
+  "titleField": "country",
+  "outlineAlpha": 0.4,
+  "depth3D": 15,
+  "balloonText": "[[title]]<br><span style='font-size:14px'><b>[[value]]</b> ([[percents]]%)</span>",
+  "angle": 30,
+  "export": {
+    "enabled": true
+  }
+} );
+</script>

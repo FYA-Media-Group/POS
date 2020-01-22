@@ -1,0 +1,117 @@
+<?php require_once("setting.fya"); ?>
+<html>
+</head>
+<style>
+#chartdiv {
+  width: 100%;
+  height: 500px;
+}																
+</style>
+
+<!-- Resources -->
+<script src="https://www.amcharts.com/lib/3/amcharts.js"></script>
+<script src="https://www.amcharts.com/lib/3/serial.js"></script>
+<script src="https://www.amcharts.com/lib/3/plugins/export/export.min.js"></script>
+<link rel="stylesheet" href="https://www.amcharts.com/lib/3/plugins/export/export.css" type="text/css" media="all" />
+<script src="https://www.amcharts.com/lib/3/themes/light.js"></script>
+<!-- Chart code -->
+<script>
+var chart = AmCharts.makeChart("chartdiv", {
+    "type": "serial",
+    "theme": "light",
+    "dataProvider": [
+<?php
+	$DB=Connect();
+$month = date('m');
+$year = date('y');
+
+for($d=1; $d<=31; $d++)
+{
+    $time=mktime(12, 0, 0, $month, $d, $year);          
+    if (date('m', $time)==$month)       
+       $list[]=date('Y-m-d', $time);
+	
+}
+foreach($list as $li)
+{
+	// echo $li."<br>";
+	$SelectSales="Select SUM(TotalPayment) as Sales from tblInvoiceDetails where Date(OfferDiscountDateTime)='$li'";
+	// echo $SelectSales."<br>";
+	$RSN = $DB->query($SelectSales);
+	if ($RSN->num_rows > 0) 
+	{
+		$counter = 0;
+		while($rowN = $RSN->fetch_assoc())
+		{
+			$counter ++;
+			$Sales= $rowN["Sales"];
+?>
+			{
+				"date": "<?=$li?>",
+				"value": 5
+			},
+<?php	
+		}
+	}
+	else
+	{
+?>		
+			{
+				"date": "<?=$li?>",
+				"value": 15
+			}
+<?php	
+	}
+	
+}
+?>	
+	
+
+	],
+    "valueAxes": [{
+        "axisAlpha": 0,
+        "dashLength": 4,
+        "position": "left"
+    }],
+    "graphs": [{
+        "bulletSize": 14,
+        "customBullet": "https://www.amcharts.com/lib/3/images/star.png?x",
+        "customBulletField": "customBullet",
+        "valueField": "value",
+         "balloonText":"<div style='margin:10px; text-align:left;'><span style='font-size:13px'>[[category]]</span><br><span style='font-size:18px'>Value:[[value]]</span>",
+    }],
+    "marginTop": 20,
+    "marginRight": 70,
+    "marginLeft": 40,
+    "marginBottom": 20,
+    "chartCursor": {
+        "graphBulletSize": 1.5,
+     	"zoomable":false,
+      	"valueZoomable":true,
+         "cursorAlpha":0,
+         "valueLineEnabled":true,
+         "valueLineBalloonEnabled":true,
+         "valueLineAlpha":0.2
+    },
+    "autoMargins": false,
+    "dataDateFormat": "YYYY-MM-DD",
+    "categoryField": "date",
+    "valueScrollbar":{
+      "offset":30
+    },
+    "categoryAxis": {
+        "parseDates": true,
+        "axisAlpha": 0,
+        "gridAlpha": 0,
+        "inside": true,
+        "tickLength": 0
+    },
+    "export": {
+        "enabled": true
+    }
+});
+</script>
+
+
+</head>
+</html>

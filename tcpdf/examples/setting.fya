@@ -1,0 +1,631 @@
+<?php require_once 'incVariablesUsed.php'; ?>
+
+
+<?php
+
+function ServerName()
+{
+	return "localhost";
+}
+function Username()
+{
+	return "fyatedjh_nailspa";
+}
+function Password()
+{
+	return "q&#RrLdW,&i7";
+}
+function DBName()
+{
+	return "fyatedjh_nailspa";
+}
+
+
+function Connect()
+{
+	$servername = ServerName();
+	$username = Username();
+	$password = Password();
+	$dbname = DBName();
+
+	$conn = new mysqli($servername, $username, $password, $dbname);
+	// Check connection
+	if (mysqli_connect_error()) 
+	{
+	    die('Connect Error (' . mysqli_connect_errno() . ') '
+	            . mysqli_connect_error());
+	}
+	return $conn;
+}
+
+
+function ExecuteNQ($sqlQuery)
+{
+	$servername = ServerName();
+	$username = Username();
+	$password = Password();
+	$dbname = DBName();
+
+	$conn = new mysqli($servername, $username, $password, $dbname);
+	// Check connection
+	if (mysqli_connect_error()) 
+	{
+	    die('Connect Error (' . mysqli_connect_errno() . ') '
+	            . mysqli_connect_error());
+	}
+	$conn->query($sqlQuery);
+	$conn->close();
+}
+	function select($col,$table,$cond)
+	{
+		//echo 1234;
+		$servername = ServerName();
+	$username = Username();
+	$password = Password();
+	$dbname = DBName();
+
+		 $conn = new mysqli($servername, $username, $password, $dbname);
+		 if (mysqli_connect_error()) 
+		{
+			die('Connect Error (' . mysqli_connect_errno() . ') '
+					. mysqli_connect_error());
+		}
+		$sql="select $col from $table where $cond";
+	//echo $sql;
+		$ans=$conn->query($sql) or die($conn->error);
+    //   print_r($ans);
+		
+		if($ans->num_rows>0)
+		{
+			while($result = $ans->fetch_assoc())
+	         {
+			//	print_r($result);
+				$data[]=$result;
+				//print_r($data);
+				
+			}
+			return $data;
+		}
+		else
+		{
+			return 0;
+		}
+		$conn->close();
+	}
+
+function Filter($data) 
+{
+	// Every thing from form or query string must come through this function
+  $data = trim($data);
+  $data = str_replace("'","`",$data);
+  $data = stripslashes($data);
+  $data = htmlspecialchars($data);
+  
+  return $data;
+}
+
+
+function Encode($Variable)
+{
+	$key = "bookingmpsengine";
+	$encoded = base64_encode(mcrypt_encrypt(MCRYPT_RIJNDAEL_256, md5($key), $Variable, MCRYPT_MODE_CBC, md5(md5($key))));
+	return $encoded;
+}
+
+
+function Decode($Variable)
+{
+	$key = "bookingmpsengine";
+	$decoded = rtrim(mcrypt_decrypt(MCRYPT_RIJNDAEL_256, md5($key), base64_decode($Variable), MCRYPT_MODE_CBC, md5(md5($key))), "\0");
+	return $decoded;
+}
+
+
+function EncodeQ($Variable)
+{
+	$key = "bookingmpsengine";
+	$encoded = base64_encode(mcrypt_encrypt(MCRYPT_RIJNDAEL_256, md5($key), $Variable, MCRYPT_MODE_CBC, md5(md5($key))));
+	$encoded = urlencode($encoded);
+	return $encoded;
+}
+
+
+function DecodeQ($Variable)
+{
+	$key = "bookingmpsengine";
+	$decoded = rtrim(mcrypt_decrypt(MCRYPT_RIJNDAEL_256, md5($key), base64_decode($Variable), MCRYPT_MODE_CBC, md5(md5($key))), "\0");
+	$decoded = urldecode($decoded);
+	return $decoded;
+}
+
+
+function ValidateCookie($CookieName)
+{
+	$strReturnVariable = "";
+	$Array = explode(",",Decode($_COOKIE[$CookieName]));
+	if ($Array[0]==$Array[2])
+	{
+		$strReturnVariable = $Array[1];
+	}
+	return $strReturnVariable;	
+}
+
+
+function IsNull($Value)
+{
+	if($Value=="" || $Value==null)
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+
+}
+
+
+function FindHost()
+{
+	return "http://".$_SERVER["SERVER_NAME"];
+}
+
+
+function FindHostAdmin()
+{
+	return "http://".$_SERVER["SERVER_NAME"]."/pos/admin";
+}
+
+
+function GetActiveMenu($m1, $m2)
+{
+	if($m1==$m2)
+	{
+		return "    background-color: #225081!important;";
+	}
+	else
+	{
+		return "";
+	}
+}
+
+
+function FormatDateTime($param_date, $paramname)
+{
+	$date=date_create($param_date);
+	if($paramname=="1")
+	{
+		return date_format($date,"jS M Y H:i:s");
+	}
+	else
+	{
+		return date_format($date,"jS M Y");
+	}
+}
+
+function FormatDateTime2($param_date, $paramname)
+{
+	$date4=date_create($param_date);
+	if($paramname=="1")
+	{
+		return date_format($date4,"jS M Y H:i:s");
+	}
+	else
+	{
+		return date_format($date4,"m/d/Y");
+	}
+}
+
+
+function UniqueStamp()
+{
+	return date("Ymd").time();
+}
+
+
+function ValidateImageFile($_fileinput, $file_formname)
+{
+	if($_fileinput[$file_formname]["error"] > 0)
+	{
+		return "Error: " . $_fileinput[$file_formname]["error"] . "<br>";
+	}
+	else
+	{
+		$allowed = array("jpg" => "image/jpg", "jpeg" => "image/jpeg", "gif" => "image/gif", "png" => "image/png");
+		$filename = $_fileinput[$file_formname]["name"];
+		$filetype = $_fileinput[$file_formname]["type"];
+		$filesize = $_fileinput[$file_formname]["size"];
+
+		// Verify file extension
+		$ext = pathinfo($filename, PATHINFO_EXTENSION);
+		
+		if(!array_key_exists($ext, $allowed))
+		{									
+			return "Error: Sorry the selected file is not accepted, Please select a valid file format.";
+		}
+		else
+		{
+			// Verify file size - 5MB maximum
+			$maxsize = 1 * 1024 * 1024;
+			if($filesize > $maxsize) 
+			{
+				return "Error: Sorry the image size is larger than the allowed limit.";
+			}
+			else
+			{
+				// Verify MYME type of the file
+				if(in_array($filetype, $allowed))
+				{
+					//Check wether the file directory exist or not if nope  then create the directory
+					$filepath = 'imageupload/images';
+
+					if (file_exists($filepath))
+					{
+					} 
+					else 
+					{
+						mkdir('imageupload/images', 0777, true);
+					}
+					
+					$uploadFilename = UniqueStamp().$filename;	
+					
+					move_uploaded_file($_FILES[$file_formname]["tmp_name"], $filepath."/" .$uploadFilename);
+					return "Saved successfully";
+				}
+				else
+				{
+					return "File Type is not supported";
+				}
+			}
+		}
+
+		
+		
+	}
+}
+
+
+
+function ValidateImageFile2($_fileinput, $file_formname, $_savefilename, $_savefilepath)
+{
+	if($_fileinput[$file_formname]["error"] > 0)
+	{
+		return "Error: " . $_fileinput[$file_formname]["error"] . "<br>";
+	}
+	else
+	{
+		$allowed = array("jpg" => "image/jpg", "jpeg" => "image/jpeg", "gif" => "image/gif", "png" => "image/png");
+		$filename = $_fileinput[$file_formname]["name"];
+		$filetype = $_fileinput[$file_formname]["type"];
+		$filesize = $_fileinput[$file_formname]["size"];
+
+		// Verify file extension
+		$ext = pathinfo($filename, PATHINFO_EXTENSION);
+		
+		if(!array_key_exists($ext, $allowed))
+		{									
+			return "Error: Sorry the selected file is not accepted, Please select a valid file format.";
+		}
+		else
+		{
+			// Verify file size - 5MB maximum
+			$maxsize = 1 * 1024 * 1024;
+			if($filesize > $maxsize) 
+			{
+				return "Error: Sorry the image size is larger than the allowed limit.";
+			}
+			else
+			{
+				// Verify MYME type of the file
+				if(in_array($filetype, $allowed))
+				{
+					//Check wether the file directory exist or not if nope  then create the directory
+					if (file_exists($_savefilepath))
+					{
+					} 
+					else 
+					{
+						mkdir('imageupload/images', 0777, true);
+					}
+					
+					$uploadFilename = $_savefilename;	
+					
+					move_uploaded_file($_FILES[$file_formname]["tmp_name"], $_savefilepath."/" .$uploadFilename);
+					return "Saved successfully";
+				}
+				else
+				{
+					return "File Type is not supported";
+				}
+			}
+		}
+
+		
+		
+	}
+}
+
+
+function ValidateVideoFile($_fileinput, $file_formname)
+{
+	if($_fileinput[$file_formname]["error"] > 0)
+	{
+		return "Error: " . $_fileinput[$file_formname]["error"] . "<br>";
+	}
+	else
+	{
+		$allowed = array("mp4" => "video/mp4");
+		$filename = $_fileinput[$file_formname]["name"];
+		$filetype = $_fileinput[$file_formname]["type"];
+		$filesize = $_fileinput[$file_formname]["size"];
+
+		// Verify file extension
+		$ext = pathinfo($filename, PATHINFO_EXTENSION);
+		
+		if(!array_key_exists($ext, $allowed))
+		{									
+			return "Error: Sorry the selected file is not accepted, Please select a valid file format.";
+		}
+		else
+		{
+			// Verify file size - 5MB maximum
+			$maxsize = 10000000;
+			if($filesize > $maxsize) 
+			{
+				return "Error: Sorry the image size is larger than the allowed limit.";
+			}
+			else
+			{
+				// Verify MYME type of the file
+				if(in_array($filetype, $allowed))
+				{
+					//Check wether the file directory exist or not if nope  then create the directory
+					$filepath = 'imageupload/videos';
+
+					if (file_exists($filepath))
+					{
+					} 
+					else 
+					{
+						mkdir('imageupload/videos', 0777, true);
+					}
+					
+					$uploadFilename = UniqueStamp().$filename;	
+					
+					move_uploaded_file($_FILES[$file_formname]["tmp_name"], $filepath."/" .$uploadFilename);
+					return "Saved successfully";
+				}
+				else
+				{
+					return "File Type is not supported";
+				}
+			}
+		}
+
+		
+		
+	}
+}
+
+
+
+
+function HTMLDecode($Variable)
+{
+	$Variable = html_entity_decode($Variable);
+	return $Variable;
+}
+
+
+function CreateFolder($path)
+{
+	if (!is_dir($path))
+	{
+		mkdir($path);         
+	}
+	return false;
+}
+
+
+function DeleteFolder($path)
+{
+    if (is_dir($path) === true)
+    {
+        $files = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($path), RecursiveIteratorIterator::CHILD_FIRST);
+
+        foreach ($files as $file)
+        {
+            if (in_array($file->getBasename(), array('.', '..')) !== true)
+            {
+                if ($file->isDir() === true)
+                {
+                    rmdir($file->getPathName());
+                }
+
+                else if (($file->isFile() === true) || ($file->isLink() === true))
+                {
+                    unlink($file->getPathname());
+                }
+            }
+        }
+
+        return rmdir($path);
+    }
+
+    else if ((is_file($path) === true) || (is_link($path) === true))
+    {
+        return unlink($path);
+    }
+
+    return false;
+}
+
+
+// converts an html color name to a hex color value
+// if the input is not a color name, the original value is returned
+// http://wpCodeSnippets.info
+function color_name_to_hex($color_name)
+{
+    // standard 147 HTML color names
+    $colors  =  array(
+        'aliceblue'=>'F0F8FF',
+        'antiquewhite'=>'FAEBD7',
+        'aqua'=>'00FFFF',
+        'aquamarine'=>'7FFFD4',
+        'azure'=>'F0FFFF',
+        'beige'=>'F5F5DC',
+        'bisque'=>'FFE4C4',
+        'black'=>'000000',
+        'blanchedalmond '=>'FFEBCD',
+        'blue'=>'0000FF',
+        'blueviolet'=>'8A2BE2',
+        'brown'=>'A52A2A',
+        'burlywood'=>'DEB887',
+        'cadetblue'=>'5F9EA0',
+        'chartreuse'=>'7FFF00',
+        'chocolate'=>'D2691E',
+        'coral'=>'FF7F50',
+        'cornflowerblue'=>'6495ED',
+        'cornsilk'=>'FFF8DC',
+        'crimson'=>'DC143C',
+        'cyan'=>'00FFFF',
+        'darkblue'=>'00008B',
+        'darkcyan'=>'008B8B',
+        'darkgoldenrod'=>'B8860B',
+        'darkgray'=>'A9A9A9',
+        'darkgreen'=>'006400',
+        'darkgrey'=>'A9A9A9',
+        'darkkhaki'=>'BDB76B',
+        'darkmagenta'=>'8B008B',
+        'darkolivegreen'=>'556B2F',
+        'darkorange'=>'FF8C00',
+        'darkorchid'=>'9932CC',
+        'darkred'=>'8B0000',
+        'darksalmon'=>'E9967A',
+        'darkseagreen'=>'8FBC8F',
+        'darkslateblue'=>'483D8B',
+        'darkslategray'=>'2F4F4F',
+        'darkslategrey'=>'2F4F4F',
+        'darkturquoise'=>'00CED1',
+        'darkviolet'=>'9400D3',
+        'deeppink'=>'FF1493',
+        'deepskyblue'=>'00BFFF',
+        'dimgray'=>'696969',
+        'dimgrey'=>'696969',
+        'dodgerblue'=>'1E90FF',
+        'firebrick'=>'B22222',
+        'floralwhite'=>'FFFAF0',
+        'forestgreen'=>'228B22',
+        'fuchsia'=>'FF00FF',
+        'gainsboro'=>'DCDCDC',
+        'ghostwhite'=>'F8F8FF',
+        'gold'=>'FFD700',
+        'goldenrod'=>'DAA520',
+        'gray'=>'808080',
+        'green'=>'008000',
+        'greenyellow'=>'ADFF2F',
+        'grey'=>'808080',
+        'honeydew'=>'F0FFF0',
+        'hotpink'=>'FF69B4',
+        'indianred'=>'CD5C5C',
+        'indigo'=>'4B0082',
+        'ivory'=>'FFFFF0',
+        'khaki'=>'F0E68C',
+        'lavender'=>'E6E6FA',
+        'lavenderblush'=>'FFF0F5',
+        'lawngreen'=>'7CFC00',
+        'lemonchiffon'=>'FFFACD',
+        'lightblue'=>'ADD8E6',
+        'lightcoral'=>'F08080',
+        'lightcyan'=>'E0FFFF',
+        'lightgoldenrodyellow'=>'FAFAD2',
+        'lightgray'=>'D3D3D3',
+        'lightgreen'=>'90EE90',
+        'lightgrey'=>'D3D3D3',
+        'lightpink'=>'FFB6C1',
+        'lightsalmon'=>'FFA07A',
+        'lightseagreen'=>'20B2AA',
+        'lightskyblue'=>'87CEFA',
+        'lightslategray'=>'778899',
+        'lightslategrey'=>'778899',
+        'lightsteelblue'=>'B0C4DE',
+        'lightyellow'=>'FFFFE0',
+        'lime'=>'00FF00',
+        'limegreen'=>'32CD32',
+        'linen'=>'FAF0E6',
+        'magenta'=>'FF00FF',
+        'maroon'=>'800000',
+        'mediumaquamarine'=>'66CDAA',
+        'mediumblue'=>'0000CD',
+        'mediumorchid'=>'BA55D3',
+        'mediumpurple'=>'9370D0',
+        'mediumseagreen'=>'3CB371',
+        'mediumslateblue'=>'7B68EE',
+        'mediumspringgreen'=>'00FA9A',
+        'mediumturquoise'=>'48D1CC',
+        'mediumvioletred'=>'C71585',
+        'midnightblue'=>'191970',
+        'mintcream'=>'F5FFFA',
+        'mistyrose'=>'FFE4E1',
+        'moccasin'=>'FFE4B5',
+        'navajowhite'=>'FFDEAD',
+        'navy'=>'000080',
+        'oldlace'=>'FDF5E6',
+        'olive'=>'808000',
+        'olivedrab'=>'6B8E23',
+        'orange'=>'FFA500',
+        'orangered'=>'FF4500',
+        'orchid'=>'DA70D6',
+        'palegoldenrod'=>'EEE8AA',
+        'palegreen'=>'98FB98',
+        'paleturquoise'=>'AFEEEE',
+        'palevioletred'=>'DB7093',
+        'papayawhip'=>'FFEFD5',
+        'peachpuff'=>'FFDAB9',
+        'peru'=>'CD853F',
+        'pink'=>'FFC0CB',
+        'plum'=>'DDA0DD',
+        'powderblue'=>'B0E0E6',
+        'purple'=>'800080',
+        'red'=>'FF0000',
+        'rosybrown'=>'BC8F8F',
+        'royalblue'=>'4169E1',
+        'saddlebrown'=>'8B4513',
+        'salmon'=>'FA8072',
+        'sandybrown'=>'F4A460',
+        'seagreen'=>'2E8B57',
+        'seashell'=>'FFF5EE',
+        'sienna'=>'A0522D',
+        'silver'=>'C0C0C0',
+        'skyblue'=>'87CEEB',
+        'slateblue'=>'6A5ACD',
+        'slategray'=>'708090',
+        'slategrey'=>'708090',
+        'snow'=>'FFFAFA',
+        'springgreen'=>'00FF7F',
+        'steelblue'=>'4682B4',
+        'tan'=>'D2B48C',
+        'teal'=>'008080',
+        'thistle'=>'D8BFD8',
+        'tomato'=>'FF6347',
+        'turquoise'=>'40E0D0',
+        'violet'=>'EE82EE',
+        'wheat'=>'F5DEB3',
+        'white'=>'FFFFFF',
+        'whitesmoke'=>'F5F5F5',
+        'yellow'=>'FFFF00',
+        'yellowgreen'=>'9ACD32');
+
+    $color_name = strtolower($color_name);
+    if (isset($colors[$color_name]))
+    {
+        return ('#' . $colors[$color_name]);
+    }
+    else
+    {
+        return ($color_name);
+    }
+}
+
+
+?>

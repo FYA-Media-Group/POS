@@ -1,0 +1,508 @@
+<?php require_once("setting.fya"); ?>
+<!-- Styles -->
+<style>
+
+#chartdiv1 {
+	width		: 100%;
+	height		: 500px;
+	font-size	: 11px;
+}		
+#chartdiv2 {
+	width		: 100%;
+	height		: 500px;
+	font-size	: 11px;
+}		
+#chartdiv3 {
+	width		: 100%;
+	height		: 500px;
+	font-size	: 11px;
+}		
+#chartdiv7 {
+	width		: 100%;
+	height		: 500px;
+	font-size	: 11px;
+}		
+#chartdiv5 {
+	width		: 100%;
+	height		: 500px;
+	font-size	: 11px;
+}
+</style>		
+
+</style>
+<!-- Resources -->
+<script src="https://www.amcharts.com/lib/3/amcharts.js"></script>
+<script src="ChartsandGraphs/js/serial.js"></script>
+<script src="ChartsandGraphs/js/export.min.js"></script>
+<link rel="stylesheet" href="ChartsandGraphs/css/export.css" type="text/css" media="all" />
+<script src="https://www.amcharts.com/lib/3/themes/none.js"></script>
+ <script type="text/javascript" src="https://www.amcharts.com/lib/3/themes/patterns.js"></script>
+
+
+<!-- Chart code -->
+
+<script>
+
+
+var chart = AmCharts.makeChart( "chartdiv1", {
+  "type": "serial",
+  "theme": "light",
+  "dataProvider": [ 
+	
+		
+		<?php
+		$DB = Connect();
+		$sqlgraph=select("FromDate,ToDate","tblGraphDateParameter","RoleID='".$strAdminRoleID."'");
+		$FromDate=$sqlgraph[0]['FromDate'];
+		$ToDate=$sqlgraph[0]['ToDate'];
+	    $First= $FromDate;
+		$Last= $ToDate;
+		$coldata=array();
+		$coldata=array('#FF0F00','#FF6600','#FF9E01','#FCD202','#F8FF01','#B0DE09','#04D215','#0D8ECF','#0D52D1','#2A0CD0','#8A0CCF','#CD0D74');
+		$date=date('Y-m-d');
+		$sqlst = "SELECT EmployeeID, TotalSales
+				FROM tblCronEmployeePerformance
+				where StoreID='1' and TotalSales!='0' order by abs(TotalSales) desc";
+			
+				
+		$RSst = $DB->query($sqlst);
+		if ($RSst->num_rows > 0) 
+		{
+			$counter = 0;
+
+			while($rowst = $RSst->fetch_assoc())
+			{
+				$counter ++;
+				$EmployeeID = $rowst["EmployeeID"];
+				$TotalSales = $rowst["TotalSales"];
+				$sql_customers = select("EmployeeName","tblEmployees","EID='".$EmployeeID."'");
+				$EmployeeName=$sql_customers[0]['EmployeeName'];
+				$color=$coldata[$counter];
+											?>
+												{
+												"country": "<?=$EmployeeName?>",
+												"visits": <?=round($TotalSales,2)?>,
+												"color":"<?=$color?>"
+												}, 
+								<?php
+										
+			}
+			
+		}
+		else
+		{
+	?>
+					{
+					"country": "No Best Employee found for this month",
+					"litres": 0
+					}, 
+	<?php
+		}
+		$DB->close();
+	?>	
+ ],
+ "valueAxes": [{
+    "axisAlpha": 0,
+    "position": "left",
+    "title": "Best Employee Performance According To Sales Target"
+  }],
+  "startDuration": 1,
+  "graphs": [{
+    "balloonText": " Employee : [[category]] (In This Month Sale): <b>[[value]]</b>",
+    "fillColorsField": "color",
+    "fillAlphas": 0.9,
+    "lineAlpha": 0.2,
+    "type": "column",
+    "valueField": "visits"
+  }],
+  "chartCursor": {
+    "categoryBalloonEnabled": false,
+    "cursorAlpha": 0,
+    "zoomable": false
+  },
+  "categoryField": "country",
+  "categoryAxis": {
+    "gridPosition": "start",
+    "labelRotation": 45
+  },
+  "export": {
+    "enabled": true
+  }
+
+});
+</script>
+
+
+
+
+<!-- Chart code -->
+
+<script>
+
+
+var chart = AmCharts.makeChart( "chartdiv2", {
+  "type": "serial",
+  "theme": "light",
+  "dataProvider": [ 
+	
+	<?php
+		$DB = Connect();
+		$sqlgraph=select("FromDate,ToDate","tblGraphDateParameter","RoleID='".$strAdminRoleID."'");
+		$FromDate=$sqlgraph[0]['FromDate'];
+		$ToDate=$sqlgraph[0]['ToDate'];
+	    $First= $FromDate;
+		$Last= $ToDate;
+		$coldata=array();
+		$coldata=array('#FF0F00','#FF6600','#FF9E01','#FCD202','#F8FF01','#B0DE09','#04D215','#0D8ECF','#0D52D1','#2A0CD0','#8A0CCF','#CD0D74');
+		$date=date('Y-m-d');
+		$sqlst = "SELECT EmployeeID, TotalSales
+				FROM tblCronEmployeePerformance
+				where StoreID='2' and TotalSales!='0' order by abs(TotalSales) desc";
+			
+				
+		$RSst = $DB->query($sqlst);
+		if ($RSst->num_rows > 0) 
+		{
+			$counter = 0;
+
+			while($rowst = $RSst->fetch_assoc())
+			{
+				$counter ++;
+				$EmployeeID = $rowst["EmployeeID"];
+				$TotalSales = $rowst["TotalSales"];
+				$sql_customers = select("EmployeeName","tblEmployees","EID='".$EmployeeID."'");
+				$EmployeeName=$sql_customers[0]['EmployeeName'];
+				$color=$coldata[$counter];
+											?>
+												{
+												"country": "<?=$EmployeeName?>",
+												"visits": <?=round($TotalSales,2)?>,
+												"color":"<?=$color?>"
+												}, 
+								<?php
+										
+			}
+			
+		}
+		else
+		{
+	?>
+					{
+					"country": "No Best Employee found for this month",
+					"litres": 0
+					}, 
+	<?php
+		}
+		$DB->close();
+	?>	
+ ],
+ "valueAxes": [{
+    "axisAlpha": 0,
+    "position": "left",
+    "title": "Best Employee Performance According To Sales Target"
+  }],
+  "startDuration": 1,
+  "graphs": [{
+    "balloonText": " Employee : [[category]] (In This Month Sale): <b>[[value]]</b>",
+    "fillColorsField": "color",
+    "fillAlphas": 0.9,
+    "lineAlpha": 0.2,
+    "type": "column",
+    "valueField": "visits"
+  }],
+  "chartCursor": {
+    "categoryBalloonEnabled": false,
+    "cursorAlpha": 0,
+    "zoomable": false
+  },
+  "categoryField": "country",
+  "categoryAxis": {
+    "gridPosition": "start",
+    "labelRotation": 45
+  },
+  "export": {
+    "enabled": true
+  }
+
+});
+</script>
+
+
+
+
+<!-- Chart code -->
+
+<script>
+
+
+var chart = AmCharts.makeChart( "chartdiv3", {
+  "type": "serial",
+  "theme": "light",
+  "dataProvider": [ 
+	
+	<?php
+		$DB = Connect();
+		$sqlgraph=select("FromDate,ToDate","tblGraphDateParameter","RoleID='".$strAdminRoleID."'");
+		$FromDate=$sqlgraph[0]['FromDate'];
+		$ToDate=$sqlgraph[0]['ToDate'];
+	    $First= $FromDate;
+		$Last= $ToDate;
+		$coldata=array();
+		$coldata=array('#FF0F00','#FF6600','#FF9E01','#FCD202','#F8FF01','#B0DE09','#04D215','#0D8ECF','#0D52D1','#2A0CD0','#8A0CCF','#CD0D74');
+		$date=date('Y-m-d');
+		$sqlst = "SELECT EmployeeID, TotalSales
+				FROM tblCronEmployeePerformance
+				where StoreID='3' and TotalSales!='0' order by abs(TotalSales) desc";
+			
+				
+		$RSst = $DB->query($sqlst);
+		if ($RSst->num_rows > 0) 
+		{
+			$counter = 0;
+
+			while($rowst = $RSst->fetch_assoc())
+			{
+				$counter ++;
+				$EmployeeID = $rowst["EmployeeID"];
+				$TotalSales = $rowst["TotalSales"];
+				$sql_customers = select("EmployeeName","tblEmployees","EID='".$EmployeeID."'");
+				$EmployeeName=$sql_customers[0]['EmployeeName'];
+				$color=$coldata[$counter];
+											?>
+												{
+												"country": "<?=$EmployeeName?>",
+												"visits": <?=round($TotalSales,2)?>,
+												"color":"<?=$color?>"
+												}, 
+								<?php
+										
+			}
+			
+		}
+		else
+		{
+	?>
+					{
+					"country": "No Best Employee found for this month",
+					"litres": 0
+					}, 
+	<?php
+		}
+		$DB->close();
+	?>	
+ ],
+ "valueAxes": [{
+    "axisAlpha": 0,
+    "position": "left",
+    "title": "Best Employee Performance According To Sales Target"
+  }],
+  "startDuration": 1,
+  "graphs": [{
+    "balloonText": " Employee : [[category]] (In This Month Sale): <b>[[value]]</b>",
+    "fillColorsField": "color",
+    "fillAlphas": 0.9,
+    "lineAlpha": 0.2,
+    "type": "column",
+    "valueField": "visits"
+  }],
+  "chartCursor": {
+    "categoryBalloonEnabled": false,
+    "cursorAlpha": 0,
+    "zoomable": false
+  },
+  "categoryField": "country",
+  "categoryAxis": {
+    "gridPosition": "start",
+    "labelRotation": 45
+  },
+  "export": {
+    "enabled": true
+  }
+
+});
+</script>
+
+
+
+
+<!-- Chart code -->
+
+<script>
+
+
+var chart = AmCharts.makeChart( "chartdiv7", {
+  "type": "serial",
+  "theme": "light",
+  "dataProvider": [ 
+	
+	<?php
+		$DB = Connect();
+		$sqlgraph=select("FromDate,ToDate","tblGraphDateParameter","RoleID='".$strAdminRoleID."'");
+		$FromDate=$sqlgraph[0]['FromDate'];
+		$ToDate=$sqlgraph[0]['ToDate'];
+	    $First= $FromDate;
+		$Last= $ToDate;
+		$coldata=array();
+		$coldata=array('#FF0F00','#FF6600','#FF9E01','#FCD202','#F8FF01','#B0DE09','#04D215','#0D8ECF','#0D52D1','#2A0CD0','#8A0CCF','#CD0D74');
+		$date=date('Y-m-d');
+		$sqlst = "SELECT EmployeeID, TotalSales
+				FROM tblCronEmployeePerformance
+				where StoreID='4' and TotalSales!='0' order by abs(TotalSales) desc";
+			
+				
+		$RSst = $DB->query($sqlst);
+		if ($RSst->num_rows > 0) 
+		{
+			$counter = 0;
+
+			while($rowst = $RSst->fetch_assoc())
+			{
+				$counter ++;
+				$EmployeeID = $rowst["EmployeeID"];
+				$TotalSales = $rowst["TotalSales"];
+				$sql_customers = select("EmployeeName","tblEmployees","EID='".$EmployeeID."'");
+				$EmployeeName=$sql_customers[0]['EmployeeName'];
+				$color=$coldata[$counter];
+											?>
+												{
+												"country": "<?=$EmployeeName?>",
+												"visits": <?=round($TotalSales,2)?>,
+												"color":"<?=$color?>"
+												}, 
+								<?php
+										
+			}
+			
+		}
+		else
+		{
+	?>
+					{
+					"country": "No Best Employee found for this month",
+					"litres": 0
+					}, 
+	<?php
+		}
+		$DB->close();
+	?>	
+ ],
+ "valueAxes": [{
+    "axisAlpha": 0,
+    "position": "left",
+    "title": "Best Employee Performance According To Sales Target"
+  }],
+  "startDuration": 1,
+  "graphs": [{
+    "balloonText": " Employee : [[category]] (In This Month Sale): <b>[[value]]</b>",
+    "fillColorsField": "color",
+    "fillAlphas": 0.9,
+    "lineAlpha": 0.2,
+    "type": "column",
+    "valueField": "visits"
+  }],
+  "chartCursor": {
+    "categoryBalloonEnabled": false,
+    "cursorAlpha": 0,
+    "zoomable": false
+  },
+  "categoryField": "country",
+  "categoryAxis": {
+    "gridPosition": "start",
+    "labelRotation": 45
+  },
+  "export": {
+    "enabled": true
+  }
+
+});
+</script>
+
+<script>
+
+
+var chart = AmCharts.makeChart( "chartdiv5", {
+  "type": "serial",
+  "theme": "light",
+  "dataProvider": [ 
+	
+	<?php
+		$DB = Connect();
+		$sqlgraph=select("FromDate,ToDate","tblGraphDateParameter","RoleID='".$strAdminRoleID."'");
+		$FromDate=$sqlgraph[0]['FromDate'];
+		$ToDate=$sqlgraph[0]['ToDate'];
+	    $First= $FromDate;
+		$Last= $ToDate;
+		$coldata=array();
+		$coldata=array('#FF0F00','#FF6600','#FF9E01','#FCD202','#F8FF01','#B0DE09','#04D215','#0D8ECF','#0D52D1','#2A0CD0','#8A0CCF','#CD0D74');
+		$date=date('Y-m-d');
+		$sqlst = "SELECT EmployeeID, TotalSales
+				FROM tblCronEmployeePerformance
+				where StoreID='5' and TotalSales!='0' order by abs(TotalSales) desc";
+			
+				
+		$RSst = $DB->query($sqlst);
+		if ($RSst->num_rows > 0) 
+		{
+			$counter = 0;
+
+			while($rowst = $RSst->fetch_assoc())
+			{
+				$counter ++;
+				$EmployeeID = $rowst["EmployeeID"];
+				$TotalSales = $rowst["TotalSales"];
+				$sql_customers = select("EmployeeName","tblEmployees","EID='".$EmployeeID."'");
+				$EmployeeName=$sql_customers[0]['EmployeeName'];
+				$color=$coldata[$counter];
+											?>
+												{
+												"country": "<?=$EmployeeName?>",
+												"visits": <?=round($TotalSales,2)?>,
+												"color":"<?=$color?>"
+												}, 
+								<?php
+										
+			}
+			
+		}
+		else
+		{
+	?>
+					{
+					"country": "No Best Employee found for this month",
+					"visits": 0
+					}, 
+	<?php
+		}
+		$DB->close();
+	?>	
+ ],
+ "valueAxes": [{
+    "axisAlpha": 0,
+    "position": "left",
+    "title": "Best Employee Performance According To Sales Target"
+  }],
+  "startDuration": 1,
+  "graphs": [{
+    "balloonText": " Employee : [[category]] (In This Month Sale): <b>[[value]]</b>",
+    "fillColorsField": "color",
+    "fillAlphas": 0.9,
+    "lineAlpha": 0.2,
+    "type": "column",
+    "valueField": "visits"
+  }],
+  "chartCursor": {
+    "categoryBalloonEnabled": false,
+    "cursorAlpha": 0,
+    "zoomable": false
+  },
+  "categoryField": "country",
+  "categoryAxis": {
+    "gridPosition": "start",
+    "labelRotation": 45
+  },
+  "export": {
+    "enabled": true
+  }
+
+});
+</script>

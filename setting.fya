@@ -1,0 +1,2637 @@
+<?php 
+require_once 'incVariablesUsed.php';
+date_default_timezone_set('Asia/Calcutta');
+
+function ServerName()
+{
+	return "43.225.52.142";
+}
+function Username()
+{
+	return "nailspae_yogita";
+}
+function Password()
+{
+	return "yogita@fya123";
+}
+function DBName()
+{
+	return "nailspae_dbposfinal";
+}
+
+
+function Connect()
+{
+	$servername = ServerName();
+	$username = Username();
+	$password = Password();
+	$dbname = DBName();
+
+	$conn = new mysqli($servername, $username, $password, $dbname);
+	// Check connection
+	if (mysqli_connect_error()) 
+	{
+	    die('Connect Error (' . mysqli_connect_errno() . ') '
+	            . mysqli_connect_error());
+	}
+	return $conn;
+}
+
+function ServerName_blog()
+{
+	return "localhost";
+}
+function Username_blog()
+{
+	return "fyatedjh_nailspa";
+}
+function Password_blog()
+{
+	return "q&#RrLdW,&i7";
+}
+function DBName_blog()
+{
+	return "fyatedjh_nailspa";
+}
+
+
+function Connect_blog()
+{
+	$servername = ServerName_blog();
+	$username = Username_blog();
+	$password = Password_blog();
+	$dbname = DBName_blog();
+
+	$conn = new mysqli($servername, $username, $password, $dbname);
+	// Check connection
+	if (mysqli_connect_error()) 
+	{
+	    die('Connect Error (' . mysqli_connect_errno() . ') '
+	            . mysqli_connect_error());
+	}
+	return $conn;
+}
+
+
+function ExecuteNQ($sqlQuery)
+{
+	$servername = ServerName();
+	$username = Username();
+	$password = Password();
+	$dbname = DBName();
+
+	$conn = new mysqli($servername, $username, $password, $dbname);
+	// Check connection
+	if (mysqli_connect_error()) 
+	{
+	    die('Connect Error (' . mysqli_connect_errno() . ') '
+	            . mysqli_connect_error());
+	}
+	$conn->query($sqlQuery);
+	$conn->close();
+}
+
+
+function select($col,$table,$cond)
+{
+	//echo 1234;
+	$servername = ServerName();
+	$username = Username();
+	$password = Password();
+	$dbname = DBName();
+
+	$conn = new mysqli($servername, $username, $password, $dbname);
+	if (mysqli_connect_error()) 
+	{
+		die('Connect Error (' . mysqli_connect_errno() . ') '
+				. mysqli_connect_error());
+	}
+	$sql="select $col from $table where $cond";
+	// if($_SERVER['REMOTE_ADDR']=="111.119.219.70")
+	// {
+	   // echo $sql.'<hr>';
+	// }
+	
+	
+	$ans=$conn->query($sql) or die($conn->error);
+	//print_r($ans);
+	
+	if($ans->num_rows>0)
+	{
+		while($result = $ans->fetch_assoc())
+		 {
+		//	print_r($result);
+			$data[]=$result;
+			//print_r($data);
+			
+		}
+		return $data;
+	}
+	else
+	{
+		return 0;
+	}
+	$conn->close();
+}
+
+function selectyogi($col,$table,$cond)
+{
+	//echo 1234;
+	$servername = ServerName();
+	$username = Username();
+	$password = Password();
+	$dbname = DBName();
+
+	$conn = new mysqli($servername, $username, $password, $dbname);
+	if (mysqli_connect_error()) 
+	{
+		die('Connect Error (' . mysqli_connect_errno() . ') '
+				. mysqli_connect_error());
+	}
+	$sql="select $col from $table where $cond";
+	if($_SERVER['REMOTE_ADDR']=="111.119.219.70")
+	 {
+	  echo $sql.'<hr>';
+	 } 
+	//echo $sql;
+	
+	$ans=$conn->query($sql) or die($conn->error);
+	//print_r($ans);
+	
+	if($ans->num_rows>0)
+	{
+		while($result = $ans->fetch_assoc())
+		 {
+		//	print_r($result);
+			$data[]=$result;
+			//print_r($data);
+			
+		}
+		return $data;
+	}
+	else
+	{
+		return 0;
+	}
+	$conn->close();
+}
+
+function selectcategory($store,$dat1,$dat2)
+{
+	$servername = ServerName();
+	$username = Username();
+	$password = Password();
+	$dbname = DBName();
+
+	$conn = new mysqli($servername, $username, $password, $dbname);
+	if (mysqli_connect_error()) 
+	{
+		die('Connect Error (' . mysqli_connect_errno() . ') '
+				. mysqli_connect_error());
+	}
+	
+	$dat12=Date("'".$dat1."'");
+	$dat13=Date("'".$dat2."'");
+	
+	$sqy="CALL category($store,$dat12,$dat13)";
+	
+	$ans=$conn->query($sqy) or die($conn->error);
+	
+	
+	if($ans->num_rows>0)
+	{
+		while($result = $ans->fetch_assoc())
+		 {
+		//	print_r($result);
+			$data[]=$result;
+			//print_r($data);
+			
+			
+		}
+		return $data;
+	}
+	else
+	{
+		return 0;
+	}
+	$conn->close();
+	
+}
+
+
+function selectproduct($dat1,$dat2)
+{
+	$servername = ServerName();
+	$username = Username();
+	$password = Password();
+	$dbname = DBName();
+
+	$conn = new mysqli($servername, $username, $password, $dbname);
+	if (mysqli_connect_error()) 
+	{
+		die('Connect Error (' . mysqli_connect_errno() . ') '
+				. mysqli_connect_error());
+	}
+	
+	$dat12=Date("'".$dat1."'");
+	$dat13=Date("'".$dat2."'");
+    $catt="'".$cat."'";
+
+	$sqy="CALL product($dat12,$dat13)";
+
+	$ans=$conn->query($sqy) or die($conn->error);
+	
+	
+	if($ans->num_rows>0)
+	{
+		while($result = $ans->fetch_assoc())
+		 {
+		//	print_r($result);
+			$data[]=$result;
+			//print_r($data);
+			
+			
+		}
+		return $data;
+	}
+	else
+	{
+		return 0;
+	}
+	$conn->close();
+	
+}
+function selectproductservice($dat1,$dat2,$prod)
+{
+	$servername = ServerName();
+	$username = Username();
+	$password = Password();
+	$dbname = DBName();
+
+	$conn = new mysqli($servername, $username, $password, $dbname);
+	if (mysqli_connect_error()) 
+	{
+		die('Connect Error (' . mysqli_connect_errno() . ') '
+				. mysqli_connect_error());
+	}
+	
+	$dat12=Date("'".$dat1."'");
+	$dat13=Date("'".$dat2."'");
+    $prodt="'".$prod."'";
+
+	$sqy="CALL productservice($dat12,$dat13,$prodt)";
+
+	$ans=$conn->query($sqy) or die($conn->error);
+	
+	
+	if($ans->num_rows>0)
+	{
+		while($result = $ans->fetch_assoc())
+		 {
+		//	print_r($result);
+			$data[]=$result;
+			//print_r($data);
+			
+			
+		}
+		return $data;
+	}
+	else
+	{
+		return 0;
+	}
+	$conn->close();
+	
+}
+function selectproductservicedetail($dat1,$dat2,$ser)
+{
+	$servername = ServerName();
+	$username = Username();
+	$password = Password();
+	$dbname = DBName();
+
+	$conn = new mysqli($servername, $username, $password, $dbname);
+	if (mysqli_connect_error()) 
+	{
+		die('Connect Error (' . mysqli_connect_errno() . ') '
+				. mysqli_connect_error());
+	}
+	
+	$dat12=Date("'".$dat1."'");
+	$dat13=Date("'".$dat2."'");
+    $sert="'".$ser."'";
+
+	$sqy="CALL productservicedetail($dat12,$dat13,$sert)";
+    
+	$ans=$conn->query($sqy) or die($conn->error);
+	
+	
+	if($ans->num_rows>0)
+	{
+		while($result = $ans->fetch_assoc())
+		 {
+		//	print_r($result);
+			$data[]=$result;
+			//print_r($data);
+			
+			
+		}
+		return $data;
+	}
+	else
+	{
+		return 0;
+	}
+	$conn->close();
+}
+function selectservice($store,$dat1,$dat2,$cat)
+{
+	$servername = ServerName();
+	$username = Username();
+	$password = Password();
+	$dbname = DBName();
+
+	$conn = new mysqli($servername, $username, $password, $dbname);
+	if (mysqli_connect_error()) 
+	{
+		die('Connect Error (' . mysqli_connect_errno() . ') '
+				. mysqli_connect_error());
+	}
+	
+	$dat12=Date("'".$dat1."'");
+	$dat13=Date("'".$dat2."'");
+    $catt="'".$cat."'";
+
+	$sqy="CALL servicepp($store,$dat12,$dat13,$catt)";
+
+	$ans=$conn->query($sqy) or die($conn->error);
+	
+	
+	if($ans->num_rows>0)
+	{
+		while($result = $ans->fetch_assoc())
+		 {
+		//	print_r($result);
+			$data[]=$result;
+			//print_r($data);
+			
+			
+		}
+		return $data;
+	}
+	else
+	{
+		return 0;
+	}
+	$conn->close();
+	
+}
+function commissionemployeetargetdata($eid,$dat1,$dat2)
+{
+	$servername = ServerName();
+	$username = Username();
+	$password = Password();
+	$dbname = DBName();
+
+	$conn = new mysqli($servername, $username, $password, $dbname);
+	if (mysqli_connect_error()) 
+	{
+		die('Connect Error (' . mysqli_connect_errno() . ') '
+				. mysqli_connect_error());
+	}
+	
+	$dat12=Date("'".$dat1."'");
+	$dat13=Date("'".$dat2."'");
+    $eidd="'".$eid."'";
+
+	$sqy="CALL commissionemployeetarget($eidd,$dat12,$dat13)";
+
+	$ans=$conn->query($sqy) or die($conn->error);
+	
+	
+	if($ans->num_rows>0)
+	{
+		while($result = $ans->fetch_assoc())
+		 {
+		//	print_r($result);
+			$data[]=$result;
+			//print_r($data);
+			
+			
+		}
+		return $data;
+	}
+	else
+	{
+		return 0;
+	}
+	$conn->close();
+}
+function EmpPerFunction($dat1,$dat2,$emp)
+{
+	//echo 1345;
+	$servername = ServerName();
+	$username = Username();
+	$password = Password();
+	$dbname = DBName();
+
+	$conn = new mysqli($servername, $username, $password, $dbname);
+	if (mysqli_connect_error()) 
+	{
+		die('Connect Error (' . mysqli_connect_errno() . ') '
+				. mysqli_connect_error());
+	}
+	
+	$dat12=Date("'".$dat1."'");
+	$dat13=Date("'".$dat2."'");
+	$eidd="'".$emp."'";
+	$sqy="CALL EmpPerformance($dat12,$dat13,$eidd)";
+	//echo $sqy;
+	$ans=$conn->query($sqy) or die($conn->error);
+	
+	
+	if($ans->num_rows>0)
+	{
+		while($result = $ans->fetch_assoc())
+		 {
+		//	print_r($result);
+			$data[]=$result;
+			//print_r($data);
+			
+			
+		}
+		return $data;
+	}
+	else
+	{
+		return 0;
+	}
+	$conn->close();
+	
+}
+function ServiceRevenueAll($dat1,$dat2,$ser)
+{
+	//echo 1345;
+	$servername = ServerName();
+	$username = Username();
+	$password = Password();
+	$dbname = DBName();
+
+	$conn = new mysqli($servername, $username, $password, $dbname);
+	if (mysqli_connect_error()) 
+	{
+		die('Connect Error (' . mysqli_connect_errno() . ') '
+				. mysqli_connect_error());
+	}
+	
+	$dat12=Date("'".$dat1."'");
+	$dat13=Date("'".$dat2."'");
+	$serdd="'".$ser."'";
+	$sqy="CALL ServiceRevenue($dat12,$dat13,$serdd)";
+	//echo $sqy;
+	$ans=$conn->query($sqy) or die($conn->error);
+	
+	
+	if($ans->num_rows>0)
+	{
+		while($result = $ans->fetch_assoc())
+		 {
+		//	print_r($result);
+			$data[]=$result;
+			//print_r($data);
+			
+			
+		}
+		return $data;
+	}
+	else
+	{
+		return 0;
+	}
+	$conn->close();
+	
+}
+function ServiceRevenueAllStore($dat1,$dat2,$ser,$stor)
+{
+	//echo 1345;
+	$servername = ServerName();
+	$username = Username();
+	$password = Password();
+	$dbname = DBName();
+
+	$conn = new mysqli($servername, $username, $password, $dbname);
+	if (mysqli_connect_error()) 
+	{
+		die('Connect Error (' . mysqli_connect_errno() . ') '
+				. mysqli_connect_error());
+	}
+	
+	$dat12=Date("'".$dat1."'");
+	$dat13=Date("'".$dat2."'");
+	$serdd="'".$ser."'";
+	$stors="'".$stor."'";
+	$sqy="CALL ServiceRevenueAllStore($dat12,$dat13,$serdd,$stors)";
+	//echo $sqy;
+	$ans=$conn->query($sqy) or die($conn->error);
+	
+	
+	if($ans->num_rows>0)
+	{
+		while($result = $ans->fetch_assoc())
+		 {
+		//	print_r($result);
+			$data[]=$result;
+			//print_r($data);
+			
+			
+		}
+		return $data;
+	}
+	else
+	{
+		return 0;
+	}
+	$conn->close();
+	
+}
+
+function selectservicedetail($store,$dat1,$dat2,$ser)
+{
+	$servername = ServerName();
+	$username = Username();
+	$password = Password();
+	$dbname = DBName();
+
+	$conn = new mysqli($servername, $username, $password, $dbname);
+	if (mysqli_connect_error()) 
+	{
+		die('Connect Error (' . mysqli_connect_errno() . ') '
+				. mysqli_connect_error());
+	}
+
+	$dat12=Date("'".$dat1."'");
+	$dat13=Date("'".$dat2."'");
+	$serr="'".$ser."'";
+	$sqy="CALL servicedetails($store,$dat12,$dat13,$serr)";
+
+	$ans=$conn->query($sqy) or die($conn->error);
+	
+	
+	if($ans->num_rows>0)
+	{
+		while($result = $ans->fetch_assoc())
+		 {
+		//	print_r($result);
+			$data[]=$result;
+			//print_r($data);
+			
+			
+		}
+		return $data;
+	}
+	else
+	{
+		return 0;
+	}
+	$conn->close();
+	
+}
+function servicedetailssumqty($store,$dat1,$dat2,$ser)
+{
+	$servername = ServerName();
+	$username = Username();
+	$password = Password();
+	$dbname = DBName();
+
+	$conn = new mysqli($servername, $username, $password, $dbname);
+	if (mysqli_connect_error()) 
+	{
+		die('Connect Error (' . mysqli_connect_errno() . ') '
+				. mysqli_connect_error());
+	}
+
+	$dat12=Date("'".$dat1."'");
+	$dat13=Date("'".$dat2."'");
+	$serr="'".$ser."'";
+	$sqy="CALL servicedetailssumqty($store,$dat12,$dat13,$serr)";
+
+	$ans=$conn->query($sqy) or die($conn->error);
+	
+	
+	if($ans->num_rows>0)
+	{
+		while($result = $ans->fetch_assoc())
+		 {
+		//	print_r($result);
+			$data[]=$result;
+			//print_r($data);
+			
+			
+		}
+		return $data;
+	}
+	else
+	{
+		return 0;
+	}
+	$conn->close();
+	
+}
+function servicedetailssumamt($store,$dat1,$dat2,$ser)
+{
+	$servername = ServerName();
+	$username = Username();
+	$password = Password();
+	$dbname = DBName();
+
+	$conn = new mysqli($servername, $username, $password, $dbname);
+	if (mysqli_connect_error()) 
+	{
+		die('Connect Error (' . mysqli_connect_errno() . ') '
+				. mysqli_connect_error());
+	}
+
+	$dat12=Date("'".$dat1."'");
+	$dat13=Date("'".$dat2."'");
+	$serr="'".$ser."'";
+	$sqy="CALL servicedetailssumamt($store,$dat12,$dat13,$serr)";
+
+	$ans=$conn->query($sqy) or die($conn->error);
+	
+	
+	if($ans->num_rows>0)
+	{
+		while($result = $ans->fetch_assoc())
+		 {
+		//	print_r($result);
+			$data[]=$result;
+			//print_r($data);
+			
+			
+		}
+		return $data;
+	}
+	else
+	{
+		return 0;
+	}
+	$conn->close();
+	
+}
+function selectsaifusmani($col,$table,$cond)
+{
+	//echo 1234;
+	$servername = ServerName();
+	$username = Username();
+	$password = Password();
+	$dbname = DBName();
+
+	$conn = new mysqli($servername, $username, $password, $dbname);
+	if (mysqli_connect_error()) 
+	{
+		die('Connect Error (' . mysqli_connect_errno() . ') '
+				. mysqli_connect_error());
+	}
+	$sql="select $col from $table where $cond";
+	 echo $sql.'<hr>';
+	$ans=$conn->query($sql) or die($conn->error);
+	//print_r($ans);
+	
+	if($ans->num_rows>0)
+	{
+		while($result = $ans->fetch_assoc())
+		 {
+		//	print_r($result);
+			$data[]=$result;
+			//print_r($data);
+			
+			
+		}
+		return $data;
+	}
+	else
+	{
+		return 0;
+	}
+	$conn->close();
+}
+
+function Filter($data) 
+{
+	// Every thing from form or query string must come through this function
+  $data = trim($data);
+  $data = str_replace("'","`",$data);
+  $data = stripslashes($data);
+  $data = htmlspecialchars($data);
+  
+  return $data;
+}
+
+
+function Encode($Variable)
+{
+	$key = "bookingmpsengine";
+	$encoded = base64_encode(mcrypt_encrypt(MCRYPT_RIJNDAEL_256, md5($key), $Variable, MCRYPT_MODE_CBC, md5(md5($key))));
+	return $encoded;
+}
+
+
+function Decode($Variable)
+{
+	$key = "bookingmpsengine";
+	$decoded = rtrim(mcrypt_decrypt(MCRYPT_RIJNDAEL_256, md5($key), base64_decode($Variable), MCRYPT_MODE_CBC, md5(md5($key))), "\0");
+	return $decoded;
+}
+
+
+function EncodeQ($Variable)
+{
+	$key = "bookingmpsengine";
+	$encoded = base64_encode(mcrypt_encrypt(MCRYPT_RIJNDAEL_256, md5($key), $Variable, MCRYPT_MODE_CBC, md5(md5($key))));
+	$encoded = urlencode($encoded);
+	return $encoded;
+}
+
+
+function DecodeQ($Variable)
+{
+	$key = "bookingmpsengine";
+	$decoded = rtrim(mcrypt_decrypt(MCRYPT_RIJNDAEL_256, md5($key), base64_decode($Variable), MCRYPT_MODE_CBC, md5(md5($key))), "\0");
+	$decoded = urldecode($decoded);
+	return $decoded;
+}
+
+
+function ValidateCookie($CookieName)
+{
+	$strReturnVariable = "";
+	$Array = explode(",",Decode($_COOKIE[$CookieName]));
+	if ($Array[0]==$Array[2])
+	{
+		$strReturnVariable = $Array[1];
+	}
+	return $strReturnVariable;	
+}
+
+
+function IsNull($Value)
+{
+	if($Value=="" || $Value==null)
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+
+}
+
+
+function FindHost()
+{
+	return "http://".$_SERVER["SERVER_NAME"];
+}
+
+
+function FindHostAdmin()
+{
+	return "http://".$_SERVER["SERVER_NAME"]."/admin";
+}
+
+
+function GetActiveMenu($m1, $m2)
+{
+	if($m1==$m2)
+	{
+		return "    background-color: #225081!important;";
+	}
+	else
+	{
+		return "";
+	}
+}
+
+
+function FormatDateTime($param_date, $paramname)
+{
+	$date=date_create($param_date);
+	if($paramname=="1")
+	{
+		return date_format($date,"jS M Y H:i:s");
+	}
+	else
+	{
+		return date_format($date,"jS M Y");
+	}
+}
+
+function FormatDateTime2($param_date, $paramname)
+{
+	$date4=date_create($param_date);
+	if($paramname=="1")
+	{
+		return date_format($date4,"jS M Y H:i:s");
+	}
+	else
+	{
+		return date_format($date4,"m/d/Y");
+	}
+}
+
+
+function UniqueStamp()
+{
+	return date("Ymd").time();
+}
+
+
+function ValidateImageFile($_fileinput, $file_formname)
+{
+	if($_fileinput[$file_formname]["error"] > 0)
+	{
+		return "Error: " . $_fileinput[$file_formname]["error"] . "<br>";
+	}
+	else
+	{
+		$allowed = array("jpg" => "image/jpg", "jpeg" => "image/jpeg", "gif" => "image/gif", "png" => "image/png");
+		$filename = $_fileinput[$file_formname]["name"];
+		$filetype = $_fileinput[$file_formname]["type"];
+		$filesize = $_fileinput[$file_formname]["size"];
+
+		// Verify file extension
+		$ext = pathinfo($filename, PATHINFO_EXTENSION);
+		
+		if(!array_key_exists($ext, $allowed))
+		{									
+			return "Error: Sorry the selected file is not accepted, Please select a valid file format.";
+		}
+		else
+		{
+			// Verify file size - 5MB maximum
+			$maxsize = 1 * 1024 * 1024;
+			if($filesize > $maxsize) 
+			{
+				return "Error: Sorry the image size is larger than the allowed limit.";
+			}
+			else
+			{
+				// Verify MYME type of the file
+				if(in_array($filetype, $allowed))
+				{
+					//Check wether the file directory exist or not if nope  then create the directory
+					$filepath = 'imageupload/images';
+
+					if (file_exists($filepath))
+					{
+					} 
+					else 
+					{
+						mkdir('imageupload/images', 0777, true);
+					}
+					
+					$uploadFilename = UniqueStamp().$filename;	
+					
+					move_uploaded_file($_FILES[$file_formname]["tmp_name"], $filepath."/" .$uploadFilename);
+					return "Saved successfully";
+				}
+				else
+				{
+					return "File Type is not supported";
+				}
+			}
+		}
+
+		
+		
+	}
+}
+
+function ValidateImageFile2($_fileinput, $file_formname, $_savefilename, $_savefilepath)
+{
+	if($_fileinput[$file_formname]["error"] > 0)
+	{
+		return "Error: " . $_fileinput[$file_formname]["error"] . "<br>";
+	}
+	else
+	{
+		
+		$allowed = array("jpg" => "image/jpg", "jpeg" => "image/jpeg", "gif" => "image/gif", "png" => "image/png");
+		$filename = $_fileinput[$file_formname]["name"];
+		$filetype = $_fileinput[$file_formname]["type"];
+		$filesize = $_fileinput[$file_formname]["size"];
+
+		// Verify file extension
+		$ext = pathinfo($filename, PATHINFO_EXTENSION);
+		echo $ext;
+		
+		if(!array_key_exists($ext, $allowed))
+		{									
+			return "Error: Sorry the selected file is not accepted, Please select a valid file format.";
+		}
+		else
+		{
+			// Verify file size - 5MB maximum
+			$maxsize = 1 * 1024 * 1024;
+			if($filesize > $maxsize) 
+			{
+				return "Error: Sorry the image size is larger than the allowed limit.";
+			}
+			else
+			{
+				// Verify MYME type of the file
+				if(in_array($filetype, $allowed))
+				{
+					//Check wether the file directory exist or not if nope  then create the directory
+					if (file_exists($_savefilepath))
+					{
+					} 
+					else 
+					{
+						mkdir('imageupload/images', 0777, true);
+					}
+					
+					$uploadFilename = $_savefilename;	
+					
+					move_uploaded_file($_FILES[$file_formname]["tmp_name"], $_savefilepath."/" .$uploadFilename);
+					return "Saved successfully";
+				}
+				else
+				{
+					return "File Type is not supported";
+				}
+			}
+		}
+
+		
+		
+	}
+}
+
+
+function ValidateVideoFile($_fileinput, $file_formname)
+{
+	if($_fileinput[$file_formname]["error"] > 0)
+	{
+		return "Error: " . $_fileinput[$file_formname]["error"] . "<br>";
+	}
+	else
+	{
+		$allowed = array("mp4" => "video/mp4");
+		$filename = $_fileinput[$file_formname]["name"];
+		$filetype = $_fileinput[$file_formname]["type"];
+		$filesize = $_fileinput[$file_formname]["size"];
+
+		// Verify file extension
+		$ext = pathinfo($filename, PATHINFO_EXTENSION);
+		
+		if(!array_key_exists($ext, $allowed))
+		{									
+			return "Error: Sorry the selected file is not accepted, Please select a valid file format.";
+		}
+		else
+		{
+			// Verify file size - 5MB maximum
+			$maxsize = 10000000;
+			if($filesize > $maxsize) 
+			{
+				return "Error: Sorry the image size is larger than the allowed limit.";
+			}
+			else
+			{
+				// Verify MYME type of the file
+				if(in_array($filetype, $allowed))
+				{
+					//Check wether the file directory exist or not if nope  then create the directory
+					$filepath = 'imageupload/videos';
+
+					if (file_exists($filepath))
+					{
+					} 
+					else 
+					{
+						mkdir('imageupload/videos', 0777, true);
+					}
+					
+					$uploadFilename = UniqueStamp().$filename;	
+					
+					move_uploaded_file($_FILES[$file_formname]["tmp_name"], $filepath."/" .$uploadFilename);
+					return "Saved successfully";
+				}
+				else
+				{
+					return "File Type is not supported";
+				}
+			}
+		}
+
+		
+		
+	}
+}
+
+
+
+
+function HTMLDecode($Variable)
+{
+	$Variable = html_entity_decode($Variable);
+	return $Variable;
+}
+
+
+function CreateFolder($path)
+{
+	if (!is_dir($path))
+	{
+		mkdir($path);         
+	}
+	return false;
+}
+
+
+function DeleteFolder($path)
+{
+    if (is_dir($path) === true)
+    {
+        $files = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($path), RecursiveIteratorIterator::CHILD_FIRST);
+
+        foreach ($files as $file)
+        {
+            if (in_array($file->getBasename(), array('.', '..')) !== true)
+            {
+                if ($file->isDir() === true)
+                {
+                    rmdir($file->getPathName());
+                }
+
+                else if (($file->isFile() === true) || ($file->isLink() === true))
+                {
+                    unlink($file->getPathname());
+                }
+            }
+        }
+
+        return rmdir($path);
+    }
+
+    else if ((is_file($path) === true) || (is_link($path) === true))
+    {
+        return unlink($path);
+    }
+
+    return false;
+}
+
+
+// converts an html color name to a hex color value
+// if the input is not a color name, the original value is returned
+// http://wpCodeSnippets.info
+function color_name_to_hex($color_name)
+{
+    // standard 147 HTML color names
+    $colors  =  array(
+        'aliceblue'=>'F0F8FF',
+        'antiquewhite'=>'FAEBD7',
+        'aqua'=>'00FFFF',
+        'aquamarine'=>'7FFFD4',
+        'azure'=>'F0FFFF',
+        'beige'=>'F5F5DC',
+        'bisque'=>'FFE4C4',
+        'black'=>'000000',
+        'blanchedalmond '=>'FFEBCD',
+        'blue'=>'0000FF',
+        'blueviolet'=>'8A2BE2',
+        'brown'=>'A52A2A',
+        'burlywood'=>'DEB887',
+        'cadetblue'=>'5F9EA0',
+        'chartreuse'=>'7FFF00',
+        'chocolate'=>'D2691E',
+        'coral'=>'FF7F50',
+        'cornflowerblue'=>'6495ED',
+        'cornsilk'=>'FFF8DC',
+        'crimson'=>'DC143C',
+        'cyan'=>'00FFFF',
+        'darkblue'=>'00008B',
+        'darkcyan'=>'008B8B',
+        'darkgoldenrod'=>'B8860B',
+        'darkgray'=>'A9A9A9',
+        'darkgreen'=>'006400',
+        'darkgrey'=>'A9A9A9',
+        'darkkhaki'=>'BDB76B',
+        'darkmagenta'=>'8B008B',
+        'darkolivegreen'=>'556B2F',
+        'darkorange'=>'FF8C00',
+        'darkorchid'=>'9932CC',
+        'darkred'=>'8B0000',
+        'darksalmon'=>'E9967A',
+        'darkseagreen'=>'8FBC8F',
+        'darkslateblue'=>'483D8B',
+        'darkslategray'=>'2F4F4F',
+        'darkslategrey'=>'2F4F4F',
+        'darkturquoise'=>'00CED1',
+        'darkviolet'=>'9400D3',
+        'deeppink'=>'FF1493',
+        'deepskyblue'=>'00BFFF',
+        'dimgray'=>'696969',
+        'dimgrey'=>'696969',
+        'dodgerblue'=>'1E90FF',
+        'firebrick'=>'B22222',
+        'floralwhite'=>'FFFAF0',
+        'forestgreen'=>'228B22',
+        'fuchsia'=>'FF00FF',
+        'gainsboro'=>'DCDCDC',
+        'ghostwhite'=>'F8F8FF',
+        'gold'=>'FFD700',
+        'goldenrod'=>'DAA520',
+        'gray'=>'808080',
+        'green'=>'008000',
+        'greenyellow'=>'ADFF2F',
+        'grey'=>'808080',
+        'honeydew'=>'F0FFF0',
+        'hotpink'=>'FF69B4',
+        'indianred'=>'CD5C5C',
+        'indigo'=>'4B0082',
+        'ivory'=>'FFFFF0',
+        'khaki'=>'F0E68C',
+        'lavender'=>'E6E6FA',
+        'lavenderblush'=>'FFF0F5',
+        'lawngreen'=>'7CFC00',
+        'lemonchiffon'=>'FFFACD',
+        'lightblue'=>'ADD8E6',
+        'lightcoral'=>'F08080',
+        'lightcyan'=>'E0FFFF',
+        'lightgoldenrodyellow'=>'FAFAD2',
+        'lightgray'=>'D3D3D3',
+        'lightgreen'=>'90EE90',
+        'lightgrey'=>'D3D3D3',
+        'lightpink'=>'FFB6C1',
+        'lightsalmon'=>'FFA07A',
+        'lightseagreen'=>'20B2AA',
+        'lightskyblue'=>'87CEFA',
+        'lightslategray'=>'778899',
+        'lightslategrey'=>'778899',
+        'lightsteelblue'=>'B0C4DE',
+        'lightyellow'=>'FFFFE0',
+        'lime'=>'00FF00',
+        'limegreen'=>'32CD32',
+        'linen'=>'FAF0E6',
+        'magenta'=>'FF00FF',
+        'maroon'=>'800000',
+        'mediumaquamarine'=>'66CDAA',
+        'mediumblue'=>'0000CD',
+        'mediumorchid'=>'BA55D3',
+        'mediumpurple'=>'9370D0',
+        'mediumseagreen'=>'3CB371',
+        'mediumslateblue'=>'7B68EE',
+        'mediumspringgreen'=>'00FA9A',
+        'mediumturquoise'=>'48D1CC',
+        'mediumvioletred'=>'C71585',
+        'midnightblue'=>'191970',
+        'mintcream'=>'F5FFFA',
+        'mistyrose'=>'FFE4E1',
+        'moccasin'=>'FFE4B5',
+        'navajowhite'=>'FFDEAD',
+        'navy'=>'000080',
+        'oldlace'=>'FDF5E6',
+        'olive'=>'808000',
+        'olivedrab'=>'6B8E23',
+        'orange'=>'FFA500',
+        'orangered'=>'FF4500',
+        'orchid'=>'DA70D6',
+        'palegoldenrod'=>'EEE8AA',
+        'palegreen'=>'98FB98',
+        'paleturquoise'=>'AFEEEE',
+        'palevioletred'=>'DB7093',
+        'papayawhip'=>'FFEFD5',
+        'peachpuff'=>'FFDAB9',
+        'peru'=>'CD853F',
+        'pink'=>'FFC0CB',
+        'plum'=>'DDA0DD',
+        'powderblue'=>'B0E0E6',
+        'purple'=>'800080',
+        'red'=>'FF0000',
+        'rosybrown'=>'BC8F8F',
+        'royalblue'=>'4169E1',
+        'saddlebrown'=>'8B4513',
+        'salmon'=>'FA8072',
+        'sandybrown'=>'F4A460',
+        'seagreen'=>'2E8B57',
+        'seashell'=>'FFF5EE',
+        'sienna'=>'A0522D',
+        'silver'=>'C0C0C0',
+        'skyblue'=>'87CEEB',
+        'slateblue'=>'6A5ACD',
+        'slategray'=>'708090',
+        'slategrey'=>'708090',
+        'snow'=>'FFFAFA',
+        'springgreen'=>'00FF7F',
+        'steelblue'=>'4682B4',
+        'tan'=>'D2B48C',
+        'teal'=>'008080',
+        'thistle'=>'D8BFD8',
+        'tomato'=>'FF6347',
+        'turquoise'=>'40E0D0',
+        'violet'=>'EE82EE',
+        'wheat'=>'F5DEB3',
+        'white'=>'FFFFFF',
+        'whitesmoke'=>'F5F5F5',
+        'yellow'=>'FFFF00',
+        'yellowgreen'=>'9ACD32');
+
+    $color_name = strtolower($color_name);
+    if (isset($colors[$color_name]))
+    {
+        return ('#' . $colors[$color_name]);
+    }
+    else
+    {
+        return ($color_name);
+    }
+}
+
+function AntiFilter1($data) 
+{
+	 $data = str_replace("`","'",$data);
+	 return $data;
+}
+
+function sendmail($id,$strTo,$strFrom,$strSubject,$strBody,$strDate,$flag,$strStatus)
+{
+	$DB = Connect();
+		$sqlInsert8 = "INSERT INTO tblAdminMail (Id,ToEmail, FromEmail, Subject, Body,DateOfCreation,flag,status) VALUES ('$id', '$strTo', '$strFrom', '$strSubject', '$strBody','$strDate','$flag','$strStatus')";
+	//	echo $sqlInsert8."<br>";
+		$DB->query($sqlInsert8);
+		
+		$strMyTables = "tblAdminMail";
+		$strMyTableIDs = "MailId";
+
+		$sql = "Select * FROM tblAdminMail where status='0'";
+		$RS = $DB->query($sql);
+		if ($RS->num_rows > 0) 
+		{
+			$counter = 0;
+			while($row = $RS->fetch_assoc())
+			{
+				$strid = $row["MailId"];
+				$strTo = $row["ToEmail"];
+				$strFrom = $row["FromEmail"];
+				$strSubject = $row["Subject"];
+				$strBody = $row["Body"];
+				$strBodysa = AntiFilter1($strBody);
+				
+				$headers = "From: $strFrom\r\n";
+				$headers .= "Content-type: text/html\r\n";
+                
+				// Mail sending 
+				$retval = mail($strTo,$strSubject,$strBodysa,$headers);
+
+				if( $retval == true )
+				{
+					$sqlUpdate = "update $strMyTables set DateOfSending=now() , status='1' where $strMyTableIDs='".$strid."'";
+					// echo $sqlUpdate."<br>";
+					ExecuteNQ($sqlUpdate);
+					// echo "Email sent to " . $strTo . "<br>";
+					// echo ('<div class="alert alert-close alert-success"><div class="bg-green alert-icon"><i class="glyph-icon icon-check"></i></div><div class="alert-content">
+					// <h4 class="alert-title">Email sent to .$strTo. </h4>
+					// </div></div>');
+					return ('<div class="alert alert-notice">
+								<p>Email sent to<code>'.$strTo.'</code></p>
+							</div><br>');
+				}
+				else
+				{
+					$sqlUpdate = "update $strMyTables set DateOfSending=now() , status='2' where $strMyTableIDs='".$strid."'";
+					ExecuteNQ($sqlUpdate);
+					//echo $sqlUpdate."<br>";
+					return "<font color='red'>Email sending failed to " . $strTo . "<br></font>";
+				}	
+			}
+			//die();
+		}
+		else
+		{
+			return "No Emails in database to send";
+			//die();
+		}
+	$DB->close();
+
+}
+function sendordermail($id,$strTo,$strFrom,$strSubject,$strBody,$strDate,$flag,$strStatus,$strcc1,$strcc2)
+{
+	$DB = Connect();
+		$sqlInsert8 = "INSERT INTO tblAdminMail (Id,ToEmail, FromEmail, Subject, Body,DateOfCreation,flag,status) VALUES ('$id', '$strTo', '$strFrom', '$strSubject', '$strBody','$strDate','$flag','$strStatus')";
+//	echo $sqlInsert8."<br>";
+		$DB->query($sqlInsert8);
+		
+		$strMyTables = "tblAdminMail";
+		$strMyTableIDs = "MailId";
+
+		$sql = "Select * FROM tblAdminMail where status='0' and Id='".$id."'";
+		//echo $sql;
+		$RS = $DB->query($sql);
+		if ($RS->num_rows > 0) 
+		{
+			$counter = 0;
+			while($row = $RS->fetch_assoc())
+			{
+				$strid = $row["MailId"];
+				$strTo = $row["ToEmail"];
+				$strFrom = $row["FromEmail"];
+				$strSubject = $row["Subject"];
+				$strBody = $row["Body"];
+				$strBodysa = AntiFilter1($strBody);
+				
+				
+				if($strcc1!="" && $strcc2!="")
+				{
+				$headers = "From: $strFrom\r\n";
+				$headers .= "CC:$strcc1 \r\n";
+				$headers .= "CC:$strcc2 \r\n";
+				$headers .= "Content-type: text/html\r\n";
+				}
+				elseif($strcc1!="")
+				{
+				
+				$headers = "From: $strFrom\r\n";
+				$headers .= "CC:$strcc1 \r\n";
+				$headers .= "Content-type: text/html\r\n";
+				}
+				else
+				{
+				   $headers = "From: $strFrom\r\n";
+				   $headers .= "Content-type: text/html\r\n";
+				}
+	           // echo $headers;
+
+				// Mail sending 
+				$retval = mail($strTo,$strSubject,$strBodysa,$headers);
+
+				if( $retval == true )
+				{
+					$sqlUpdate = "update $strMyTables set DateOfSending=now() , status='1' where $strMyTableIDs='".$strid."'";
+				   //echo $sqlUpdate."<br>";
+					ExecuteNQ($sqlUpdate);
+					//echo "Email sent to " . $strTo . "<br>";
+					// echo ('<div class="alert alert-close alert-success"><div class="bg-green alert-icon"><i class="glyph-icon icon-check"></i></div><div class="alert-content">
+					// <h4 class="alert-title">Email sent to .$strTo. </h4>
+					// </div></div>');
+					return ('<div class="alert alert-notice">
+								<p>Email sent to<code>'.$strTo.'</code></p>
+							</div><br>');
+				}
+				else
+				{
+					$sqlUpdate = "update $strMyTables set DateOfSending=now() , status='2' where $strMyTableIDs='".$strid."'";
+					ExecuteNQ($sqlUpdate);
+					//echo $sqlUpdate."<br>";
+					return "<font color='red'>Email sending failed to " . $strTo . "<br></font>";
+				}	
+			}
+			//die();
+		}
+		else
+		{
+			return "No Emails in database to send";
+			//die();
+		}
+	$DB->close();
+
+}
+function sendordermailvendor($id,$strTo,$strFrom,$strSubject,$strBody,$strDate,$flag,$strStatus,$strcc1,$strcc2,$strcc3)
+{
+		$DB = Connect();
+		$sqlInsert8 = "INSERT INTO tblAdminMail (Id,ToEmail, FromEmail, Subject, Body,DateOfCreation,flag,status) VALUES ('$id', '$strTo', '$strFrom', '$strSubject', '$strBody','$strDate','$flag','$strStatus')";
+//	echo $sqlInsert8."<br>";
+		$DB->query($sqlInsert8);
+		
+		$strMyTables = "tblAdminMail";
+		$strMyTableIDs = "MailId";
+
+		$sql = "Select * FROM tblAdminMail where status='0' and Id='".$id."'";
+		//echo $sql;
+		$RS = $DB->query($sql);
+		if ($RS->num_rows > 0) 
+		{
+			$counter = 0;
+			while($row = $RS->fetch_assoc())
+			{
+				$strid = $row["MailId"];
+				$strTo = $row["ToEmail"];
+				$strFrom = $row["FromEmail"];
+				$strSubject = $row["Subject"];
+				$strBody = $row["Body"];
+				$strBodysa = AntiFilter1($strBody);
+				
+				
+				if($strcc1!="" && $strcc2!="" && $strcc3!="")
+				{
+				$headers = "From: $strFrom\r\n";
+				$headers .= "CC:$strcc1 \r\n";
+				$headers .= "CC:$strcc2 \r\n";
+				$headers .= "CC:$strcc3 \r\n";
+				$headers .= "Content-type: text/html\r\n";
+				}
+				elseif($strcc1!="")
+				{
+				
+				$headers = "From: $strFrom\r\n";
+				$headers .= "CC:$strcc1 \r\n";
+				$headers .= "Content-type: text/html\r\n";
+				}
+				else
+				{
+				   $headers = "From: $strFrom\r\n";
+				   $headers .= "Content-type: text/html\r\n";
+				}
+	           // echo $headers;
+
+				// Mail sending 
+				$retval = mail($strTo,$strSubject,$strBodysa,$headers);
+
+				if( $retval == true )
+				{
+					$sqlUpdate = "update $strMyTables set DateOfSending=now() , status='1' where $strMyTableIDs='".$strid."'";
+				   echo $sqlUpdate."<br>";
+					ExecuteNQ($sqlUpdate);
+					echo "Email sent to " . $strTo . "<br>";
+					// echo ('<div class="alert alert-close alert-success"><div class="bg-green alert-icon"><i class="glyph-icon icon-check"></i></div><div class="alert-content">
+					// <h4 class="alert-title">Email sent to .$strTo. </h4>
+					// </div></div>');
+					return ('<div class="alert alert-notice">
+								<p>Email sent to<code>'.$strTo.'</code></p>
+							</div><br>');
+				}
+				else
+				{
+					$sqlUpdate = "update $strMyTables set DateOfSending=now() , status='2' where $strMyTableIDs='".$strid."'";
+					ExecuteNQ($sqlUpdate);
+					//echo $sqlUpdate."<br>";
+					return "<font color='red'>Email sending failed to " . $strTo . "<br></font>";
+				}	
+			}
+			//die();
+		}
+		else
+		{
+			return "No Emails in database to send";
+			//die();
+		}
+	$DB->close();
+
+}
+
+function getMonthSpelling($Month)
+{
+	switch ($Month) {
+    case "1":
+        return "January";
+        break;
+    case "2":
+        return "February";
+        break;
+    case "3":
+        return "March";
+        break;
+    case "4":
+        return "April";
+        break;
+    case "5":
+        return "May";
+        break;
+    case "6":
+        return "June";
+        break;
+    case "7":
+        return "July";
+        break;
+    case "8":
+        return "August";
+        break;
+    case "9":
+        return "September";
+        break;
+    case "10":
+        return "October";
+        break;
+    case "11":
+        return "November";
+        break;
+    case "12":
+        return "December";
+        break;
+    default:
+        return "Invalid Month Number!";
+}
+}
+
+function get12hour($Time24Hour)
+{
+	$DBSuitableAppointmentTime = $Time24Hour;
+	$arr_Time = array();
+	$arr_Time = explode(":","$DBSuitableAppointmentTime");
+	if($arr_Time[0] < 12)
+		$SuitableAppointmentTime = $arr_Time[0].":".$arr_Time[1]." AM";
+	elseif($arr_Time[0] > 12)
+		$SuitableAppointmentTime = ($arr_Time[0]-12).":".$arr_Time[1]." PM";
+	elseif($arr_Time[0] == 12)
+		$SuitableAppointmentTime = $arr_Time[0].":".$arr_Time[1]." PM";
+	return $SuitableAppointmentTime;
+}
+
+function CreateSMSURL($campaign, $unicode, $flash, $message, $sms)
+{
+	$xmldata =  '<?xml version="1.0" encoding="UTF-8"?>
+                <api>
+                    <campaign>'.$campaign.'</campaign>
+					
+                    <unicode>'.$unicode.'</unicode>
+                    <flash>'.$flash.'</flash>
+                    <sender>NAILSP</sender>
+                    <message><![CDATA['.$message.']]></message>
+                        <sms>
+                            <to>'.$sms.'</to>
+                        </sms>
+                </api>';
+				
+	$api_url ='http://api-alerts.solutionsinfini.com/v3/?method=sms.xml&api_key=Aebe2e79fd5ce8a3ffb0720d4bef17fe9&format=json&xml='.urlencode($xmldata);
+	$response = file_get_contents($api_url);
+	$response = json_decode($response, true);
+	$strSendingStatus = $response['status'];
+	
+	if ($strSendingStatus == 'OK')
+	{
+		return $response;
+	}
+	else
+	{
+		return "Not Sent";
+	}
+}
+
+function array_multi_search( $array, $index, $pattern, $invert = FALSE )
+{
+   $output = array();
+   foreach ( $array as $i => $arr )
+   {
+	   // The index must exist and match the pattern
+	   if ( isset( $arr[ $index ] ) && ( bool ) $invert !== ( bool ) preg_match( $pattern, $arr[ $index ] ) )
+	   {
+		   $output[ $i ] = $arr;
+	   }
+   }
+	 return $output;
+}
+
+
+
+function array_multi_search2( $array, $index, $pattern, $invert = FALSE )
+{
+   $output = array();
+   foreach ( $array as $i => $arr )
+   {
+	   // The index must exist and match the pattern
+	   if ( isset( $arr[ $index ] ) && ( bool ) $invert !== ( bool ) preg_match( $pattern, $arr[ $index ] ) )
+	   {
+		   $output[ $i ] = $arr;
+	   }
+   }
+   return $output;
+}   
+function selectcategoryall($dat1,$dat2)
+{
+	$servername = ServerName();
+	$username = Username();
+	$password = Password();
+	$dbname = DBName();
+
+	$conn = new mysqli($servername, $username, $password, $dbname);
+	if (mysqli_connect_error()) 
+	{
+		die('Connect Error (' . mysqli_connect_errno() . ') '
+				. mysqli_connect_error());
+	}
+	
+	$dat12=Date("'".$dat1."'");
+	$dat13=Date("'".$dat2."'");
+	
+	$sqy="CALL categoryall($dat12,$dat13)";
+	
+	$ans=$conn->query($sqy) or die($conn->error);
+	
+	
+	if($ans->num_rows>0)
+	{
+		while($result = $ans->fetch_assoc())
+		 {
+		//	print_r($result);
+			$data[]=$result;
+			//print_r($data);
+			
+			
+		}
+		return $data;
+	}
+	else
+	{
+		return 0;
+	}
+	$conn->close();
+	
+}
+function selectserviceall($dat1,$dat2,$cat)
+{
+	$servername = ServerName();
+	$username = Username();
+	$password = Password();
+	$dbname = DBName();
+
+	$conn = new mysqli($servername, $username, $password, $dbname);
+	if (mysqli_connect_error()) 
+	{
+		die('Connect Error (' . mysqli_connect_errno() . ') '
+				. mysqli_connect_error());
+	}
+	
+	$dat12=Date("'".$dat1."'");
+	$dat13=Date("'".$dat2."'");
+    $catt="'".$cat."'";
+
+	$sqy="CALL serviceppall($dat12,$dat13,$catt)";
+
+	$ans=$conn->query($sqy) or die($conn->error);
+	
+	
+	if($ans->num_rows>0)
+	{
+		while($result = $ans->fetch_assoc())
+		 {
+		//	print_r($result);
+			$data[]=$result;
+			//print_r($data);
+			
+			
+		}
+		return $data;
+	}
+	else
+	{
+		return 0;
+	}
+	$conn->close();
+	
+}
+function selectapp($dat1,$dat2)
+{
+	$servername = ServerName();
+	$username = Username();
+	$password = Password();
+	$dbname = DBName();
+
+	$conn = new mysqli($servername, $username, $password, $dbname);
+	if (mysqli_connect_error()) 
+	{
+		die('Connect Error (' . mysqli_connect_errno() . ') '
+				. mysqli_connect_error());
+	}
+
+	$dat12=Date("'".$dat1."'");
+	$dat13=Date("'".$dat2."'");
+	//$serr="'".$ser."'";
+	$sqy="CALL selectapp($dat12,$dat13)";
+
+	$ans=$conn->query($sqy) or die($conn->error);
+	
+	
+	if($ans->num_rows>0)
+	{
+		while($result = $ans->fetch_assoc())
+		 {
+		//	print_r($result);
+			$data[]=$result;
+			//print_r($data);
+			
+			
+		}
+		return $data;
+	}
+	else
+	{
+		return 0;
+	}
+	$conn->close();
+	
+}
+function selectservicedetailall($dat1,$dat2,$ser)
+{
+	$servername = ServerName();
+	$username = Username();
+	$password = Password();
+	$dbname = DBName();
+
+	$conn = new mysqli($servername, $username, $password, $dbname);
+	if (mysqli_connect_error()) 
+	{
+		die('Connect Error (' . mysqli_connect_errno() . ') '
+				. mysqli_connect_error());
+	}
+
+	$dat12=Date("'".$dat1."'");
+	$dat13=Date("'".$dat2."'");
+	$serr="'".$ser."'";
+	$sqy="CALL servicedetailsall($dat12,$dat13,$serr)";
+
+	$ans=$conn->query($sqy) or die($conn->error);
+	
+	
+	if($ans->num_rows>0)
+	{
+		while($result = $ans->fetch_assoc())
+		 {
+		//	print_r($result);
+			$data[]=$result;
+			//print_r($data);
+			
+			
+		}
+		return $data;
+	}
+	else
+	{
+		return 0;
+	}
+	$conn->close();
+	
+}
+function newcustomercount12($dat1,$dat2,$eid)
+{
+	$servername = ServerName();
+	$username = Username();
+	$password = Password();
+	$dbname = DBName();
+
+	$conn = new mysqli($servername, $username, $password, $dbname);
+	if (mysqli_connect_error()) 
+	{
+		die('Connect Error (' . mysqli_connect_errno() . ') '
+				. mysqli_connect_error());
+	}
+
+	$dat12=Date("'".$dat1."'");
+	$dat13=Date("'".$dat2."'");
+	$eidd="'".$eid."'";
+
+
+	$sqy="CALL newcustomercount($eidd,$dat12,$dat13)";
+   
+	$ans=$conn->query($sqy) or die($conn->error);
+	
+	
+	if($ans->num_rows>0)
+	{
+		while($result = $ans->fetch_assoc())
+		 {
+		//	print_r($result);
+			$data[]=$result;
+			//print_r($data);
+			
+			
+		}
+		return $data;
+	}
+	else
+	{
+		return 0;
+	}
+	$conn->close();
+	
+}
+function newcustomercountalldata($dat1,$dat2)
+{
+	$servername = ServerName();
+	$username = Username();
+	$password = Password();
+	$dbname = DBName();
+
+	$conn = new mysqli($servername, $username, $password, $dbname);
+	if (mysqli_connect_error()) 
+	{
+		die('Connect Error (' . mysqli_connect_errno() . ') '
+				. mysqli_connect_error());
+	}
+
+	$dat12=Date("'".$dat1."'");
+	$dat13=Date("'".$dat2."'");
+	$eidd="'".$eid."'";
+
+
+	$sqy="CALL newcustomercountall($dat12,$dat13)";
+   
+	$ans=$conn->query($sqy) or die($conn->error);
+	
+	
+	if($ans->num_rows>0)
+	{
+		while($result = $ans->fetch_assoc())
+		 {
+		//	print_r($result);
+			$data[]=$result;
+			//print_r($data);
+			
+			
+		}
+		return $data;
+	}
+	else
+	{
+		return 0;
+	}
+	$conn->close();
+	
+}
+
+
+function newcustomercountallstore($dat1,$dat2,$stor)
+{
+	$servername = ServerName();
+	$username = Username();
+	$password = Password();
+	$dbname = DBName();
+
+	$conn = new mysqli($servername, $username, $password, $dbname);
+	if (mysqli_connect_error()) 
+	{
+		die('Connect Error (' . mysqli_connect_errno() . ') '
+				. mysqli_connect_error());
+	}
+
+	$dat12=Date("'".$dat1."'");
+	$dat13=Date("'".$dat2."'");
+	$store="'".$stor."'";
+
+
+	$sqy="CALL newcustomercountallstore($dat12,$dat13,$store)";
+   
+	$ans=$conn->query($sqy) or die($conn->error);
+	
+	
+	if($ans->num_rows>0)
+	{
+		while($result = $ans->fetch_assoc())
+		 {
+		//	print_r($result);
+			$data[]=$result;
+			//print_r($data);
+			
+			
+		}
+		return $data;
+	}
+	else
+	{
+		return 0;
+	}
+	$conn->close();
+	
+}
+function newcustomer($dat1,$dat2)
+{
+	$servername = ServerName();
+	$username = Username();
+	$password = Password();
+	$dbname = DBName();
+
+	$conn = new mysqli($servername, $username, $password, $dbname);
+	if (mysqli_connect_error()) 
+	{
+		die('Connect Error (' . mysqli_connect_errno() . ') '
+				. mysqli_connect_error());
+	}
+
+	$dat12=Date("'".$dat1."'");
+	$dat13=Date("'".$dat2."'");
+	
+
+
+	$sqy="CALL newcustomer($dat12,$dat13)";
+   
+	$ans=$conn->query($sqy) or die($conn->error);
+	
+	
+	if($ans->num_rows>0)
+	{
+		while($result = $ans->fetch_assoc())
+		 {
+		//	print_r($result);
+			$data[]=$result;
+			//print_r($data);
+			
+			
+		}
+		return $data;
+	}
+	else
+	{
+		return 0;
+	}
+	$conn->close();
+	
+}
+function newcustomerrepeat($dat1,$dat2,$eid)
+{
+	$servername = ServerName();
+	$username = Username();
+	$password = Password();
+	$dbname = DBName();
+
+	$conn = new mysqli($servername, $username, $password, $dbname);
+	if (mysqli_connect_error()) 
+	{
+		die('Connect Error (' . mysqli_connect_errno() . ') '
+				. mysqli_connect_error());
+	}
+
+	$dat12=Date("'".$dat1."'");
+	$dat13=Date("'".$dat2."'");
+	$eidd="'".$eid."'";
+	$newcusty="'".$newcust."'";
+
+
+	$sqy="CALL newcustomerrepeat($dat12,$dat13,$eidd)";
+   
+	$ans=$conn->query($sqy) or die($conn->error);
+	
+	
+	if($ans->num_rows>0)
+	{
+		while($result = $ans->fetch_assoc())
+		 {
+		//	print_r($result);
+			$data[]=$result;
+			//print_r($data);
+			
+			
+		}
+		return $data;
+	}
+	else
+	{
+		return 0;
+	}
+	$conn->close();
+	
+}
+function newcustomerrepeatalldata($dat1,$dat2)
+{
+	$servername = ServerName();
+	$username = Username();
+	$password = Password();
+	$dbname = DBName();
+
+	$conn = new mysqli($servername, $username, $password, $dbname);
+	if (mysqli_connect_error()) 
+	{
+		die('Connect Error (' . mysqli_connect_errno() . ') '
+				. mysqli_connect_error());
+	}
+
+	$dat12=Date("'".$dat1."'");
+	$dat13=Date("'".$dat2."'");
+	$eidd="'".$eid."'";
+	$newcusty="'".$newcust."'";
+
+
+	$sqy="CALL newcustomerrepeatalldata($dat12,$dat13)";
+   
+	$ans=$conn->query($sqy) or die($conn->error);
+	
+	
+	if($ans->num_rows>0)
+	{
+		while($result = $ans->fetch_assoc())
+		 {
+		//	print_r($result);
+			$data[]=$result;
+			//print_r($data);
+			
+			
+		}
+		return $data;
+	}
+	else
+	{
+		return 0;
+	}
+	$conn->close();
+	
+}
+function newcustomerrepeatalldatastore($dat1,$dat2,$store)
+{
+	$servername = ServerName();
+	$username = Username();
+	$password = Password();
+	$dbname = DBName();
+
+	$conn = new mysqli($servername, $username, $password, $dbname);
+	if (mysqli_connect_error()) 
+	{
+		die('Connect Error (' . mysqli_connect_errno() . ') '
+				. mysqli_connect_error());
+	}
+
+	$dat12=Date("'".$dat1."'");
+	$dat13=Date("'".$dat2."'");
+	$eidd="'".$eid."'";
+	$stored="'".$store."'";
+
+
+	$sqy="CALL newcustomerrepeatalldatastore($dat12,$dat13,$stored)";
+   
+	$ans=$conn->query($sqy) or die($conn->error);
+	
+	
+	if($ans->num_rows>0)
+	{
+		while($result = $ans->fetch_assoc())
+		 {
+		//	print_r($result);
+			$data[]=$result;
+			//print_r($data);
+			
+			
+		}
+		return $data;
+	}
+	else
+	{
+		return 0;
+	}
+	$conn->close();
+	
+}
+function newcustomerrepeatcount($dat1,$dat2,$eid,$newc)
+{
+	$servername = ServerName();
+	$username = Username();
+	$password = Password();
+	$dbname = DBName();
+
+	$conn = new mysqli($servername, $username, $password, $dbname);
+	if (mysqli_connect_error()) 
+	{
+		die('Connect Error (' . mysqli_connect_errno() . ') '
+				. mysqli_connect_error());
+	}
+
+	$dat12=Date("'".$dat1."'");
+	$dat13=Date("'".$dat2."'");
+	$eidd="'".$eid."'";
+	$newcusty="'".$newc."'";
+
+
+	$sqy="CALL newcustomerrepeatcount($dat12,$dat13,$eidd,$newcusty)";
+   
+	$ans=$conn->query($sqy) or die($conn->error);
+	
+	
+	if($ans->num_rows>0)
+	{
+		while($result = $ans->fetch_assoc())
+		 {
+		//	print_r($result);
+			$data[]=$result;
+			//print_r($data);
+			
+			
+		}
+		return $data;
+	}
+	else
+	{
+		return 0;
+	}
+	$conn->close();
+	
+}
+function newcustomerrepeatcountalldata($dat1,$dat2,$newc)
+{
+	$servername = ServerName();
+	$username = Username();
+	$password = Password();
+	$dbname = DBName();
+
+	$conn = new mysqli($servername, $username, $password, $dbname);
+	if (mysqli_connect_error()) 
+	{
+		die('Connect Error (' . mysqli_connect_errno() . ') '
+				. mysqli_connect_error());
+	}
+
+	$dat12=Date("'".$dat1."'");
+	$dat13=Date("'".$dat2."'");
+	$eidd="'".$eid."'";
+	$newcusty="'".$newc."'";
+
+
+	$sqy="CALL newcustomerrepeatcountalldata($dat12,$dat13,$newcusty)";
+   
+	$ans=$conn->query($sqy) or die($conn->error);
+	
+	
+	if($ans->num_rows>0)
+	{
+		while($result = $ans->fetch_assoc())
+		 {
+		//	print_r($result);
+			$data[]=$result;
+			//print_r($data);
+			
+			
+		}
+		return $data;
+	}
+	else
+	{
+		return 0;
+	}
+	$conn->close();
+	
+}
+function newcustomerrepeatcountalldatastore($dat1,$dat2,$newc,$store)
+{
+	$servername = ServerName();
+	$username = Username();
+	$password = Password();
+	$dbname = DBName();
+
+	$conn = new mysqli($servername, $username, $password, $dbname);
+	if (mysqli_connect_error()) 
+	{
+		die('Connect Error (' . mysqli_connect_errno() . ') '
+				. mysqli_connect_error());
+	}
+
+	$dat12=Date("'".$dat1."'");
+	$dat13=Date("'".$dat2."'");
+	$eidd="'".$eid."'";
+	$newcusty="'".$newc."'";
+	$stor="'".$store."'";
+
+
+	$sqy="CALL newcustomerrepeatcountalldatastore($dat12,$dat13,$newcusty,$stor)";
+   
+	$ans=$conn->query($sqy) or die($conn->error);
+	
+	
+	if($ans->num_rows>0)
+	{
+		while($result = $ans->fetch_assoc())
+		 {
+		//	print_r($result);
+			$data[]=$result;
+			//print_r($data);
+			
+			
+		}
+		return $data;
+	}
+	else
+	{
+		return 0;
+	}
+	$conn->close();
+	
+}
+function oldcustomercount($dat1,$dat2,$eid)
+{
+	$servername = ServerName();
+	$username = Username();
+	$password = Password();
+	$dbname = DBName();
+
+	$conn = new mysqli($servername, $username, $password, $dbname);
+	if (mysqli_connect_error()) 
+	{
+		die('Connect Error (' . mysqli_connect_errno() . ') '
+				. mysqli_connect_error());
+	}
+
+	$dat12=Date("'".$dat1."'");
+	$dat13=Date("'".$dat2."'");
+	$eidd="'".$eid."'";
+	//$newcusty="'".$newc."'";
+
+
+	$sqy="CALL oldcustomercount($dat12,$dat13,$eidd)";
+   
+	$ans=$conn->query($sqy) or die($conn->error);
+	
+	
+	if($ans->num_rows>0)
+	{
+		while($result = $ans->fetch_assoc())
+		 {
+		//	print_r($result);
+			$data[]=$result;
+			//print_r($data);
+			
+			
+		}
+		return $data;
+	}
+	else
+	{
+		return 0;
+	}
+	$conn->close();
+}
+function oldcustomercountalldata($dat1,$dat2)
+{
+	$servername = ServerName();
+	$username = Username();
+	$password = Password();
+	$dbname = DBName();
+
+	$conn = new mysqli($servername, $username, $password, $dbname);
+	if (mysqli_connect_error()) 
+	{
+		die('Connect Error (' . mysqli_connect_errno() . ') '
+				. mysqli_connect_error());
+	}
+
+	$dat12=Date("'".$dat1."'");
+	$dat13=Date("'".$dat2."'");
+	$eidd="'".$eid."'";
+	//$newcusty="'".$newc."'";
+
+
+	$sqy="CALL oldcustomercountalldata($dat12,$dat13)";
+   
+	$ans=$conn->query($sqy) or die($conn->error);
+	
+	
+	if($ans->num_rows>0)
+	{
+		while($result = $ans->fetch_assoc())
+		 {
+		//	print_r($result);
+			$data[]=$result;
+			//print_r($data);
+			
+			
+		}
+		return $data;
+	}
+	else
+	{
+		return 0;
+	}
+	$conn->close();
+}
+function oldcustomercountalldatastore($dat1,$dat2,$store)
+{
+	$servername = ServerName();
+	$username = Username();
+	$password = Password();
+	$dbname = DBName();
+
+	$conn = new mysqli($servername, $username, $password, $dbname);
+	if (mysqli_connect_error()) 
+	{
+		die('Connect Error (' . mysqli_connect_errno() . ') '
+				. mysqli_connect_error());
+	}
+
+	$dat12=Date("'".$dat1."'");
+	$dat13=Date("'".$dat2."'");
+	$stor="'".$store."'";
+	//$newcusty="'".$newc."'";
+
+
+	$sqy="CALL oldcustomercountalldatastore($dat12,$dat13,$stor)";
+   
+	$ans=$conn->query($sqy) or die($conn->error);
+	
+	
+	if($ans->num_rows>0)
+	{
+		while($result = $ans->fetch_assoc())
+		 {
+		//	print_r($result);
+			$data[]=$result;
+			//print_r($data);
+			
+			
+		}
+		return $data;
+	}
+	else
+	{
+		return 0;
+	}
+	$conn->close();
+}
+function oldcustomer($dat1,$dat2,$eid,$newc)
+{
+	$servername = ServerName();
+	$username = Username();
+	$password = Password();
+	$dbname = DBName();
+
+	$conn = new mysqli($servername, $username, $password, $dbname);
+	if (mysqli_connect_error()) 
+	{
+		die('Connect Error (' . mysqli_connect_errno() . ') '
+				. mysqli_connect_error());
+	}
+
+	$dat12=Date("'".$dat1."'");
+	$dat13=Date("'".$dat2."'");
+	$eidd="'".$eid."'";
+	$newcusty="'".$newc."'";
+
+
+	$sqy="CALL oldcustomer($dat12,$dat13,$eidd,$newcusty)";
+   
+	$ans=$conn->query($sqy) or die($conn->error);
+	
+	
+	if($ans->num_rows>0)
+	{
+		while($result = $ans->fetch_assoc())
+		 {
+		//	print_r($result);
+			$data[]=$result;
+			//print_r($data);
+			
+			
+		}
+		return $data;
+	}
+	else
+	{
+		return 0;
+	}
+	$conn->close();
+}
+function oldcustomeralldata($dat1,$dat2,$newc)
+{
+	$servername = ServerName();
+	$username = Username();
+	$password = Password();
+	$dbname = DBName();
+
+	$conn = new mysqli($servername, $username, $password, $dbname);
+	if (mysqli_connect_error()) 
+	{
+		die('Connect Error (' . mysqli_connect_errno() . ') '
+				. mysqli_connect_error());
+	}
+
+	$dat12=Date("'".$dat1."'");
+	$dat13=Date("'".$dat2."'");
+	$eidd="'".$eid."'";
+	$newcusty="'".$newc."'";
+
+
+	$sqy="CALL oldcustomeralldata($dat12,$dat13,$newcusty)";
+   
+	$ans=$conn->query($sqy) or die($conn->error);
+	
+	
+	if($ans->num_rows>0)
+	{
+		while($result = $ans->fetch_assoc())
+		 {
+		//	print_r($result);
+			$data[]=$result;
+			//print_r($data);
+			
+			
+		}
+		return $data;
+	}
+	else
+	{
+		return 0;
+	}
+	$conn->close();
+}
+function oldcustomeralldatastore($dat1,$dat2,$newc,$store)
+{
+	$servername = ServerName();
+	$username = Username();
+	$password = Password();
+	$dbname = DBName();
+
+	$conn = new mysqli($servername, $username, $password, $dbname);
+	if (mysqli_connect_error()) 
+	{
+		die('Connect Error (' . mysqli_connect_errno() . ') '
+				. mysqli_connect_error());
+	}
+
+	$dat12=Date("'".$dat1."'");
+	$dat13=Date("'".$dat2."'");
+	$eidd="'".$eid."'";
+	$newcusty="'".$newc."'";
+    $stor="'".$store."'";
+
+	$sqy="CALL oldcustomeralldatastore($dat12,$dat13,$newcusty,$stor)";
+   
+	$ans=$conn->query($sqy) or die($conn->error);
+	
+	
+	if($ans->num_rows>0)
+	{
+		while($result = $ans->fetch_assoc())
+		 {
+		//	print_r($result);
+			$data[]=$result;
+			//print_r($data);
+			
+			
+		}
+		return $data;
+	}
+	else
+	{
+		return 0;
+	}
+	$conn->close();
+}
+function oldcustomerrepeatcnt($dat1,$dat2,$eid,$newc)
+{
+	$servername = ServerName();
+	$username = Username();
+	$password = Password();
+	$dbname = DBName();
+
+	$conn = new mysqli($servername, $username, $password, $dbname);
+	if (mysqli_connect_error()) 
+	{
+		die('Connect Error (' . mysqli_connect_errno() . ') '
+				. mysqli_connect_error());
+	}
+
+	$dat12=Date("'".$dat1."'");
+	$dat13=Date("'".$dat2."'");
+	$eidd="'".$eid."'";
+	$newcusty="'".$newc."'";
+
+
+	$sqy="CALL oldcustomerrepeatcnt($dat12,$dat13,$eidd,$newcusty)";
+   
+	$ans=$conn->query($sqy) or die($conn->error);
+	
+	
+	if($ans->num_rows>0)
+	{
+		while($result = $ans->fetch_assoc())
+		 {
+		//	print_r($result);
+			$data[]=$result;
+			//print_r($data);
+			
+			
+		}
+		return $data;
+	}
+	else
+	{
+		return 0;
+	}
+	$conn->close();
+}
+function oldcustomerrepeatcntstore($dat1,$dat2,$eid,$newc,$store)
+{
+	$servername = ServerName();
+	$username = Username();
+	$password = Password();
+	$dbname = DBName();
+
+	$conn = new mysqli($servername, $username, $password, $dbname);
+	if (mysqli_connect_error()) 
+	{
+		die('Connect Error (' . mysqli_connect_errno() . ') '
+				. mysqli_connect_error());
+	}
+
+	$dat12=Date("'".$dat1."'");
+	$dat13=Date("'".$dat2."'");
+	$eidd="'".$eid."'";
+	$newcusty="'".$newc."'";
+	$stor="'".$store."'";
+
+
+	$sqy="CALL oldcustomerrepeatcntstore($dat12,$dat13,$eidd,$newcusty,$stor)";
+   
+	$ans=$conn->query($sqy) or die($conn->error);
+	
+	
+	if($ans->num_rows>0)
+	{
+		while($result = $ans->fetch_assoc())
+		 {
+		//	print_r($result);
+			$data[]=$result;
+			//print_r($data);
+			
+			
+		}
+		return $data;
+	}
+	else
+	{
+		return 0;
+	}
+	$conn->close();
+}
+function oldcustomerrepeatcntalldata($dat1,$dat2,$newc)
+{
+	$servername = ServerName();
+	$username = Username();
+	$password = Password();
+	$dbname = DBName();
+
+	$conn = new mysqli($servername, $username, $password, $dbname);
+	if (mysqli_connect_error()) 
+	{
+		die('Connect Error (' . mysqli_connect_errno() . ') '
+				. mysqli_connect_error());
+	}
+
+	$dat12=Date("'".$dat1."'");
+	$dat13=Date("'".$dat2."'");
+	$eidd="'".$eid."'";
+	$newcusty="'".$newc."'";
+
+
+	$sqy="CALL oldcustomerrepeatcntalldata($dat12,$dat13,$newcusty)";
+   
+	$ans=$conn->query($sqy) or die($conn->error);
+	
+	
+	if($ans->num_rows>0)
+	{
+		while($result = $ans->fetch_assoc())
+		 {
+		//	print_r($result);
+			$data[]=$result;
+			//print_r($data);
+			
+			
+		}
+		return $data;
+	}
+	else
+	{
+		return 0;
+	}
+	$conn->close();
+}
+function oldcustomerrepeatcntalldatastore($dat1,$dat2,$newc,$sto)
+{
+	$servername = ServerName();
+	$username = Username();
+	$password = Password();
+	$dbname = DBName();
+
+	$conn = new mysqli($servername, $username, $password, $dbname);
+	if (mysqli_connect_error()) 
+	{
+		die('Connect Error (' . mysqli_connect_errno() . ') '
+				. mysqli_connect_error());
+	}
+
+	$dat12=Date("'".$dat1."'");
+	$dat13=Date("'".$dat2."'");
+	$eidd="'".$eid."'";
+	$newcusty="'".$newc."'";
+	$stos="'".$sto."'";
+   
+
+	$sqy="CALL oldcustomerrepeatcntalldatastore($dat12,$dat13,$newcusty,$stos)";
+   
+	$ans=$conn->query($sqy) or die($conn->error);
+	
+	
+	if($ans->num_rows>0)
+	{
+		while($result = $ans->fetch_assoc())
+		 {
+		//	print_r($result);
+			$data[]=$result;
+			//print_r($data);
+			
+			
+		}
+		return $data;
+	}
+	else
+	{
+		return 0;
+	}
+	$conn->close();
+}
+?>

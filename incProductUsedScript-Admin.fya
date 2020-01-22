@@ -1,0 +1,106 @@
+						<!-- Styles -->
+<style>
+#chartdivproducts {
+  width: 100%;
+  height: 300px;
+}												
+</style>
+
+<!-- Resources -->
+<script src="https://www.amcharts.com/lib/3/amcharts.js"></script>
+<script src="https://www.amcharts.com/lib/3/pie.js"></script>
+<script src="https://www.amcharts.com/lib/3/plugins/export/export.min.js"></script>
+<link rel="stylesheet" href="https://www.amcharts.com/lib/3/plugins/export/export.css" type="text/css" media="all" />
+<script src="https://www.amcharts.com/lib/3/themes/light.js"></script>
+
+<!-- Chart code -->
+<script>
+var chart = AmCharts.makeChart( "chartdivproducts", {
+  "type": "pie",
+  "theme": "light",
+  
+  "dataProvider": [ 
+     	<?php
+		$DB = Connect();
+		$First= date('Y-m-01');
+		$Last= date('Y-m-t');
+		$date=date('Y-m-d');
+		$sql=selectproduct($First,$Last);
+		foreach($sql as $row)
+		{
+		$counter ++;
+	
+		$ProductID = $row["ProductID"];
+	    $sep=select("count(*)","tblNewProducts","ProductID='".$ProductID."'");
+		$cntserr=$sep[0]['count(*)'];
+		if($cntserr>0)
+		{
+		   $sept=select("*","tblNewProducts","ProductID='".$ProductID."'");
+			 $ProductIDT=$sept[0]['ProductID'];
+		     $productname=$sept[0]['ProductName'];
+			 $PerQtyServe=$sept[0]['PerQtyServe'];
+			 $ProductMRP=$sept[0]['ProductMRP'];
+			 //$productcost=$ProductMRP*$PerQtyServe;
+			 $sepa=select("*","tblStores","StoreID='".$storrr."'");
+		     $storename=$sepa[0]['StoreName'];
+			 
+			$sqlt=selectproductservice($First,$Last,$ProductIDT);
+			 
+				foreach($sqlt as $vat)
+				{
+					$servicedtt = $vat["ServiceID"];
+					$stppsertyptup=selectproductservicedetail($First,$Last,$servicedtt);
+					foreach($stppsertyptup as $tr)
+										{
+											$qty=$tr['qty'];
+											$ServiceAmount=$tr['ServiceAmount'];
+											$qttyt +=$qty;
+											$strServiceAmount = $ServiceAmount*$qty;
+											$totalstrServiceAmount=$totalstrServiceAmount+$strServiceAmount;
+										}
+				}
+			
+				$ProductQtyUsed=$PerQtyServe/$qttyt;
+				if($qttyt=="")
+				{
+					$qttyt=0;
+				}
+				$consumperformance=$PerQtyServe-$qttyt;
+			    $profit=$productcost-$totalstrServiceAmount;
+				$productcost=$ProductMRP*$qttyt;
+		   if($ProductQtyUsed =="")
+			{
+				$ProductQtyUsed ="0.00";
+			}
+			else
+			{
+			
+				$ProductQtyUsed = $ProductQtyUsed;
+				
+			}
+			$TotalProductQtyUsed += $ProductQtyUsed;
+			?>
+												{
+												"country": "<?=$productname?>",
+												"visits": <?=$ProductQtyUsed?>,
+												"color":"#F8FF01"
+												}, 
+								<?php
+		}
+		}
+		?>
+  ],
+  "valueField": "visits",
+  "titleField": "country",
+  "startEffect": "elastic",
+  "startDuration": 2,
+  "labelRadius": 15,
+  "innerRadius": "50%",
+  "depth3D": 10,
+  "balloonText": "[[title]]<br><span style='font-size:14px'><b>[[value]]</b></span>",
+  "angle": 15,
+  "export": {
+    "enabled": true
+  }
+} );
+</script>

@@ -1,0 +1,86 @@
+<!-- Styles -->
+<style>
+#chartMembershipdiv {
+  width: 100%;
+  height: 300px;
+}										
+</style>
+
+
+<!-- Chart code -->
+<script>
+var chart = AmCharts.makeChart("chartMembershipdiv", {
+    "theme": "light",
+    "type": "serial",
+    "dataProvider": [
+<?php
+$date=date('Y-m-d');
+$DB=Connect();
+		$SelectStore="Select StoreID, StoreName from tblStores";
+		$RSCF = $DB->query($SelectStore);
+			if ($RSCF->num_rows > 0) 
+			{
+				while($rowS = $RSCF->fetch_assoc())
+				{
+					$StoreID = $rowS["StoreID"];
+					$strStoreName = $rowS["StoreName"];
+					$StoreName = substr($strStoreName, 0, 6);
+						$MembershipAmount="Select count(tblAppointmentMembershipDiscount.MembershipAmount)as MembershipAmt from tblAppointmentMembershipDiscount Left Join tblAppointments ON tblAppointmentMembershipDiscount.AppointmentID=tblAppointments.AppointmentID WHERE tblAppointments.StoreID='$StoreID' and Date(tblAppointmentMembershipDiscount.DateTimeStamp)='$date'";
+						$RSP= $DB->query($MembershipAmount);
+							if($RSP->num_rows>0)
+							{
+								while($ROP=$RSP->fetch_assoc())
+								{
+									$MembershipAmt = $ROP["MembershipAmt"];
+									if($MembershipAmt=="")
+									{
+										$MembershipAmt='0';
+									}
+?>
+						{
+							"year": "<?=$StoreName?>",
+							"income": <?=$MembershipAmt?>
+						},
+<?php
+								}
+							}
+				}
+			}
+			else
+			{
+?>
+						{
+							"year": "0",
+							"income": 0
+						},
+<?php				
+			}
+?>					
+					],
+    "valueAxes": [{
+        "title": "Membership Sold per day"
+    }],
+    "graphs": [{
+        "balloonText": "Membership Sold in [[category]]:[[value]]",
+        "fillAlphas": 1,
+        "lineAlpha": 0.2,
+        "title": "Income",
+        "type": "column",
+        "valueField": "income"
+    }],
+    "depth3D": 0,
+    "angle": 30,
+    "rotate": true,
+    "categoryField": "year",
+    "categoryAxis": {
+        "gridPosition": "start",
+        "fillAlpha": 0.05,
+        "position": "left"
+    },
+    "export": {
+    	"enabled": true
+     }
+});
+</script>
+
+		

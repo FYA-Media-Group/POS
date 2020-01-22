@@ -1,0 +1,943 @@
+<?php require_once("setting.fya"); ?>
+<?php require_once 'incFirewall.fya'; ?>
+<style>
+
+#chartdiv1 {
+	width		: 100%;
+	height		: 500px;
+	font-size	: 11px;
+}		
+#chartdiv2 {
+	width		: 100%;
+	height		: 500px;
+	font-size	: 11px;
+}		
+#chartdiv3 {
+	width		: 100%;
+	height		: 500px;
+	font-size	: 11px;
+}		
+#chartdiv7 {
+	width		: 100%;
+	height		: 500px;
+	font-size	: 11px;
+}		
+#chartdiv5 {
+	width		: 100%;
+	height		: 500px;
+	font-size	: 11px;
+}
+</style>	
+<!-- Resources -->
+<script src="https://www.amcharts.com/lib/3/amcharts.js"></script>
+<script src="https://www.amcharts.com/lib/3/pie.js"></script>
+<script src="https://www.amcharts.com/lib/3/plugins/export/export.min.js"></script>
+<link rel="stylesheet" href="https://www.amcharts.com/lib/3/plugins/export/export.css" type="text/css" media="all" />
+<script src="https://www.amcharts.com/lib/3/themes/light.js"></script>
+
+<!-- Chart code -->
+<script>
+var chart = AmCharts.makeChart( "chartdiv1", {
+  "type": "pie",
+  "theme": "light",
+  
+  "dataProvider": [ 
+     	<?php
+		$DB = Connect();
+		$sqlgraph=select("FromDate,ToDate","tblGraphDateParameter","RoleID='".$strAdminRoleID."'");
+		$FromDate=$sqlgraph[0]['FromDate'];
+		$ToDate=$sqlgraph[0]['ToDate'];
+	    $First= $FromDate;
+		$Last= $ToDate;
+		$date=date('Y-m-d');
+		$getfrom=$First;
+		$getto=$Last;
+		$sqlTempfrom = " and Date(tblInvoiceDetails.OfferDiscountDateTime)>=Date('".$getfrom."')";
+		$sqlTempto = " and Date(tblInvoiceDetails.OfferDiscountDateTime)<=Date('".$getto."')";
+		$storrr=1;
+        $sql = "select distinct(tblProductsServices.ProductID) from tblProductsServices left join tblAppointments on tblProductsServices.StoreID=tblAppointments.StoreID right join tblInvoiceDetails on tblInvoiceDetails.AppointmentId=tblAppointments.AppointmentID left join tblNewProducts on tblNewProducts.ProductID=tblProductsServices.ProductID WHERE tblAppointments.StoreID='".$storrr."' AND tblProductsServices.StoreID='".$storrr."'  AND tblAppointments.IsDeleted !=  '1' AND tblAppointments.FreeService !=  '1' and tblAppointments.Status='2' $sqlTempfrom $sqlTempto  AND tblProductsServices.StoreID='".$storrr."'";
+
+		$RS = $DB->query($sql);
+		if ($RS->num_rows > 0) 
+		{
+			$counter = 0;
+
+			while($row = $RS->fetch_assoc())
+			{
+				$counter ++;
+			
+				$ProductID = $row["ProductID"];
+				$sep=select("count(*)","tblNewProducts","ProductID='".$ProductID."'");
+				$cntserr=$sep[0]['count(*)'];
+				if($cntserr>0)
+				{
+				     $sept=select("*","tblNewProducts","ProductID='".$ProductID."'");
+					 $ProductIDT=$sept[0]['ProductID'];
+					 $productname=$sept[0]['ProductName'];
+					 $PerQtyServe=$sept[0]['PerQtyServe'];
+					 $ProductMRP=$sept[0]['ProductMRP'];
+					
+					 $sepa=select("*","tblStores","StoreID='".$storrr."'");
+					 $storename=$sepa[0]['StoreName'];
+					 
+					// $sqlt=selectproductservice($storrr,$getfrom,$getto,$ProductIDT);
+						$sqlt = "select distinct(tblProductsServices.ServiceID) from tblProductsServices left join tblAppointments on tblProductsServices.StoreID=tblAppointments.StoreID right join tblInvoiceDetails on tblInvoiceDetails.AppointmentId=tblAppointments.AppointmentID left join tblNewProducts on tblNewProducts.ProductID=tblProductsServices.ProductID WHERE tblAppointments.StoreID='".$storrr."' AND tblProductsServices.StoreID='".$storrr."'  AND tblAppointments.IsDeleted !=  '1' AND tblAppointments.FreeService !=  '1' and tblAppointments.Status='2' $sqlTempfrom $sqlTempto  AND tblProductsServices.StoreID='".$storrr."' and tblProductsServices.ProductID='".$ProductIDT."'";
+						
+						$RSt = $DB->query($sqlt);
+						if ($RSt->num_rows > 0) 
+						{
+							$counter = 0;
+
+							while($row1 = $RSt->fetch_assoc())
+							{
+								$servicedt = $row1["ServiceID"];
+								// $stppsertyptup=selectproductservicedetail($storrr,$getfrom,$getto,$servicedt);
+								 $stppsertyptup=select("tblAppointmentsDetailsInvoice.qty,tblAppointmentsDetailsInvoice.ServiceAmount","tblAppointmentsDetailsInvoice left join tblAppointments on tblAppointmentsDetailsInvoice.AppointmentID=tblAppointments.AppointmentID right join tblInvoiceDetails on tblInvoiceDetails.AppointmentId=tblAppointments.AppointmentID","tblAppointmentsDetailsInvoice.ServiceID!='NULL' AND tblAppointmentsDetailsInvoice.ServiceID!='' and tblAppointments.StoreID='".$storrr."' and tblAppointmentsDetailsInvoice.ServiceID='".$servicedt."' AND tblAppointments.IsDeleted !=  '1' and tblAppointments.Status='2' AND tblAppointments.FreeService !=  '1' $sqlTempfrom $sqlTempto ");
+												foreach($stppsertyptup as $tr)
+												{
+													$qty=$tr['qty'];
+													$ServiceAmount=$tr['ServiceAmount'];
+													$qttyt +=$qty;
+													$strServiceAmount = $ServiceAmount*$qty;
+													$totalstrServiceAmount=$totalstrServiceAmount+$strServiceAmount;
+												}
+							}
+						}
+								$productcost=$ProductMRP*$qttyt;
+							$ProductQtyUsed=$PerQtyServe/$qttyt;
+							if($qttyt=="")
+							{
+								$qttyt=0;
+							}
+							$consumperformance=$PerQtyServe-$qttyt;
+							$profit=$productcost-$totalstrServiceAmount;
+							 
+					   if($ProductQtyUsed =="")
+						{
+							$ProductQtyUsed ="0.00";
+						}
+						else
+						{
+						
+							$ProductQtyUsed = $ProductQtyUsed;
+							
+						}
+						$TotalProductQtyUsed += $ProductQtyUsed;
+						if($qttyt =="")
+						{
+							$qttyt ="0.00";
+						}
+						else
+						{
+						
+							$qttyt = $qttyt;
+							
+						}
+						$Totalqttyt += $qttyt;
+						if($PerQtyServe =="")
+						{
+							$PerQtyServe ="0.00";
+						}
+						else
+						{
+						
+							$PerQtyServe = $PerQtyServe;
+							
+						}
+						$TotalPerQtyServe += $PerQtyServe;
+						if($consumperformance =="")
+						{
+							$consumperformance ="0.00";
+						}
+						else
+						{
+						
+							$consumperformance = $consumperformance;
+							
+						}
+						$Totalconsumperformance += $consumperformance;
+							if($totalstrServiceAmount =="")
+						{
+							$totalstrServiceAmount ="0.00";
+						}
+						else
+						{
+						
+							$totalstrServiceAmount = $totalstrServiceAmount;
+							
+						}
+						$TotaltotalstrServiceAmount += $totalstrServiceAmount;
+							if($productcost =="")
+						{
+							$productcost ="0.00";
+						}
+						else
+						{
+						
+							$productcost = $productcost;
+							
+						}
+						$Totalproductcost += $productcost;
+						if($profit =="")
+						{
+							$profit ="0.00";
+						}
+						else
+						{
+						
+							$profit = $profit;
+							
+						}
+						$Totalprofit += $profit;
+						
+						?>
+												{
+												"country": "<?=$productname?>",
+												"visits": <?=ceil($ProductQtyUsed)?>,
+												"color":"#F8FF01"
+												}, 
+								<?php
+				}
+		    }
+		}
+				
+		?>
+  ],
+  "valueField": "visits",
+  "titleField": "country",
+  "startEffect": "elastic",
+  "startDuration": 2,
+  "labelRadius": 15,
+  "innerRadius": "50%",
+  "depth3D": 10,
+  "balloonText": "[[title]]<br><span style='font-size:14px'><b>[[value]]</b></span>",
+  "angle": 15,
+  "export": {
+    "enabled": true
+  }
+} );
+</script>
+<script>
+var chart = AmCharts.makeChart( "chartdiv2", {
+  "type": "pie",
+  "theme": "light",
+  
+  "dataProvider": [ 
+     	<?php
+		$DB = Connect();
+				$sqlgraph=select("FromDate,ToDate","tblGraphDateParameter","RoleID='".$strAdminRoleID."'");
+		$FromDate=$sqlgraph[0]['FromDate'];
+		$ToDate=$sqlgraph[0]['ToDate'];
+	    $First= $FromDate;
+		$Last= $ToDate;
+		$date=date('Y-m-d');
+		$getfrom=$First;
+		$getto=$Last;
+		$sqlTempfrom = " and Date(tblInvoiceDetails.OfferDiscountDateTime)>=Date('".$getfrom."')";
+		$sqlTempto = " and Date(tblInvoiceDetails.OfferDiscountDateTime)<=Date('".$getto."')";
+		$storrr=2;
+        $sql = "select distinct(tblProductsServices.ProductID) from tblProductsServices left join tblAppointments on tblProductsServices.StoreID=tblAppointments.StoreID right join tblInvoiceDetails on tblInvoiceDetails.AppointmentId=tblAppointments.AppointmentID left join tblNewProducts on tblNewProducts.ProductID=tblProductsServices.ProductID WHERE tblAppointments.StoreID='".$storrr."' AND tblProductsServices.StoreID='".$storrr."'  AND tblAppointments.IsDeleted !=  '1' AND tblAppointments.FreeService !=  '1' and tblAppointments.Status='2' $sqlTempfrom $sqlTempto  AND tblProductsServices.StoreID='".$storrr."'";
+
+		$RS = $DB->query($sql);
+		if ($RS->num_rows > 0) 
+		{
+			$counter = 0;
+
+			while($row = $RS->fetch_assoc())
+			{
+				$counter ++;
+			
+				$ProductID = $row["ProductID"];
+				$sep=select("count(*)","tblNewProducts","ProductID='".$ProductID."'");
+				$cntserr=$sep[0]['count(*)'];
+				if($cntserr>0)
+				{
+				     $sept=select("*","tblNewProducts","ProductID='".$ProductID."'");
+					 $ProductIDT=$sept[0]['ProductID'];
+					 $productname=$sept[0]['ProductName'];
+					 $PerQtyServe=$sept[0]['PerQtyServe'];
+					 $ProductMRP=$sept[0]['ProductMRP'];
+					
+					 $sepa=select("*","tblStores","StoreID='".$storrr."'");
+					 $storename=$sepa[0]['StoreName'];
+					 
+					// $sqlt=selectproductservice($storrr,$getfrom,$getto,$ProductIDT);
+						$sqlt = "select distinct(tblProductsServices.ServiceID) from tblProductsServices left join tblAppointments on tblProductsServices.StoreID=tblAppointments.StoreID right join tblInvoiceDetails on tblInvoiceDetails.AppointmentId=tblAppointments.AppointmentID left join tblNewProducts on tblNewProducts.ProductID=tblProductsServices.ProductID WHERE tblAppointments.StoreID='".$storrr."' AND tblProductsServices.StoreID='".$storrr."'  AND tblAppointments.IsDeleted !=  '1' AND tblAppointments.FreeService !=  '1' and tblAppointments.Status='2' $sqlTempfrom $sqlTempto  AND tblProductsServices.StoreID='".$storrr."' and tblProductsServices.ProductID='".$ProductIDT."'";
+						
+						$RSt = $DB->query($sqlt);
+						if ($RSt->num_rows > 0) 
+						{
+							$counter = 0;
+
+							while($row1 = $RSt->fetch_assoc())
+							{
+								$servicedt = $row1["ServiceID"];
+								// $stppsertyptup=selectproductservicedetail($storrr,$getfrom,$getto,$servicedt);
+								 $stppsertyptup=select("tblAppointmentsDetailsInvoice.qty,tblAppointmentsDetailsInvoice.ServiceAmount","tblAppointmentsDetailsInvoice left join tblAppointments on tblAppointmentsDetailsInvoice.AppointmentID=tblAppointments.AppointmentID right join tblInvoiceDetails on tblInvoiceDetails.AppointmentId=tblAppointments.AppointmentID","tblAppointmentsDetailsInvoice.ServiceID!='NULL' AND tblAppointmentsDetailsInvoice.ServiceID!='' and tblAppointments.StoreID='".$storrr."' and tblAppointmentsDetailsInvoice.ServiceID='".$servicedt."' AND tblAppointments.IsDeleted !=  '1' and tblAppointments.Status='2' AND tblAppointments.FreeService !=  '1' $sqlTempfrom $sqlTempto ");
+												foreach($stppsertyptup as $tr)
+												{
+													$qty=$tr['qty'];
+													$ServiceAmount=$tr['ServiceAmount'];
+													$qttyt +=$qty;
+													$strServiceAmount = $ServiceAmount*$qty;
+													$totalstrServiceAmount=$totalstrServiceAmount+$strServiceAmount;
+												}
+							}
+						}
+								$productcost=$ProductMRP*$qttyt;
+							$ProductQtyUsed=$PerQtyServe/$qttyt;
+							if($qttyt=="")
+							{
+								$qttyt=0;
+							}
+							$consumperformance=$PerQtyServe-$qttyt;
+							$profit=$productcost-$totalstrServiceAmount;
+							 
+					   if($ProductQtyUsed =="")
+						{
+							$ProductQtyUsed ="0.00";
+						}
+						else
+						{
+						
+							$ProductQtyUsed = $ProductQtyUsed;
+							
+						}
+						$TotalProductQtyUsed += $ProductQtyUsed;
+						if($qttyt =="")
+						{
+							$qttyt ="0.00";
+						}
+						else
+						{
+						
+							$qttyt = $qttyt;
+							
+						}
+						$Totalqttyt += $qttyt;
+						if($PerQtyServe =="")
+						{
+							$PerQtyServe ="0.00";
+						}
+						else
+						{
+						
+							$PerQtyServe = $PerQtyServe;
+							
+						}
+						$TotalPerQtyServe += $PerQtyServe;
+						if($consumperformance =="")
+						{
+							$consumperformance ="0.00";
+						}
+						else
+						{
+						
+							$consumperformance = $consumperformance;
+							
+						}
+						$Totalconsumperformance += $consumperformance;
+							if($totalstrServiceAmount =="")
+						{
+							$totalstrServiceAmount ="0.00";
+						}
+						else
+						{
+						
+							$totalstrServiceAmount = $totalstrServiceAmount;
+							
+						}
+						$TotaltotalstrServiceAmount += $totalstrServiceAmount;
+							if($productcost =="")
+						{
+							$productcost ="0.00";
+						}
+						else
+						{
+						
+							$productcost = $productcost;
+							
+						}
+						$Totalproductcost += $productcost;
+						if($profit =="")
+						{
+							$profit ="0.00";
+						}
+						else
+						{
+						
+							$profit = $profit;
+							
+						}
+						$Totalprofit += $profit;
+						
+						?>
+												{
+												"country": "<?=$productname?>",
+												"visits": <?=ceil($ProductQtyUsed)?>,
+												"color":"#F8FF01"
+												}, 
+								<?php
+				}
+		    }
+		}
+				
+		?>
+  ],
+  "valueField": "visits",
+  "titleField": "country",
+  "startEffect": "elastic",
+  "startDuration": 2,
+  "labelRadius": 15,
+  "innerRadius": "50%",
+  "depth3D": 10,
+  "balloonText": "[[title]]<br><span style='font-size:14px'><b>[[value]]</b></span>",
+  "angle": 15,
+  "export": {
+    "enabled": true
+  }
+} );
+</script>
+<script>
+var chart = AmCharts.makeChart( "chartdiv3", {
+  "type": "pie",
+  "theme": "light",
+  
+  "dataProvider": [ 
+     	<?php
+		$DB = Connect();
+			$sqlgraph=select("FromDate,ToDate","tblGraphDateParameter","RoleID='".$strAdminRoleID."'");
+		$FromDate=$sqlgraph[0]['FromDate'];
+		$ToDate=$sqlgraph[0]['ToDate'];
+	    $First= $FromDate;
+		$Last= $ToDate;
+		$date=date('Y-m-d');
+		$getfrom=$First;
+		$getto=$Last;
+		$sqlTempfrom = " and Date(tblInvoiceDetails.OfferDiscountDateTime)>=Date('".$getfrom."')";
+		$sqlTempto = " and Date(tblInvoiceDetails.OfferDiscountDateTime)<=Date('".$getto."')";
+		$storrr=3;
+        $sql = "select distinct(tblProductsServices.ProductID) from tblProductsServices left join tblAppointments on tblProductsServices.StoreID=tblAppointments.StoreID right join tblInvoiceDetails on tblInvoiceDetails.AppointmentId=tblAppointments.AppointmentID left join tblNewProducts on tblNewProducts.ProductID=tblProductsServices.ProductID WHERE tblAppointments.StoreID='".$storrr."' AND tblProductsServices.StoreID='".$storrr."'  AND tblAppointments.IsDeleted !=  '1' AND tblAppointments.FreeService !=  '1' and tblAppointments.Status='2' $sqlTempfrom $sqlTempto  AND tblProductsServices.StoreID='".$storrr."'";
+
+		$RS = $DB->query($sql);
+		if ($RS->num_rows > 0) 
+		{
+			$counter = 0;
+
+			while($row = $RS->fetch_assoc())
+			{
+				$counter ++;
+			
+				$ProductID = $row["ProductID"];
+				$sep=select("count(*)","tblNewProducts","ProductID='".$ProductID."'");
+				$cntserr=$sep[0]['count(*)'];
+				if($cntserr>0)
+				{
+				     $sept=select("*","tblNewProducts","ProductID='".$ProductID."'");
+					 $ProductIDT=$sept[0]['ProductID'];
+					 $productname=$sept[0]['ProductName'];
+					 $PerQtyServe=$sept[0]['PerQtyServe'];
+					 $ProductMRP=$sept[0]['ProductMRP'];
+					
+					 $sepa=select("*","tblStores","StoreID='".$storrr."'");
+					 $storename=$sepa[0]['StoreName'];
+					 
+					// $sqlt=selectproductservice($storrr,$getfrom,$getto,$ProductIDT);
+						$sqlt = "select distinct(tblProductsServices.ServiceID) from tblProductsServices left join tblAppointments on tblProductsServices.StoreID=tblAppointments.StoreID right join tblInvoiceDetails on tblInvoiceDetails.AppointmentId=tblAppointments.AppointmentID left join tblNewProducts on tblNewProducts.ProductID=tblProductsServices.ProductID WHERE tblAppointments.StoreID='".$storrr."' AND tblProductsServices.StoreID='".$storrr."'  AND tblAppointments.IsDeleted !=  '1' AND tblAppointments.FreeService !=  '1' and tblAppointments.Status='2' $sqlTempfrom $sqlTempto  AND tblProductsServices.StoreID='".$storrr."' and tblProductsServices.ProductID='".$ProductIDT."'";
+						
+						$RSt = $DB->query($sqlt);
+						if ($RSt->num_rows > 0) 
+						{
+							$counter = 0;
+
+							while($row1 = $RSt->fetch_assoc())
+							{
+								$servicedt = $row1["ServiceID"];
+								// $stppsertyptup=selectproductservicedetail($storrr,$getfrom,$getto,$servicedt);
+								 $stppsertyptup=select("tblAppointmentsDetailsInvoice.qty,tblAppointmentsDetailsInvoice.ServiceAmount","tblAppointmentsDetailsInvoice left join tblAppointments on tblAppointmentsDetailsInvoice.AppointmentID=tblAppointments.AppointmentID right join tblInvoiceDetails on tblInvoiceDetails.AppointmentId=tblAppointments.AppointmentID","tblAppointmentsDetailsInvoice.ServiceID!='NULL' AND tblAppointmentsDetailsInvoice.ServiceID!='' and tblAppointments.StoreID='".$storrr."' and tblAppointmentsDetailsInvoice.ServiceID='".$servicedt."' AND tblAppointments.IsDeleted !=  '1' and tblAppointments.Status='2' AND tblAppointments.FreeService !=  '1' $sqlTempfrom $sqlTempto ");
+												foreach($stppsertyptup as $tr)
+												{
+													$qty=$tr['qty'];
+													$ServiceAmount=$tr['ServiceAmount'];
+													$qttyt +=$qty;
+													$strServiceAmount = $ServiceAmount*$qty;
+													$totalstrServiceAmount=$totalstrServiceAmount+$strServiceAmount;
+												}
+							}
+						}
+								$productcost=$ProductMRP*$qttyt;
+							$ProductQtyUsed=$PerQtyServe/$qttyt;
+							if($qttyt=="")
+							{
+								$qttyt=0;
+							}
+							$consumperformance=$PerQtyServe-$qttyt;
+							$profit=$productcost-$totalstrServiceAmount;
+							 
+					   if($ProductQtyUsed =="")
+						{
+							$ProductQtyUsed ="0.00";
+						}
+						else
+						{
+						
+							$ProductQtyUsed = $ProductQtyUsed;
+							
+						}
+						$TotalProductQtyUsed += $ProductQtyUsed;
+						if($qttyt =="")
+						{
+							$qttyt ="0.00";
+						}
+						else
+						{
+						
+							$qttyt = $qttyt;
+							
+						}
+						$Totalqttyt += $qttyt;
+						if($PerQtyServe =="")
+						{
+							$PerQtyServe ="0.00";
+						}
+						else
+						{
+						
+							$PerQtyServe = $PerQtyServe;
+							
+						}
+						$TotalPerQtyServe += $PerQtyServe;
+						if($consumperformance =="")
+						{
+							$consumperformance ="0.00";
+						}
+						else
+						{
+						
+							$consumperformance = $consumperformance;
+							
+						}
+						$Totalconsumperformance += $consumperformance;
+							if($totalstrServiceAmount =="")
+						{
+							$totalstrServiceAmount ="0.00";
+						}
+						else
+						{
+						
+							$totalstrServiceAmount = $totalstrServiceAmount;
+							
+						}
+						$TotaltotalstrServiceAmount += $totalstrServiceAmount;
+							if($productcost =="")
+						{
+							$productcost ="0.00";
+						}
+						else
+						{
+						
+							$productcost = $productcost;
+							
+						}
+						$Totalproductcost += $productcost;
+						if($profit =="")
+						{
+							$profit ="0.00";
+						}
+						else
+						{
+						
+							$profit = $profit;
+							
+						}
+						$Totalprofit += $profit;
+						
+						?>
+												{
+												"country": "<?=$productname?>",
+												"visits": <?=ceil($ProductQtyUsed)?>,
+												"color":"#F8FF01"
+												}, 
+								<?php
+				}
+		    }
+		}
+				
+		?>
+  ],
+  "valueField": "visits",
+  "titleField": "country",
+  "startEffect": "elastic",
+  "startDuration": 2,
+  "labelRadius": 15,
+  "innerRadius": "50%",
+  "depth3D": 10,
+  "balloonText": "[[title]]<br><span style='font-size:14px'><b>[[value]]</b></span>",
+  "angle": 15,
+  "export": {
+    "enabled": true
+  }
+} );
+</script>
+<script>
+var chart = AmCharts.makeChart( "chartdiv7", {
+  "type": "pie",
+  "theme": "light",
+  
+  "dataProvider": [ 
+     	<?php
+		$DB = Connect();
+			$sqlgraph=select("FromDate,ToDate","tblGraphDateParameter","RoleID='".$strAdminRoleID."'");
+		$FromDate=$sqlgraph[0]['FromDate'];
+		$ToDate=$sqlgraph[0]['ToDate'];
+	    $First= $FromDate;
+		$Last= $ToDate;
+		$date=date('Y-m-d');
+		$getfrom=$First;
+		$getto=$Last;
+		$sqlTempfrom = " and Date(tblInvoiceDetails.OfferDiscountDateTime)>=Date('".$getfrom."')";
+		$sqlTempto = " and Date(tblInvoiceDetails.OfferDiscountDateTime)<=Date('".$getto."')";
+		$storrr=4;
+        $sql = "select distinct(tblProductsServices.ProductID) from tblProductsServices left join tblAppointments on tblProductsServices.StoreID=tblAppointments.StoreID right join tblInvoiceDetails on tblInvoiceDetails.AppointmentId=tblAppointments.AppointmentID left join tblNewProducts on tblNewProducts.ProductID=tblProductsServices.ProductID WHERE tblAppointments.StoreID='".$storrr."' AND tblProductsServices.StoreID='".$storrr."'  AND tblAppointments.IsDeleted !=  '1' AND tblAppointments.FreeService !=  '1' and tblAppointments.Status='2' $sqlTempfrom $sqlTempto  AND tblProductsServices.StoreID='".$storrr."'";
+
+		$RS = $DB->query($sql);
+		if ($RS->num_rows > 0) 
+		{
+			$counter = 0;
+
+			while($row = $RS->fetch_assoc())
+			{
+				$counter ++;
+			
+				$ProductID = $row["ProductID"];
+				$sep=select("count(*)","tblNewProducts","ProductID='".$ProductID."'");
+				$cntserr=$sep[0]['count(*)'];
+				if($cntserr>0)
+				{
+				     $sept=select("*","tblNewProducts","ProductID='".$ProductID."'");
+					 $ProductIDT=$sept[0]['ProductID'];
+					 $productname=$sept[0]['ProductName'];
+					 $PerQtyServe=$sept[0]['PerQtyServe'];
+					 $ProductMRP=$sept[0]['ProductMRP'];
+					
+					 $sepa=select("*","tblStores","StoreID='".$storrr."'");
+					 $storename=$sepa[0]['StoreName'];
+					 
+					// $sqlt=selectproductservice($storrr,$getfrom,$getto,$ProductIDT);
+						$sqlt = "select distinct(tblProductsServices.ServiceID) from tblProductsServices left join tblAppointments on tblProductsServices.StoreID=tblAppointments.StoreID right join tblInvoiceDetails on tblInvoiceDetails.AppointmentId=tblAppointments.AppointmentID left join tblNewProducts on tblNewProducts.ProductID=tblProductsServices.ProductID WHERE tblAppointments.StoreID='".$storrr."' AND tblProductsServices.StoreID='".$storrr."'  AND tblAppointments.IsDeleted !=  '1' AND tblAppointments.FreeService !=  '1' and tblAppointments.Status='2' $sqlTempfrom $sqlTempto  AND tblProductsServices.StoreID='".$storrr."' and tblProductsServices.ProductID='".$ProductIDT."'";
+						
+						$RSt = $DB->query($sqlt);
+						if ($RSt->num_rows > 0) 
+						{
+							$counter = 0;
+
+							while($row1 = $RSt->fetch_assoc())
+							{
+								$servicedt = $row1["ServiceID"];
+								// $stppsertyptup=selectproductservicedetail($storrr,$getfrom,$getto,$servicedt);
+								 $stppsertyptup=select("tblAppointmentsDetailsInvoice.qty,tblAppointmentsDetailsInvoice.ServiceAmount","tblAppointmentsDetailsInvoice left join tblAppointments on tblAppointmentsDetailsInvoice.AppointmentID=tblAppointments.AppointmentID right join tblInvoiceDetails on tblInvoiceDetails.AppointmentId=tblAppointments.AppointmentID","tblAppointmentsDetailsInvoice.ServiceID!='NULL' AND tblAppointmentsDetailsInvoice.ServiceID!='' and tblAppointments.StoreID='".$storrr."' and tblAppointmentsDetailsInvoice.ServiceID='".$servicedt."' AND tblAppointments.IsDeleted !=  '1' and tblAppointments.Status='2' AND tblAppointments.FreeService !=  '1' $sqlTempfrom $sqlTempto ");
+												foreach($stppsertyptup as $tr)
+												{
+													$qty=$tr['qty'];
+													$ServiceAmount=$tr['ServiceAmount'];
+													$qttyt +=$qty;
+													$strServiceAmount = $ServiceAmount*$qty;
+													$totalstrServiceAmount=$totalstrServiceAmount+$strServiceAmount;
+												}
+							}
+						}
+								$productcost=$ProductMRP*$qttyt;
+							$ProductQtyUsed=$PerQtyServe/$qttyt;
+							if($qttyt=="")
+							{
+								$qttyt=0;
+							}
+							$consumperformance=$PerQtyServe-$qttyt;
+							$profit=$productcost-$totalstrServiceAmount;
+							 
+					   if($ProductQtyUsed =="")
+						{
+							$ProductQtyUsed ="0.00";
+						}
+						else
+						{
+						
+							$ProductQtyUsed = $ProductQtyUsed;
+							
+						}
+						$TotalProductQtyUsed += $ProductQtyUsed;
+						if($qttyt =="")
+						{
+							$qttyt ="0.00";
+						}
+						else
+						{
+						
+							$qttyt = $qttyt;
+							
+						}
+						$Totalqttyt += $qttyt;
+						if($PerQtyServe =="")
+						{
+							$PerQtyServe ="0.00";
+						}
+						else
+						{
+						
+							$PerQtyServe = $PerQtyServe;
+							
+						}
+						$TotalPerQtyServe += $PerQtyServe;
+						if($consumperformance =="")
+						{
+							$consumperformance ="0.00";
+						}
+						else
+						{
+						
+							$consumperformance = $consumperformance;
+							
+						}
+						$Totalconsumperformance += $consumperformance;
+							if($totalstrServiceAmount =="")
+						{
+							$totalstrServiceAmount ="0.00";
+						}
+						else
+						{
+						
+							$totalstrServiceAmount = $totalstrServiceAmount;
+							
+						}
+						$TotaltotalstrServiceAmount += $totalstrServiceAmount;
+							if($productcost =="")
+						{
+							$productcost ="0.00";
+						}
+						else
+						{
+						
+							$productcost = $productcost;
+							
+						}
+						$Totalproductcost += $productcost;
+						if($profit =="")
+						{
+							$profit ="0.00";
+						}
+						else
+						{
+						
+							$profit = $profit;
+							
+						}
+						$Totalprofit += $profit;
+						
+						?>
+												{
+												"country": "<?=$productname?>",
+												"visits": <?=ceil($ProductQtyUsed)?>,
+												"color":"#F8FF01"
+												}, 
+								<?php
+				}
+		    }
+		}
+				
+		?>
+  ],
+  "valueField": "visits",
+  "titleField": "country",
+  "startEffect": "elastic",
+  "startDuration": 2,
+  "labelRadius": 15,
+  "innerRadius": "50%",
+  "depth3D": 10,
+  "balloonText": "[[title]]<br><span style='font-size:14px'><b>[[value]]</b></span>",
+  "angle": 15,
+  "export": {
+    "enabled": true
+  }
+} );
+</script>
+<script>
+var chart = AmCharts.makeChart( "chartdiv5", {
+  "type": "pie",
+  "theme": "light",
+  
+  "dataProvider": [ 
+     	<?php
+		$DB = Connect();
+				$sqlgraph=select("FromDate,ToDate","tblGraphDateParameter","RoleID='".$strAdminRoleID."'");
+		$FromDate=$sqlgraph[0]['FromDate'];
+		$ToDate=$sqlgraph[0]['ToDate'];
+	    $First= $FromDate;
+		$Last= $ToDate;
+		$date=date('Y-m-d');
+		$getfrom=$First;
+		$getto=$Last;
+		$sqlTempfrom = " and Date(tblInvoiceDetails.OfferDiscountDateTime)>=Date('".$getfrom."')";
+		$sqlTempto = " and Date(tblInvoiceDetails.OfferDiscountDateTime)<=Date('".$getto."')";
+		$storrr=5;
+        $sql = "select distinct(tblProductsServices.ProductID) from tblProductsServices left join tblAppointments on tblProductsServices.StoreID=tblAppointments.StoreID right join tblInvoiceDetails on tblInvoiceDetails.AppointmentId=tblAppointments.AppointmentID left join tblNewProducts on tblNewProducts.ProductID=tblProductsServices.ProductID WHERE tblAppointments.StoreID='".$storrr."' AND tblProductsServices.StoreID='".$storrr."'  AND tblAppointments.IsDeleted !=  '1' AND tblAppointments.FreeService !=  '1' and tblAppointments.Status='2' $sqlTempfrom $sqlTempto  AND tblProductsServices.StoreID='".$storrr."'";
+
+		$RS = $DB->query($sql);
+		if ($RS->num_rows > 0) 
+		{
+			$counter = 0;
+
+			while($row = $RS->fetch_assoc())
+			{
+				$counter ++;
+			
+				$ProductID = $row["ProductID"];
+				$sep=select("count(*)","tblNewProducts","ProductID='".$ProductID."'");
+				$cntserr=$sep[0]['count(*)'];
+				if($cntserr>0)
+				{
+				     $sept=select("*","tblNewProducts","ProductID='".$ProductID."'");
+					 $ProductIDT=$sept[0]['ProductID'];
+					 $productname=$sept[0]['ProductName'];
+					 $PerQtyServe=$sept[0]['PerQtyServe'];
+					 $ProductMRP=$sept[0]['ProductMRP'];
+					
+					 $sepa=select("*","tblStores","StoreID='".$storrr."'");
+					 $storename=$sepa[0]['StoreName'];
+					 
+					// $sqlt=selectproductservice($storrr,$getfrom,$getto,$ProductIDT);
+						$sqlt = "select distinct(tblProductsServices.ServiceID) from tblProductsServices left join tblAppointments on tblProductsServices.StoreID=tblAppointments.StoreID right join tblInvoiceDetails on tblInvoiceDetails.AppointmentId=tblAppointments.AppointmentID left join tblNewProducts on tblNewProducts.ProductID=tblProductsServices.ProductID WHERE tblAppointments.StoreID='".$storrr."' AND tblProductsServices.StoreID='".$storrr."'  AND tblAppointments.IsDeleted !=  '1' AND tblAppointments.FreeService !=  '1' and tblAppointments.Status='2' $sqlTempfrom $sqlTempto  AND tblProductsServices.StoreID='".$storrr."' and tblProductsServices.ProductID='".$ProductIDT."'";
+						
+						$RSt = $DB->query($sqlt);
+						if ($RSt->num_rows > 0) 
+						{
+							$counter = 0;
+
+							while($row1 = $RSt->fetch_assoc())
+							{
+								$servicedt = $row1["ServiceID"];
+								// $stppsertyptup=selectproductservicedetail($storrr,$getfrom,$getto,$servicedt);
+								 $stppsertyptup=select("tblAppointmentsDetailsInvoice.qty,tblAppointmentsDetailsInvoice.ServiceAmount","tblAppointmentsDetailsInvoice left join tblAppointments on tblAppointmentsDetailsInvoice.AppointmentID=tblAppointments.AppointmentID right join tblInvoiceDetails on tblInvoiceDetails.AppointmentId=tblAppointments.AppointmentID","tblAppointmentsDetailsInvoice.ServiceID!='NULL' AND tblAppointmentsDetailsInvoice.ServiceID!='' and tblAppointments.StoreID='".$storrr."' and tblAppointmentsDetailsInvoice.ServiceID='".$servicedt."' AND tblAppointments.IsDeleted !=  '1' and tblAppointments.Status='2' AND tblAppointments.FreeService !=  '1' $sqlTempfrom $sqlTempto ");
+												foreach($stppsertyptup as $tr)
+												{
+													$qty=$tr['qty'];
+													$ServiceAmount=$tr['ServiceAmount'];
+													$qttyt +=$qty;
+													$strServiceAmount = $ServiceAmount*$qty;
+													$totalstrServiceAmount=$totalstrServiceAmount+$strServiceAmount;
+												}
+							}
+						}
+								$productcost=$ProductMRP*$qttyt;
+							$ProductQtyUsed=$PerQtyServe/$qttyt;
+							if($qttyt=="")
+							{
+								$qttyt=0;
+							}
+							$consumperformance=$PerQtyServe-$qttyt;
+							$profit=$productcost-$totalstrServiceAmount;
+							 
+					   if($ProductQtyUsed =="")
+						{
+							$ProductQtyUsed ="0.00";
+						}
+						else
+						{
+						
+							$ProductQtyUsed = $ProductQtyUsed;
+							
+						}
+						$TotalProductQtyUsed += $ProductQtyUsed;
+						if($qttyt =="")
+						{
+							$qttyt ="0.00";
+						}
+						else
+						{
+						
+							$qttyt = $qttyt;
+							
+						}
+						$Totalqttyt += $qttyt;
+						if($PerQtyServe =="")
+						{
+							$PerQtyServe ="0.00";
+						}
+						else
+						{
+						
+							$PerQtyServe = $PerQtyServe;
+							
+						}
+						$TotalPerQtyServe += $PerQtyServe;
+						if($consumperformance =="")
+						{
+							$consumperformance ="0.00";
+						}
+						else
+						{
+						
+							$consumperformance = $consumperformance;
+							
+						}
+						$Totalconsumperformance += $consumperformance;
+							if($totalstrServiceAmount =="")
+						{
+							$totalstrServiceAmount ="0.00";
+						}
+						else
+						{
+						
+							$totalstrServiceAmount = $totalstrServiceAmount;
+							
+						}
+						$TotaltotalstrServiceAmount += $totalstrServiceAmount;
+							if($productcost =="")
+						{
+							$productcost ="0.00";
+						}
+						else
+						{
+						
+							$productcost = $productcost;
+							
+						}
+						$Totalproductcost += $productcost;
+						if($profit =="")
+						{
+							$profit ="0.00";
+						}
+						else
+						{
+						
+							$profit = $profit;
+							
+						}
+						$Totalprofit += $profit;
+						
+						?>
+												{
+												"country": "<?=$productname?>",
+												"visits": <?=ceil($ProductQtyUsed)?>,
+												"color":"#F8FF01"
+												}, 
+								<?php
+				}
+		    }
+		}
+				
+		?>
+  ],
+  "valueField": "visits",
+  "titleField": "country",
+  "startEffect": "elastic",
+  "startDuration": 2,
+  "labelRadius": 15,
+  "innerRadius": "50%",
+  "depth3D": 10,
+  "balloonText": "[[title]]<br><span style='font-size:14px'><b>[[value]]</b></span>",
+  "angle": 15,
+  "export": {
+    "enabled": true
+  }
+} );
+</script>

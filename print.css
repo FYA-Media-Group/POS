@@ -1,0 +1,11 @@
+/*<!--@media print {
+    .no-print {
+      display: none;
+    }
+}*/
+
+#printarea
+{
+	background: url('http://nailspaexperience.com/images/test3.png') no-repeat;
+	background-position: 50% -5px;
+}

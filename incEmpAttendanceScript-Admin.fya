@@ -1,0 +1,262 @@
+<?php require_once("setting.fya"); ?>
+<?php require_once 'incFirewall.fya'; ?>
+<!-- Styles -->
+<style>
+#chartdivEmpAttendance {
+	width		: 100%;
+	height		: 300px;
+	font-size	: 11px;
+}						
+</style>
+
+<!-- Resources -->
+<script src="https://www.amcharts.com/lib/3/amcharts.js"></script>
+<script src="https://www.amcharts.com/lib/3/serial.js"></script>
+<script src="https://www.amcharts.com/lib/3/plugins/export/export.min.js"></script>
+<link rel="stylesheet" href="https://www.amcharts.com/lib/3/plugins/export/export.css" type="text/css" media="all" />
+<script src="https://www.amcharts.com/lib/3/themes/light.js"></script>
+<?php
+$store1="KHAR";
+$store2="Colaba";
+$store3="Lokhandwala";
+$store4="Oshiwara";
+$store5="br";
+/* $DB=Connect();
+$sqlgraph=select("FromDate,ToDate","tblGraphDateParameter","RoleID='".$strAdminRoleID."'");
+		$FromDate=$sqlgraph[0]['FromDate'];
+		$ToDate=$sqlgraph[0]['ToDate'];
+	    $First= $FromDate;
+		$Last= $ToDate;
+		
+		$date=date('Y-m-d');
+		$year=date('Y', strtotime($First));
+		$mon=date('m', strtotime($First));
+		$month = date("F", mktime(0, 0, 0, $mon, 10));
+		
+		$d=cal_days_in_month(CAL_GREGORIAN,$mon,$year);
+		$SelectStore="Select StoreID, StoreName from tblStores";
+		$RSCF = $DB->query($SelectStore);
+			if ($RSCF->num_rows > 0) 
+			{
+				while($rowS = $RSCF->fetch_assoc())
+				{
+				    $totalemm="";
+					$StoreID = $rowS["StoreID"];
+					$strStoreName = $rowS["StoreName"];	
+					$sqlservicecntt=select("distinct(tblEmployeeAttendance.EmployeeCode)","tblEmployees left join tblEmployeeAttendance 
+					on tblEmployees.EmployeeCode=tblEmployeeAttendance.EmployeeCode left join tblStores on tblEmployees.StoreID=tblStores.StoreID","tblEmployees.StoreID='".$StoreID."' and tblEmployeeAttendance.RecordYear='".$year."' and tblEmployeeAttendance.RecordMonth='".$month."' and tblEmployeeAttendance.LeavesThisMonth='' group by tblEmployeeAttendance.StartDate,tblEmployees.StoreID");
+					foreach($sqlservicecntt as $ftyu)
+					{
+					$ecc[]=$ftyu['EmployeeCode'];
+					}
+					
+					for($i=0;$i<count($ecc);$i++)
+					{
+					$sqlservicecntts=select("count(*)","tblEmployeeAttendance","EmployeeCode='".$ecc[$i]."' and RecordYear='".$year."' and RecordMonth='".$month."' and LeavesThisMonth='' group by tblEmployeeAttendance.StartDate limit 0,1");
+					$EMPPRESENTd=$sqlservicecntts[0]['count(*)'];
+					$totalemm=$totalemm+$EMPPRESENTd;
+					}
+					unset($ecc);
+					
+									// echo $StoreName." Total Present Employees are . ".$EMPPRESENT."<br><br><br>";
+									// echo $TotalPay." for ".StoreName." and Total Customers are ".$TotalCustomers."<br>";
+									$TotalEmp="Select Count(EmployeeCode)as TotalEmp1 from tblEmployees where StoreID='$StoreID'";
+									$RSE = $DB->query($TotalEmp);
+									if ($RSE->num_rows > 0) 
+									{
+										while($rowE = $RSE->fetch_assoc())
+										{
+											$TotalEmp1 = $rowE["TotalEmp1"];
+											echo $strStoreName;
+											echo $TotalEmp1;
+											echo $totalemm;
+										}
+									}
+							
+							
+				}
+				$totalemm=0;
+			}
+			 */
+			//exit;
+//exit;
+/* 
+$DB=Connect();
+$sqlgraph=select("FromDate,ToDate","tblGraphDateParameter","RoleID='".$strAdminRoleID."'");
+		$FromDate=$sqlgraph[0]['FromDate'];
+		$ToDate=$sqlgraph[0]['ToDate'];
+	    $First= $FromDate;
+		$Last= $ToDate;
+			$date=date('Y-m-d');
+		$year=date('Y', strtotime($First));
+		$mon=date('m', strtotime($First));
+		$month = date("F", mktime(0, 0, 0, $mon, 10));
+		
+		$d=cal_days_in_month(CAL_GREGORIAN,$mon,$year);
+		$SelectStore="Select StoreID, StoreName from tblStores";
+		$RSCF = $DB->query($SelectStore);
+			if ($RSCF->num_rows > 0) 
+			{
+				while($rowS = $RSCF->fetch_assoc())
+				{
+					    $totalemm="";
+					$StoreID = $rowS["StoreID"];
+					$strStoreName = $rowS["StoreName"];	
+					$sqlservicecntt=select("distinct(tblAttendanceRecord.EmployeeCode)","tblEmployees left join tblAttendanceRecord 
+					on tblEmployees.EmployeeCode=tblAttendanceRecord.EmployeeCode","tblEmployees.StoreID='".$StoreID."' and tblAttendanceRecord.RecordYear='".$year."' and tblAttendanceRecord.RecordMonth='".$month."' and tblAttendanceRecord.LeavesThisMonth='' group by tblAttendanceRecord.StartDate,tblEmployees.StoreID");
+					foreach($sqlservicecntt as $ftyu)
+					{
+					$ecc[]=$ftyu['EmployeeCode'];
+					}
+					for($i=0;$i<count($ecc);$i++)
+					{
+					$sqlservicecntts=select("count(*)","tblAttendanceRecord","EmployeeCode='".$ecc[$i]."' and RecordYear='".$year."' and RecordMonth='".$month."' and LeavesThisMonth='' group by tblAttendanceRecord.StartDate limit 0,1");
+					$EMPPRESENTd=$sqlservicecntts[0]['count(*)'];
+					$totalemm=$totalemm+$EMPPRESENTd;
+					}
+					unset($ecc);
+					//echo $totalemm;
+				}
+			} */
+		//exit;
+?>
+<!-- Chart code -->
+<script>
+var chart = AmCharts.makeChart("chartdivEmpAttendance", {
+    "type": "serial",
+    "theme": "light",
+    "categoryField": "year",
+    "rotate": true,
+    "startDuration": 1,
+    "categoryAxis": {
+        "gridPosition": "start",
+        "position": "left"
+    },
+    "trendLines": [],
+    "graphs": [
+        {
+            "balloonText": "TotalEmployees:[[value]]",
+            "fillAlphas": 0.8,
+            "id": "AmGraph-1",
+            "lineAlpha": 0.2,
+            "title": "T",
+            "type": "column",
+            "valueField": "income"
+        },
+        {
+            "balloonText": "Attendance:[[value]]",
+            "fillAlphas": 0.8,
+            "id": "AmGraph-2",
+            "lineAlpha": 0.2,
+            "title": "Expenses",
+            "type": "column",
+            "valueField": "expenses"
+        }
+    ],
+	
+    "guides": [],
+    "valueAxes": [
+        {
+            "id": "ValueAxis-1",
+            "position": "top",
+            "axisAlpha": 0
+        }
+    ],
+    "allLabels": [],
+    "balloon": {},
+    "titles": [],
+    "dataProvider": [
+<?php
+
+$DB=Connect();
+$sqlgraph=select("FromDate,ToDate","tblGraphDateParameter","RoleID='".$strAdminRoleID."'");
+		$FromDate=$sqlgraph[0]['FromDate'];
+		$ToDate=$sqlgraph[0]['ToDate'];
+	    $First= $FromDate;
+		$Last= $ToDate;
+		
+		$date=date('Y-m-d');
+		$year=date('Y', strtotime($First));
+		$mon=date('m', strtotime($First));
+		$month = date("F", mktime(0, 0, 0, $mon, 10));
+		
+		$d=cal_days_in_month(CAL_GREGORIAN,$mon,$year);
+		$SelectStore="Select StoreID, StoreName from tblStores where Status='0'";
+		$RSCF = $DB->query($SelectStore);
+			if ($RSCF->num_rows > 0) 
+			{
+				while($rowS = $RSCF->fetch_assoc())
+				{
+				    $totalemm="";
+					$StoreID = $rowS["StoreID"];
+					$strStoreName = $rowS["StoreName"];	
+					$sqlservicecntt=select("distinct(tblEmployeeAttendance.EmployeeCode)","tblEmployees left join tblEmployeeAttendance 
+					on tblEmployees.EmployeeCode=tblEmployeeAttendance.EmployeeCode left join tblStores on tblEmployees.StoreID=tblStores.StoreID","tblEmployees.StoreID='".$StoreID."' and tblEmployeeAttendance.RecordYear='".$year."' and tblEmployeeAttendance.RecordMonth='".$month."' and tblEmployeeAttendance.LeavesThisMonth='' group by tblEmployeeAttendance.StartDate,tblEmployees.StoreID");
+					foreach($sqlservicecntt as $ftyu)
+					{
+					$ecc[]=$ftyu['EmployeeCode'];
+					}
+					if(count($ecc)==0)
+					{
+						$totalemm=0;
+					}
+					else
+					{
+						
+					}
+					
+				//	exit;
+					for($i=0;$i<count($ecc);$i++)
+					{
+					$sqlservicecntts=select("count(*)","tblEmployeeAttendance","EmployeeCode='".$ecc[$i]."' and RecordYear='".$year."' and RecordMonth='".$month."' and LeavesThisMonth='' group by tblEmployeeAttendance.StartDate limit 0,1");
+					$EMPPRESENTd=$sqlservicecntts[0]['count(*)'];
+					
+					$totalemm=$totalemm+$EMPPRESENTd;
+					
+					}
+					unset($ecc);
+					
+									// echo $StoreName." Total Present Employees are . ".$EMPPRESENT."<br><br><br>";
+									// echo $TotalPay." for ".StoreName." and Total Customers are ".$TotalCustomers."<br>";
+									$TotalEmp="Select Count(EmployeeCode)as TotalEmp1 from tblEmployees where StoreID='$StoreID'";
+									$RSE = $DB->query($TotalEmp);
+									if ($RSE->num_rows > 0) 
+									{
+										while($rowE = $RSE->fetch_assoc())
+										{
+										$TotalEmp1 = $rowE["TotalEmp1"];
+?>
+														{
+															"year": "<?=$strStoreName?>",
+															"income": <?=$TotalEmp1?>,
+															"expenses": <?=$totalemm?>
+														},
+<?php					
+										}
+									}
+						
+							
+				}
+				$totalemm=0;
+					//die();
+			}
+			else
+			{
+?>
+					{
+						"year": "0",
+						"income": 0,
+						"expenses": 0
+					},
+<?php				
+			}
+?>			
+      
+    ],
+   "export": {
+       "enabled": true
+    }
+
+});
+</script>
+	

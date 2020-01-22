@@ -1,0 +1,653 @@
+<?php require_once("setting.fya"); ?>
+<?php require_once 'incFirewall.fya'; ?>
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<?php require_once("incMetaScript.fya"); ?>
+	<script type="text/javascript" src="assets/widgets/charts/chart-js/chart-doughnut.js"></script>
+	<!-- Styles -->
+<style>
+#chartdiv {
+  width: 100%;
+  height: 500px;
+}																	
+</style>
+
+<!-- Resources -->
+<script src="https://www.amcharts.com/lib/3/amcharts.js"></script>
+<script src="https://www.amcharts.com/lib/3/serial.js"></script>
+<script src="https://www.amcharts.com/lib/3/gantt.js"></script>
+<script src="https://www.amcharts.com/lib/3/themes/light.js"></script>
+<script src="https://www.amcharts.com/lib/3/plugins/export/export.min.js"></script>
+<link rel="stylesheet" href="https://www.amcharts.com/lib/3/plugins/export/export.css" type="text/css" media="all" />
+
+<!-- Chart code -->
+<script>
+AmCharts.useUTC = true;
+var chart = AmCharts.makeChart( "chartdiv", {
+    "type": "gantt",
+    "theme": "light",
+    "marginRight": 70,
+    "period": "hh",
+    "dataDateFormat":"YYYY-MM-DD",
+    "balloonDateFormat": "JJ:NN",
+    "columnWidth": 0.5,
+    "valueAxis": {
+        "type": "date",
+        "minimum": 7,
+        "maximum": 31
+    },
+    "brightnessStep": 10,
+    "graph": {
+        "fillAlphas": 1,
+        "balloonText": "<b>[[task]]</b>: [[open]] [[value]]"
+    },
+    "rotate": true,
+    "categoryField": "category",
+    "segmentsField": "segments",
+    "colorField": "color",
+    "startDate": "2015-01-01",
+    "startField": "start",
+    "endField": "end",
+    "durationField": "duration",
+    "dataProvider": [ {
+        "category": "John",
+        "segments": [ {
+            "start": 7,
+            "duration": 2,
+            "color": "#46615e",
+            "task": "Task #1"
+        }, {
+            "duration": 2,
+            "color": "#727d6f",
+            "task": "Task #2"
+        }, {
+            "duration": 2,
+            "color": "#8dc49f",
+            "task": "Task #3"
+        } ]
+    }, {
+        "category": "Smith",
+        "segments": [ {
+            "start": 10,
+            "duration": 2,
+            "color": "#727d6f",
+            "task": "Task #2"
+        }, {
+            "duration": 1,
+            "color": "#8dc49f",
+            "task": "Task #3"
+        }, {
+            "duration": 4,
+            "color": "#46615e",
+            "task": "Task #1"
+        } ]
+    }, {
+        "category": "Ben",
+        "segments": [ {
+            "start": 12,
+            "duration": 2,
+            "color": "#727d6f",
+            "task": "Task #2"
+        }, {
+            "start": 16,
+            "duration": 2,
+            "color": "#FFE4C4",
+            "task": "Task #4"
+        } ]
+    }, {
+        "category": "Mike",
+        "segments": [ {
+            "start": 9,
+            "duration": 6,
+            "color": "#46615e",
+            "task": "Task #1"
+        }, {
+            "duration": 4,
+            "color": "#727d6f",
+            "task": "Task #2"
+        } ]
+    }, {
+        "category": "Lenny",
+        "segments": [ {
+            "start": 8,
+            "duration": 1,
+            "color": "#8dc49f",
+            "task": "Task #3"
+        }, {
+            "duration": 4,
+            "color": "#46615e",
+            "task": "Task #1"
+        } ]
+    }, {
+        "category": "Scott",
+        "segments": [ {
+            "start": 15,
+            "duration": 3,
+            "color": "#727d6f",
+            "task": "Task #2"
+        } ]
+    }, {
+        "category": "Julia",
+        "segments": [ {
+            "start": 9,
+            "duration": 2,
+            "color": "#46615e",
+            "task": "Task #1"
+        }, {
+            "duration": 1,
+            "color": "#727d6f",
+            "task": "Task #2"
+        }, {
+            "duration": 8,
+            "color": "#8dc49f",
+            "task": "Task #3"
+        } ]
+    }, {
+        "category": "Bob",
+        "segments": [ {
+            "start": 9,
+            "duration": 8,
+            "color": "#727d6f",
+            "task": "Task #2"
+        }, {
+            "duration": 7,
+            "color": "#8dc49f",
+            "task": "Task #3"
+        } ]
+    }, {
+        "category": "Kendra",
+        "segments": [ {
+            "start": 11,
+            "duration": 8,
+            "color": "#727d6f",
+            "task": "Task #2"
+        }, {
+            "start": 16,
+            "duration": 2,
+            "color": "#FFE4C4",
+            "task": "Task #4"
+        } ]
+    }, {
+        "category": "Tom",
+        "segments": [ {
+            "start": 9,
+            "duration": 4,
+            "color": "#46615e",
+            "task": "Task #1"
+        }, {
+            "duration": 3,
+            "color": "#727d6f",
+            "task": "Task #2"
+        }, {
+            "duration": 5,
+            "color": "#8dc49f",
+            "task": "Task #3"
+        } ]
+    }, {
+        "category": "Kyle",
+        "segments": [ {
+            "start": 6,
+            "duration": 3,
+            "color": "#727d6f",
+            "task": "Task #2"
+        } ]
+    }, {
+        "category": "Anita",
+        "segments": [ {
+            "start": 12,
+            "duration": 2,
+            "color": "#727d6f",
+            "task": "Task #2"
+        }, {
+            "start": 16,
+            "duration": 2,
+            "color": "#FFE4C4",
+            "task": "Task #4"
+        } ]
+    }, {
+        "category": "Jack",
+        "segments": [ {
+            "start": 8,
+            "duration": 10,
+            "color": "#46615e",
+            "task": "Task #1"
+        }, {
+            "duration": 2,
+            "color": "#727d6f",
+            "task": "Task #2"
+        } ]
+    }, {
+        "category": "Kim",
+        "segments": [ {
+            "start": 12,
+            "duration": 2,
+            "color": "#727d6f",
+            "task": "Task #2"
+        }, {
+            "duration": 3,
+            "color": "#8dc49f",
+            "task": "Task #3"
+        } ]
+    }, {
+        "category": "Aaron",
+        "segments": [ {
+            "start": 18,
+            "duration": 2,
+            "color": "#727d6f",
+            "task": "Task #2"
+        }, {
+            "duration": 2,
+            "color": "#FFE4C4",
+            "task": "Task #4"
+        } ]
+    }, {
+        "category": "Alan",
+        "segments": [ {
+            "start": 17,
+            "duration": 2,
+            "color": "#46615e",
+            "task": "Task #1"
+        }, {
+            "duration": 2,
+            "color": "#727d6f",
+            "task": "Task #2"
+        }, {
+            "duration": 2,
+            "color": "#8dc49f",
+            "task": "Task #3"
+        } ]
+    }, {
+        "category": "Ruth",
+        "segments": [ {
+            "start": 13,
+            "duration": 2,
+            "color": "#727d6f",
+            "task": "Task #2"
+        }, {
+            "duration": 1,
+            "color": "#8dc49f",
+            "task": "Task #3"
+        }, {
+            "duration": 4,
+            "color": "#46615e",
+            "task": "Task #1"
+        } ]
+    }, {
+        "category": "Simon",
+        "segments": [ {
+            "start": 10,
+            "duration": 3,
+            "color": "#727d6f",
+            "task": "Task #2"
+        }, {
+            "start": 17,
+            "duration": 4,
+            "color": "#FFE4C4",
+            "task": "Task #4"
+        } ]
+    } ],
+    "valueScrollbar": {
+        "autoGridCount":true
+    },
+    "chartCursor": {
+        "cursorColor":"#55bb76",
+        "valueBalloonsEnabled": false,
+        "cursorAlpha": 0,
+        "valueLineAlpha":0.5,
+        "valueLineBalloonEnabled": true,
+        "valueLineEnabled": true,
+        "zoomable":false,
+        "valueZoomable":true
+    },
+    "export": {
+        "enabled": true
+     }
+} );
+</script>
+</head>
+
+<body>
+ 
+    <div id="sb-site">
+	
+	
+		<?php require_once("incOpenLayout.fya"); ?>
+		
+		
+        <?php require_once("incLoader.fya"); ?>
+		
+		
+        <div id="page-wrapper">
+            <div id="mobile-navigation"><button id="nav-toggle" class="collapsed" data-toggle="collapse" data-target="#page-sidebar"><span></span></button></div>
+				
+				<?php require_once("incLeftMenu.fya"); ?>
+				
+            <div id="page-content-wrapper">
+                <div id="page-content">
+
+					<?php require_once("incHeader.fya"); ?>
+				
+                    <script type="text/javascript" src="assets/widgets/skycons/skycons.js"></script>
+                    <script type="text/javascript" src="assets/widgets/datatable/datatable.js"></script>
+                    <script type="text/javascript" src="assets/widgets/datatable/datatable-bootstrap.js"></script>
+                    <script type="text/javascript" src="assets/widgets/datatable/datatable-tabletools.js"></script>
+                    <script type="text/javascript">  /* Datatables basic */
+
+                        // $(document).ready(function() {
+                            // $('#datatable-example').dataTable();
+							// var abc=$("#abc").val();
+							// $.ajax({
+								// type:"POST",
+								// data:"abc="+abc,
+								// url:"chartdata.php",
+								// success:function(res)
+								// {
+									// alert(res)
+									
+									
+								// }
+								
+								
+							// })
+                        // });
+
+                        /* Datatables hide columns */
+
+                        $(document).ready(function() {
+                            var table = $('#datatable-hide-columns').DataTable({
+                                "scrollY": "300px",
+                                "paging": false
+                            });
+
+                            $('#datatable-hide-columns_filter').hide();
+
+                            $('a.toggle-vis').on('click', function(e) {
+                                e.preventDefault();
+
+                                // Get the column API object
+                                var column = table.column($(this).attr('data-column'));
+
+                                // Toggle the visibility
+                                column.visible(!column.visible());
+                            });
+                        });
+
+                        /* Datatable row highlight */
+
+                        $(document).ready(function() {
+                            var table = $('#datatable-row-highlight').DataTable();
+
+                            $('#datatable-row-highlight tbody').on('click', 'tr', function() {
+                                $(this).toggleClass('tr-selected');
+                            });
+                        });
+
+
+
+                        $(document).ready(function() {
+                            $('.dataTables_filter input').attr("placeholder", "Search...");
+                        });
+                    </script>
+						<div class="panel" style="padding:2%;">
+                <div class="row">
+					<span id="abc" style="display:none"></span>
+					<div class="tile-box col-md-2" style="background: #fc8213;border-color: #fc8213;margin-right:03%; margin-left:1.5%;">
+					<div class="panel-content">
+					<div style="font-size:14px;"><b>Low Stock Products</b></style></div>
+					<?php				
+
+$DB=Connect();
+
+						$TotalProductAlert="Select (SELECT count(0) FROM `tblStoreProduct` where Stock<5 ) as ProductAlertCount";
+							$RSP= $DB->query($TotalProductAlert);
+							if($RSP->num_rows>0)
+							{
+								while($ROP=$RSP->fetch_assoc())
+								{
+									$ProductAlertCount = $ROP["ProductAlertCount"];
+									if($ProductAlertCount=="")
+									{
+										$ProductAlertCount='0';
+									}
+									// echo "Store " .$StoreName." need Total Products are. ".$ProductAlertCount."<br><br><br>" ;
+									
+								}
+							}
+$DB->close();
+?>	
+						<button class="btn btn-lg" data-toggle="modal" data-target="#myModal" style="background: #fc8213;border-color: #fc8213;color:#fff;"><?=$ProductAlertCount?></button>	
+						<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+							   <div class="modal-dialog">
+								   <div class="modal-content">
+									   <div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+										   
+									   <div class="modal-body">
+										   <p>
+
+										   </p>
+										  
+									   </div>
+									   <div class="modal-footer"><button type="button" class="btn btn-default" data-dismiss="modal">Close Modal</button> </div>
+								   </div>
+							   </div>
+							</div>
+						</div>
+					</div>
+				</div>
+				
+				<span id="abc" style="display:none"></span>
+					<div class="tile-box col-md-2" style="background: #dc1156;border-color: #dc1156;margin-right:03%;">
+					<div class="panel-content">
+					<div style="font-size:14px;"><b>Outstanding Payment</b></style></div>
+					<?php				
+
+$DB=Connect();
+// ApproveInvoices="SELECT * FROM tblAppointments where status='2' and IsDeleted!='1' and ApproveStatus='1' order by AppointmentID desc";
+						$PendingAmountStores="Select count(tblPendingPayments.PendingAmount)as Pending,  tblAppointments.StoreID from tblPendingPayments Left Join tblAppointments ON tblPendingPayments.AppointmentID=tblAppointments.AppointmentID WHERE  tblPendingPayments.PendingStatus=2";
+						// echo $ApproveInvoices."<br><br><br>";
+
+							$RSP= $DB->query($PendingAmountStores);
+							if($RSP->num_rows>0)
+							{
+								while($ROP=$RSP->fetch_assoc())
+								{
+									$Pending = $ROP["Pending"];
+									if($Pending=="")
+									{
+										$Pending='0';
+									}
+									// echo "Pending Amount from  " .$StoreName." is Rs. ".$Pending."<br><br><br>" ;
+									
+								}
+							}
+$DB->close();
+?>				
+						<button class="btn btn-lg" data-toggle="modal" data-target="#myModal" style="background: #dc1156;border-color: #dc1156;color:#fff;"><?=$Pending?></button>	
+						<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+							   <div class="modal-dialog">
+								   <div class="modal-content">
+									   <div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+										   
+									   <div class="modal-body">
+										   <p>
+
+										   </p>
+										  
+									   </div>
+									   <div class="modal-footer"><button type="button" class="btn btn-default" data-dismiss="modal">Close Modal</button> </div>
+								   </div>
+							   </div>
+							</div>
+						</div>
+					</div>
+				</div>
+				
+				<span id="abc" style="display:none"></span>
+					<div class="tile-box col-md-2" style="background: #77dd77;border-color: #77dd77;margin-right:03%;">
+					<div class="panel-content">
+					<div style="font-size:14px;"><b>Confirm Appointments</b></style></div>
+<?php	
+$First= date('Y-m-01');
+$Last= date('Y-m-t');
+$date=date('Y-m-d');	
+$DB = Connect();
+
+					$sql="Select Count(0) as ConfirmedCount from tblAppointments where AppointmentDate>='$First' and AppointmentDate<='$Last' and Status='2' and IsDeleted!='1' ";
+					// echo $sql."<br><br><br>";
+					$RSC = $DB->query($sql);
+					if ($RSC->num_rows > 0) 
+					{
+						while($rowC = $RSC->fetch_assoc())
+						{
+							$ConfirmedCount = $rowC["ConfirmedCount"];
+						}
+					}
+$DB->close();
+?>		
+						<button class="btn btn-lg" data-toggle="modal" data-target="#myModal" style="background: #77dd77;border-color: #77dd77;color:#fff;"><?=$ConfirmedCount?></button>	
+						<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+							   <div class="modal-dialog">
+								   <div class="modal-content">
+									   <div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+										   
+									   <div class="modal-body">
+										   <p>
+
+										   </p>
+										 
+									   </div>
+									   <div class="modal-footer"><button type="button" class="btn btn-default" data-dismiss="modal">Close Modal</button> </div>
+								   </div>
+							   </div>
+							</div>
+						</div>
+					</div>
+                       
+				</div>
+				<span id="abc" style="display:none"></span>
+					<div class="tile-box col-md-2" style="background: #1296ff;border-color: #1296ff;margin-right:03%;">
+					<div class="panel-content">
+					<div style="font-size:14px;"><b>Cancelled Appointments</b></style></div>
+<?php		
+$DB = Connect();
+$First= date('Y-m-01');
+$Last= date('Y-m-t');
+$date=date('Y-m-d');
+
+					$sql="Select (SELECT count(0) FROM `tblAppointments` where Status=3 and IsDeleted!='1' and AppointmentDate>='$First' and AppointmentDate<='$Last') as CancelledCount ";
+					// echo $sql."<br><br><br>";
+					$RSC = $DB->query($sql);
+					if ($RSC->num_rows > 0) 
+					{
+						while($rowC = $RSC->fetch_assoc())
+						{
+							$CancelledCount = $rowC["CancelledCount"];
+							// echo "Total Cancelled Appointments in Current month - ".$CancelledCount;// echo $TodaysMembership;
+							// echo "Total Cancelled Appointments in Current Month on ".$StoreName." are " .$CancelledCount."<br><br>";
+						}
+					}
+$DB->close();
+?>	
+						<button class="btn btn-lg" data-toggle="modal" data-target="#myModal" style="background: #1296ff;border-color: #1296ff;color:#fff;"><?=$CancelledCount?></button>	
+						<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+							   <div class="modal-dialog">
+								   <div class="modal-content">
+									   <div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+										   
+									   <div class="modal-body">
+										   <p>
+
+										   </p>
+										 
+									   </div>
+									   <div class="modal-footer"><button type="button" class="btn btn-default" data-dismiss="modal">Close Modal</button> </div>
+								   </div>
+							   </div>
+							</div>
+						</div>
+					</div>
+                       
+				</div>
+				
+				<span id="abc" style="display:none"></span>
+					<div class="tile-box col-md-2" style="background: #a7c3d1;border-color: #a7c3d1; margin-right:03%;">
+					<div class="panel-content">
+					<div style="font-size:14px;"><b>Non Visiting Customers</b></style></div>
+<?php		
+$DB = Connect();
+$First= date('Y-m-01');
+$Last= date('Y-m-t');
+$date=date('Y-m-d');
+
+					$sql="Select (SELECT count(0) FROM `tblAppointments` where Status=3 and IsDeleted!='1' and AppointmentDate>='$First' and AppointmentDate<='$Last') as CancelledCount ";
+					// echo $sql."<br><br><br>";
+					$RSC = $DB->query($sql);
+					if ($RSC->num_rows > 0) 
+					{
+						while($rowC = $RSC->fetch_assoc())
+						{
+							$CancelledCount = $rowC["CancelledCount"];
+							// echo "Total Cancelled Appointments in Current month - ".$CancelledCount;// echo $TodaysMembership;
+							// echo "Total Cancelled Appointments in Current Month on ".$StoreName." are " .$CancelledCount."<br><br>";
+						}
+					}
+$DB->close();
+?>	
+						<button class="btn btn-lg" data-toggle="modal" data-target="#myModal" style="background: #a7c3d1;border-color: #a7c3d1;color:#fff;">0</button>	
+						<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+							   <div class="modal-dialog">
+								   <div class="modal-content">
+									   <div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+										   
+									   <div class="modal-body">
+										   <p>
+
+										   </p>
+										 
+									   </div>
+									   <div class="modal-footer"><button type="button" class="btn btn-default" data-dismiss="modal">Close Modal</button> </div>
+								   </div>
+							   </div>
+							</div>
+						</div>
+					</div>
+                       
+				</div>
+				
+				
+				
+            </div>
+					<div class="row">
+					<span id="abc" style="display:none"></span>
+						<div class="col-md-12" style="padding-top: 10px;">
+							<div class="panel mrg20T">
+								<div class="panel-body">
+									<div class="col-md-12">
+										<h3 class="title-hero">Reconciliation Pending Invoices</h3>
+										<div class="example-box-wrapper">
+											<div id="chartdiv"></div>
+										</div>
+										
+									</div>
+									
+								</div>
+							</div>
+					`</div>
+			</div>	
+			
+		
+			
+				</div>
+        </div>
+		
+		<?php require_once 'incFooter.fya'; ?>
+ 
+    </div>
+</body>
+
+</html>

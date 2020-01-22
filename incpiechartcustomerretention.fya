@@ -1,0 +1,205 @@
+<?php require_once("setting.fya"); ?>
+<?php require_once 'incFirewall.fya'; ?>
+<!-- Styles -->
+<style>
+#chartdiv3 {
+  width: 100%;
+  height: 300px;
+}
+</style>
+
+<!-- Resources -->
+<script src="https://www.amcharts.com/lib/3/amcharts.js"></script>
+<script src="https://www.amcharts.com/lib/3/pie.js"></script>
+<script src="https://www.amcharts.com/lib/3/plugins/export/export.min.js"></script>
+<link rel="stylesheet" href="https://www.amcharts.com/lib/3/plugins/export/export.css" type="text/css" media="all" />
+<script src="https://www.amcharts.com/lib/3/themes/light.js"></script>
+
+<!-- Chart code -->
+<script>
+var chart = AmCharts.makeChart( "chartdiv3", {
+ "type": "pie",
+    "theme": "light",
+    "innerRadius": "40%",
+    "gradientRatio": [-0.4, -0.4, -0.4, -0.4, -0.4, -0.4, 0, 0.1, 0.2, 0.1, 0, -0.2, -0.5],
+  "dataProvider": [
+  <?php
+		$DB = Connect(); 
+		$sqlgraph=select("FromDate,ToDate","tblGraphDateParameter","RoleID='".$strAdminRoleID."'");
+		$FromDate=$sqlgraph[0]['FromDate'];
+		$ToDate=$sqlgraph[0]['ToDate'];
+	    $First= $FromDate;
+		$Last= $ToDate;
+		$getfrom=$First;
+		$getto=$Last;
+		
+		$sql = "select * from tblEmployees where Status='0'";
+	//////////////////////////////////////////////////////////////////////////
+		$RS = $DB->query($sql);
+if ($RS->num_rows > 0) 
+{
+	$counter = 0;
+
+	while($row = $RS->fetch_assoc())
+	{
+		
+		//$StoreID = $row["StoreID"];
+		$EID = $row["EID"];
+		$store = $row["StoreID"];
+		if($EID=="35" || $EID=="8" || $EID=="6" || $EID=="34" || $EID=="22" || $EID=="29" || $EID=="43" || $EID=="49")
+		{
+			// List of managers, HO and Audit whose details need not to be shown
+		}
+		else
+		{
+			$EID = $row["EID"];
+			$counter ++;
+		
+		$DateTime = FormatDateTime($getfrom);	
+		$sep=select("StoreName","tblStores","StoreID='".$store."'");
+		$storename=$sep[0]['StoreName'];
+		$EmployeeName = $row["EmployeeName"];
+	
+	//////////////////////////////new customer count////////////////////////////////
+	       $sqldetailsd=newcustomercount12($getfrom,$getto,$EID);
+		  
+			/*  $sqldetailsd=select("DISTINCT(tblAppointments.AppointmentID)","tblCustomers LEFT JOIN tblAppointments ON tblCustomers.CustomerID = tblAppointments.CustomerID LEFT JOIN tblAppointmentAssignEmployee ON tblAppointments.AppointmentID = tblAppointmentAssignEmployee.AppointmentID","tblAppointments.IsDeleted !=  '1' AND tblAppointments.FreeService != '1' AND tblAppointments.Status =  '2' AND tblAppointmentAssignEmployee.MECID = '".$EID."' $sqlTempfrom1 $sqlTempto1"); */
+			 foreach($sqldetailsd as $vat)
+		    {
+			$app[]=$vat['AppointmentID'];
+			$custcnt=count($app);
+			if($custcnt=='' || $custcnt=='0')
+			{
+				$custcnt=0;
+			}
+		    }
+		   unset($app);
+          $stu1=newcustomerrepeat($getfrom,$getto,$EID);
+						
+		
+		/////////////////////////////////old customer count///////////////////////////////
+		
+		 $sqldetailsy=oldcustomercount($getfrom,$getto,$EID);
+	
+		                                           	if($custcnt=='')
+																{
+																	$custcnt=0;
+																}
+																else
+																{
+																	
+																}
+																$cntsncust=0;
+																 foreach($stu1 as $vqt)
+																 {
+																	 $newc=$vqt['newcust'];
+																	 $stu2=newcustomerrepeatcount($getfrom,$getto,$EID,$newc);
+																	 $newcoldqt=$stu2[0]['newcustcnt'];
+																	
+																	if($newcoldqt!='0')
+																	 {
+                                                                       																	 
+																     if($newcoldqt>3)
+																		 {
+																			$cntsncust++;
+																			$cntsncust;
+																		 }
+																		
+																	 } 
+																	
+																 } 
+														     
+																$cntsncustold=0;
+																 foreach($sqldetailsy as $vqtp)
+																 {
+																	 $oldcustcntc=$vqtp['oldcustcnt'];
+																	 $stu2q=oldcustomer($getfrom,$getto,$EID,$oldcustcntc);
+																	 $newcold=$stu2q[0]['oldcustcntq'];
+																	
+																	if($newcold!='0')
+																	 { 
+           																 if($newcold>4)
+																		 {
+																			$cntsncustold++;
+																		
+																		 }
+																		
+																		
+																	 }
+                                                                    
+																 } 
+															
+		                                                      foreach($sqldetailsy as $vqtp)
+																 {
+																	 $oldcustcntc=$vqtp['oldcustcnt'];
+																	 $stu2qmst=oldcustomerrepeatcnt($getfrom,$getto,$EID,$oldcustcntc);
+																	
+																	 $maxoldcustcntq=$stu2qmst[0]['maxoldcustcntq'];
+																	 $sqldetailsdTy=select("tblAppointments.AppointmentDate","tblAppointments","tblAppointments.AppointmentID='".$maxoldcustcntq."'");
+																	 $app_date=$sqldetailsdTy[0]['AppointmentDate'];
+																	 $new_date = strtotime(date("Y-m-d", strtotime($app_date)) . " +12 month");
+																	 $stu2qmstold=oldcustomerrepeatcnt($app_date,$new_date,$EID,$oldcustcntc);
+																	 $newcoldrepeat=$stu2qmstold[0]['oldcustcntq'];
+																
+																  
+																 } 
+																   if($newcoldrepeat=="")
+																	{
+																		$newcoldrepeat=0;
+																	}
+																	
+		
+		
+				$totalnew=$totalnew+$custcnt;
+				$totalre=$totalre+$cntsncust;
+				$totalold=$totalold+$cntsncustold;
+				$totalnewoldrep=$totalnewoldrep+$newcoldrepeat;
+
+		}
+		
+        $custcnt="";
+		$cntsncust="";
+		$cntsncustold="";
+		$newcoldrepeat="";
+		
+		
+	}
+	?>
+	                 {
+					"country": "New Walkin %",
+					"litres": <?=round($totalnew,2)?>
+					}, 
+					   {
+					"country": "Recurred customers %",
+					"litres": <?=round($totalre,2)?>
+					}, 
+					   {
+					"country": "Existing customers %",
+					"litres": <?=round($totalold,2)?>
+					}, 
+					   {
+					"country": "Reacquired customers %",
+					"litres": <?=round($totalnewoldrep,2)?>
+					}, 
+		 <?php
+	 
+}			
+				
+			
+		?>
+	
+	],
+   "balloonText": "[[value]]",
+    "valueField": "litres",
+    "titleField": "country",
+    "balloon": {
+        "drop": true,
+        "adjustBorderColor": false,
+        "color": "#FFFFFF",
+        "fontSize": 16
+    },
+  "export": {
+    "enabled": true
+  }
+} );
+</script>

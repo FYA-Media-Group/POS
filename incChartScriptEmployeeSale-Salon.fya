@@ -1,0 +1,212 @@
+<!-- Styles -->
+<style>
+#chartdivEmpDailysale {
+	width		: 100%;
+	height		: 500px;
+	font-size	: 11px;
+}						
+</style>
+
+<!-- Resources -->
+<script src="https://www.amcharts.com/lib/3/amcharts.js"></script>
+<script src="https://www.amcharts.com/lib/3/serial.js"></script>
+<script src="https://www.amcharts.com/lib/3/plugins/export/export.min.js"></script>
+<link rel="stylesheet" href="https://www.amcharts.com/lib/3/plugins/export/export.css" type="text/css" media="all" />
+<script src="https://www.amcharts.com/lib/3/themes/light.js"></script>
+
+<!-- Chart code -->
+<script>
+var chart = AmCharts.makeChart("chartdivEmpDailysale", {
+	"type": "serial",
+     "theme": "light",
+	"categoryField": "year",
+	"rotate": true,
+	"startDuration": 1,
+	"categoryAxis": {
+		"gridPosition": "start",
+		"position": "left"
+	},
+	"trendLines": [],
+	"graphs": [
+		{
+			"balloonText": "Target:[[value]]",
+			"fillAlphas": 0.8,
+			"id": "AmGraph-1",
+			"lineAlpha": 0.2,
+			"title": "Income",
+			"type": "column",
+			"valueField": "income"
+		},
+		{
+			"balloonText": "Achieved:[[value]]",
+			"fillAlphas": 0.8,
+			"id": "AmGraph-2",
+			"lineAlpha": 0.2,
+			"title": "Expenses",
+			"type": "column",
+			"valueField": "expenses"
+		}
+	],
+	"guides": [],
+	"valueAxes": [
+		{
+			"id": "ValueAxis-1",
+			"position": "top",
+			"axisAlpha": 0
+		}
+	],
+	"allLabels": [],
+	"balloon": {},
+	"titles": [],
+	"dataProvider": [
+<?php
+$DB = Connect();
+
+$FindStore="Select StoreID from tblAdminStore where AdminID=$strAdminID";
+											// echo $FindStore;
+											$RSf = $DB->query($FindStore);
+											if ($RSf->num_rows > 0) 
+											{
+												while($rowf = $RSf->fetch_assoc())
+												{
+													$strStoreID = $rowf["StoreID"];
+													// echo $strStoreID;
+													// echo "Hello";
+												}
+											}
+
+
+$date=date('Y-m-d');
+$Year=date('Y');
+$Month = date('m');		
+$First= date('Y-m-01');	
+$MonthSpell = getMonthSpelling($Month);
+$d=cal_days_in_month(CAL_GREGORIAN,$Month,$Year);
+
+// $sql = "select EID, EmployeeName, EmployeeEmailID, EmpPercentage, EmployeeMobileNo from tblEmployees where Status='0' and StoreID='2'";
+$sql = "select tblEmployees.EID, tblEmployees.EmployeeName, tblEmployees.EmployeeEmailID, tblEmployees.EmpPercentage, tblEmployees.EmployeeMobileNo , tblEmployeeTarget.BaseTarget from tblEmployees
+left Join tblEmployeeTarget on tblEmployeeTarget.EmployeeCode=tblEmployees.EmployeeCode  
+where tblEmployees.Status='0' and tblEmployees.StoreID='$strStoreID' and tblEmployeeTarget.TargetForMonth='$MonthSpell' and tblEmployeeTarget.Year='$Year'";
+// echo $sql."<br>";
+
+$RS = $DB->query($sql);
+if($RS->num_rows > 0) 
+{
+	while($row = $RS->fetch_assoc())
+	{
+		$strEID = $row["EID"];
+		$strEmployeeName = $row["EmployeeName"];
+		$strEmpPercentage = $row["EmpPercentage"];
+		$strEmpBaseTarget = $row["BaseTarget"];
+		$PerDayTarget1=$strEmpBaseTarget/$d;
+		$PerDayTarget=round($PerDayTarget1);
+		
+			// die()
+			$sqldetails = "SELECT tblAppointmentAssignEmployee.AppointmentID,
+			tblAppointmentAssignEmployee.ServiceID, 
+			SUM(tblAppointmentsDetailsInvoice.ServiceAmount)as ServiceAmount, 
+			tblAppointmentAssignEmployee.Commission, 
+			tblInvoiceDetails.OfferDiscountDateTime,tblEmployees.StoreID 
+			FROM tblEmployees 
+			left join tblAppointmentAssignEmployee 
+			on tblEmployees.EID = tblAppointmentAssignEmployee.MECID 
+			left join tblAppointmentsDetailsInvoice 
+			on tblAppointmentsDetailsInvoice.AppointmentId= tblAppointmentAssignEmployee.AppointmentID
+			left join tblInvoiceDetails 
+			on tblAppointmentAssignEmployee.AppointmentID=tblInvoiceDetails.AppointmentId
+			where tblEmployees.StoreID ='$strStoreID' and tblEmployees.EID='$strEID' and tblAppointmentAssignEmployee.AppointmentID!='NULL' and tblInvoiceDetails.OfferDiscountDateTime!='NULL' and Date(tblInvoiceDetails.OfferDiscountDateTime)='$date'";
+						// echo $sqldetails."<br><br>";
+						$RSdetails = $DB->query($sqldetails);
+						
+			if($RSdetails->num_rows > 0) 
+			{
+				$counter = 0;
+				$ComFinal = "";
+				$strSID = "";
+				$strSAmount = "";
+				$strCommission = "";
+				while($rowdetails = $RSdetails->fetch_assoc())
+				{
+					$counter ++;
+					$strEIDa = $rowdetails["EID"];
+					$strAID = $rowdetails["AppointmentID"];
+					$strSID = $rowdetails["ServiceID"];
+					$sep=select("ServiceName","tblServices","ServiceID='".$strSID."'");
+					$servicename=$sep[0]['ServiceName'];
+					$strSAmount = $rowdetails["ServiceAmount"];
+					$strCommission = $rowdetails["Commission"];
+					$StoreIDd = $rowdetails["StoreID"];
+					$stpp=select("StoreName","tblStores","StoreID='".$StoreIDd."'");
+					$StoreName=$stpp[0]['StoreName'];
+						$sqldiscount ="select OfferAmount, MemberShipAmount from tblAppointmentMembershipDiscount where AppointmentID='$strAID' and ServiceID='$strSID'";
+						//echo $sqldiscount;
+					
+						$RSdiscount = $DB->query($sqldiscount);
+						if($RSdiscount->num_rows > 0) 
+						{
+							while($rowdiscount = $RSdiscount->fetch_assoc())
+							{
+								$strOfferAmount = $rowdiscount["OfferAmount"];
+								$strDiscountAmount = $rowdiscount["MemberShipAmount"];
+		
+								
+								if($strOfferAmount=="0")
+								{
+									$FinalDAmount = $strDiscountAmount;
+								}
+								elseif($strDiscountAmount=="0")
+								{
+									$FinalDAmount = $strOfferAmount;
+								}
+							}
+						}
+						else
+						{
+							$FinalDAmount = "0";
+						}
+						
+						$Sale1 = $strSAmount - $FinalDAmount;
+						$Sale+=$Sale1;
+						//Calculation
+						$CommssionFinal = "";
+						
+						if($strCommission=="1")
+						{
+							$CommssionFinal = ($Sale / 100) * $strEmpPercentage;
+						}
+						elseif($strCommission=="2")
+						{
+							
+							$CommssionFinal = ($Sale / 200) * $strEmpPercentage;
+						}
+						$ComFinal += $CommssionFinal;
+					
+?>
+		
+					{
+						"year": "<?=$strEmployeeName?>",
+						"income": <?=$PerDayTarget?>,
+						"expenses": <?=$Sale1?>
+					},
+<?php	
+		}
+			}
+	}
+}
+?>	
+	
+	
+		
+			
+		
+		
+		
+	],
+    "export": {
+    	"enabled": true
+     }
+
+});
+</script>
+
+	

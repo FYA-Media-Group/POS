@@ -1,0 +1,28 @@
+<?php
+	$strRemember_me = ValidateCookie("CookieRemember_me");
+
+	if($strRemember_me=="Y")
+	{
+		$strAdminID = ValidateCookie("CookieAdminID");
+		$strAdminFullName = ValidateCookie("CookieAdminFullName");
+		$strAdminType = ValidateCookie("CookieAdminType");
+		$strAdminUsername = ValidateCookie("CookieAdminUsername");
+		$strStore = ValidateCookie("CookieStore");
+		$strAdminRoleID = ValidateCookie("CookieAdminRoleID");
+	}
+	else
+	{
+		session_start();
+		$strAdminID = $_SESSION["AdminID"];
+		$strAdminFullName = $_SESSION["AdminFullName"];
+		$strAdminType = $_SESSION["AdminType"];
+		$strAdminUsername = $_SESSION["AdminUsername"];
+		$strStore = $_SESSION["Store"];
+		$strAdminRoleID = $_SESSION["AdminRoleID"];
+	}
+
+	if (IsNull($strAdminID))
+	{
+		header('Location: Logout.php'); 
+	}
+?>

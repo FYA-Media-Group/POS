@@ -1,0 +1,119 @@
+<!-- Styles -->
+<style>
+#chartRECPendingdiv {
+  width: 100%;
+  height: 300px;
+}										
+</style>
+
+<!-- Resources -->
+<script src="https://www.amcharts.com/lib/3/amcharts.js"></script>
+<script src="https://www.amcharts.com/lib/3/serial.js"></script>
+<script src="https://www.amcharts.com/lib/3/plugins/export/export.min.js"></script>
+<link rel="stylesheet" href="https://www.amcharts.com/lib/3/plugins/export/export.css" type="text/css" media="all" />
+<script src="https://www.amcharts.com/lib/3/themes/light.js"></script>
+
+<!-- Chart code -->
+<script>
+var chart = AmCharts.makeChart("chartRECPendingdiv", {
+    "theme": "black",
+    "type": "serial",
+    "dataProvider": [
+<?php
+$First= date('Y-m-01');
+$Last= date('Y-m-t');
+$date=date('Y-m-d');
+$DB=Connect();
+
+$SelectStore="Select StoreID, StoreName from tblStores";
+		$RSCF = $DB->query($SelectStore);
+			if ($RSCF->num_rows > 0) 
+			{
+				$counter=0;
+				while($rowS = $RSCF->fetch_assoc())
+				{
+					$counter++;
+					$StoreID = $rowS["StoreID"];
+					$strStoreName = $rowS["StoreName"];
+					$StoreName = substr($strStoreName, 0, 6);
+					$ApprovePending="SELECT count(0) as ApprovalPendingCount FROM `tblAppointments` where AppointmentDate>='$First' and AppointmentDate<='$Last' and Status='2' and IsDeleted!='1' and ApproveStatus!='1' and StoreID='$StoreID'";
+					$RSAI= $DB->query($ApprovePending);
+							if($RSAI->num_rows>0)
+							{
+								while($ROS=$RSAI->fetch_assoc())
+								{
+									$ApprovalPendingCount = $ROS["ApprovalPendingCount"];
+?>					
+										{
+											"country": "<?=$StoreName?>",
+											"year2005": <?=$ApprovalPendingCount?>,
+											"color":"#FF0000"
+										},
+<?php					
+								}
+							}
+				}
+			}
+			else
+			{
+?>
+					{
+						"country": "0",
+						"year2005": 0
+					},
+<?php				
+			}
+?>	
+			
+	],
+    "valueAxes": [{
+        "stackType": "3d",
+        "unit": "",
+        "position": "left",
+        "title": "Reconciliation Pending Invoices",
+    }],
+    "startDuration": 1,
+    "graphs": [{
+        "balloonText": "Reconciliation Pending: <b>[[value]]</b>",
+        "fillAlphas": 0.9,
+        "lineAlpha": 0.2,
+        "title": "2004",
+        "type": "column",
+		"fillColors":"#FF0000",
+        "valueField": "year2004"
+    }, {
+        "balloonText": "Reconciliation Pending: <b>[[value]]</b>",
+        "fillAlphas": 0.9,
+        "lineAlpha": 0.2,
+        "title": "2005",
+        "type": "column",
+		"fillColors":"#FF0000",
+        "valueField": "year2005"
+    }],
+    "plotAreaFillAlphas": 0.1,
+    "depth3D": 30,
+    "angle": 15,
+    "categoryField": "country",
+    "categoryAxis": {
+        "gridPosition": "start"
+    },
+    "export": {
+    	"enabled": true
+     }
+});
+jQuery('.chart-input').off().on('input change',function() {
+	var property	= jQuery(this).data('property');
+	var target		= chart;
+	chart.startDuration = 0;
+
+	if ( property == 'topRadius') {
+		target = chart.graphs[0];
+      	if ( this.value == 0 ) {
+          this.value = undefined;
+      	}
+	}
+
+	target[property] = this.value;
+	chart.validateNow();
+});
+</script>

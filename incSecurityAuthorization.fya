@@ -1,0 +1,9 @@
+<?php
+	// code for not allowing the normal admin to access the super admin rights	
+	if($strAdminType!="0")
+	{
+		die("Sorry you are trying to enter Unauthorized access");
+	}
+	// code for not allowing the normal admin to access the super admin rights	
+?>
+

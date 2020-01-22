@@ -1,0 +1,665 @@
+<?php require_once("setting.fya"); ?>
+<?php require_once 'incFirewall.fya'; ?>
+<!-- Styles -->
+<style>
+#chartdiv1 {
+	width		: 100%;
+	height		: 500px;
+	font-size	: 11px;
+}		
+#chartdiv2 {
+	width		: 100%;
+	height		: 500px;
+	font-size	: 11px;
+}		
+#chartdiv3 {
+	width		: 100%;
+	height		: 500px;
+	font-size	: 11px;
+}		
+#chartdiv7 {
+	width		: 100%;
+	height		: 500px;
+	font-size	: 11px;
+}		
+#chartdiv5 {
+	width		: 100%;
+	height		: 500px;
+	font-size	: 11px;
+}
+</style>
+
+<!-- Resources -->
+<script src="https://www.amcharts.com/lib/3/amcharts.js"></script>
+<script src="https://www.amcharts.com/lib/3/serial.js"></script>
+<script src="https://www.amcharts.com/lib/3/plugins/export/export.min.js"></script>
+<link rel="stylesheet" href="https://www.amcharts.com/lib/3/plugins/export/export.css" type="text/css" media="all" />
+<script src="https://www.amcharts.com/lib/3/themes/light.js"></script>
+				
+
+
+<!-- Chart code -->
+<script>
+var chart = AmCharts.makeChart("chartdiv1", {
+    "theme": "light",
+    "type": "serial",
+    "dataProvider": [
+	
+<?php
+$DB=Connect();
+	$sqlgraph=select("FromDate,ToDate","tblGraphDateParameter","RoleID='".$strAdminRoleID."'");
+		$FromDate=$sqlgraph[0]['FromDate'];
+		$ToDate=$sqlgraph[0]['ToDate'];
+	    $First= $FromDate;
+		$Last= $ToDate;
+		
+		$SelectStore="Select StoreID, StoreName from tblStores WHERE StoreID=1";
+		$RSCF = $DB->query($SelectStore);
+			if ($RSCF->num_rows > 0) 
+			{
+				while($rowS = $RSCF->fetch_assoc())
+				{
+					$StoreID = $rowS["StoreID"];
+					$strStoreName = $rowS["StoreName"];
+					$StoreName = substr($strStoreName, 0, 6);
+					$SelectExpenseBalance="Select tblExpensesBalance.Balance, SUM(tblExpenses.Amount) as Expenses from tblExpensesBalance left Join tblExpenses ON tblExpensesBalance.StoreID=tblExpenses.StoreID where tblExpensesBalance.StoreID='$StoreID' and tblExpenses.Status='0' and  Date(DateOfExpense)>=Date('".$First."') and Date(DateOfExpense)<=Date('".$Last."') group by tblExpensesBalance.StoreID";
+						// echo $SelectExpenseBalance."<br><br><br><br>";
+						
+							$RSP= $DB->query($SelectExpenseBalance);
+							if($RSP->num_rows>0)
+							{
+								while($ROP=$RSP->fetch_assoc())
+								{
+									$Expenses = $ROP["Expenses"];
+									$Balance = $ROP["Balance"];
+									
+									if($Expenses=="")
+									{
+										$Expenses = "0";
+									}
+									else
+									{
+										$Expenses = $Expenses;
+									}
+									if($Balance=="")
+									{
+										$Balance = '0';
+									}
+									else
+									{
+										$Balance = $Balance;
+									}
+?>
+										{
+											"country": "<?=$StoreName?>",
+											"year2004": <?=$Expenses?>,
+											"year2005": <?=$Balance?>,
+											"color":"#fc8213"
+										}, 
+<?php
+								}
+							}
+				}
+			}
+			else
+			{
+?>
+				{
+					"country": "0",
+					"year2004": 0,
+					"year2005": 0
+				}, 
+<?php
+			}
+			$DB->close();	
+?>	
+	],
+    "valueAxes": [{
+        "stackType": "3d",
+        "unit": "",
+        "position": "left",
+        "title": "Petty Cash Analysis Branch Wise",
+    }],
+    "startDuration": 1,
+    "graphs": [{
+        "balloonText": "Balance [[category]] : <b>[[value]]</b>",
+        "fillAlphas": 0.9,
+        "lineAlpha": 0.2,
+        "title": "2004",
+        "type": "column",
+		"fillColors":"#fc8213",
+        "valueField": "year2004"
+    }, {
+        "balloonText": "Expenses [[category]]: <b>[[value]]</b>",
+        "fillAlphas": 0.9,
+        "lineAlpha": 0.2,
+        "title": "2005",
+        "type": "column",
+        "valueField": "year2005"
+    }],
+    "plotAreaFillAlphas": 0.1,
+    "depth3D": 0,
+    "angle": 30,
+    "categoryField": "country",
+    "categoryAxis": {
+        "gridPosition": "start"
+    },
+    "export": {
+    	"enabled": true
+     }
+});
+jQuery('.chart-input').off().on('input change',function() {
+	var property	= jQuery(this).data('property');
+	var target		= chart;
+	chart.startDuration = 0;
+
+	if ( property == 'topRadius') {
+		target = chart.graphs[0];
+      	if ( this.value == 0 ) {
+          this.value = undefined;
+      	}
+	}
+
+	target[property] = this.value;
+	chart.validateNow();
+});
+</script>
+
+<script>
+var chart = AmCharts.makeChart("chartdiv2", {
+    "theme": "light",
+    "type": "serial",
+    "dataProvider": [
+	
+<?php
+$DB=Connect();
+	$sqlgraph=select("FromDate,ToDate","tblGraphDateParameter","RoleID='".$strAdminRoleID."'");
+		$FromDate=$sqlgraph[0]['FromDate'];
+		$ToDate=$sqlgraph[0]['ToDate'];
+	    $First= $FromDate;
+		$Last= $ToDate;
+		$SelectStore="Select StoreID, StoreName from tblStores WHERE StoreID=2";
+		$RSCF = $DB->query($SelectStore);
+			if ($RSCF->num_rows > 0) 
+			{
+				while($rowS = $RSCF->fetch_assoc())
+				{
+					$StoreID = $rowS["StoreID"];
+					$strStoreName = $rowS["StoreName"];
+					$StoreName = substr($strStoreName, 0, 6);
+					$SelectExpenseBalance="Select tblExpensesBalance.Balance, SUM(tblExpenses.Amount) as Expenses from tblExpensesBalance left Join tblExpenses ON tblExpensesBalance.StoreID=tblExpenses.StoreID where tblExpensesBalance.StoreID='$StoreID' and tblExpenses.Status='0' and  Date(DateOfExpense)>=Date('".$First."') and Date(DateOfExpense)<=Date('".$Last."') group by tblExpensesBalance.StoreID";
+						// echo $SelectExpenseBalance."<br><br><br><br>";
+						
+							$RSP= $DB->query($SelectExpenseBalance);
+							if($RSP->num_rows>0)
+							{
+								while($ROP=$RSP->fetch_assoc())
+								{
+									$Expenses = $ROP["Expenses"];
+									$Balance = $ROP["Balance"];
+									
+									if($Expenses=="")
+									{
+										$Expenses = "0";
+									}
+									else
+									{
+										$Expenses = $Expenses;
+									}
+									if($Balance=="")
+									{
+										$Balance = '0';
+									}
+									else
+									{
+										$Balance = $Balance;
+									}
+?>
+										{
+											"country": "<?=$StoreName?>",
+											"year2004": <?=$Expenses?>,
+											"year2005": <?=$Balance?>,
+											"color":"#fc8213"
+										}, 
+<?php
+								}
+							}
+				}
+			}
+			else
+			{
+?>
+				{
+					"country": "0",
+					"year2004": 0,
+					"year2005": 0
+				}, 
+<?php
+			}
+			$DB->close();	
+?>	
+	],
+    "valueAxes": [{
+        "stackType": "3d",
+        "unit": "",
+        "position": "left",
+        "title": "Petty Cash Analysis Branch Wise",
+    }],
+    "startDuration": 1,
+    "graphs": [{
+        "balloonText": "Balance [[category]] : <b>[[value]]</b>",
+        "fillAlphas": 0.9,
+        "lineAlpha": 0.2,
+        "title": "2004",
+        "type": "column",
+		"fillColors":"#fc8213",
+        "valueField": "year2004"
+    }, {
+        "balloonText": "Expenses [[category]]: <b>[[value]]</b>",
+        "fillAlphas": 0.9,
+        "lineAlpha": 0.2,
+        "title": "2005",
+        "type": "column",
+        "valueField": "year2005"
+    }],
+    "plotAreaFillAlphas": 0.1,
+    "depth3D": 0,
+    "angle": 30,
+    "categoryField": "country",
+    "categoryAxis": {
+        "gridPosition": "start"
+    },
+    "export": {
+    	"enabled": true
+     }
+});
+jQuery('.chart-input').off().on('input change',function() {
+	var property	= jQuery(this).data('property');
+	var target		= chart;
+	chart.startDuration = 0;
+
+	if ( property == 'topRadius') {
+		target = chart.graphs[0];
+      	if ( this.value == 0 ) {
+          this.value = undefined;
+      	}
+	}
+
+	target[property] = this.value;
+	chart.validateNow();
+});
+</script>
+
+<script>
+var chart = AmCharts.makeChart("chartdiv3", {
+    "theme": "light",
+    "type": "serial",
+    "dataProvider": [
+	
+<?php
+$DB=Connect();
+	$sqlgraph=select("FromDate,ToDate","tblGraphDateParameter","RoleID='".$strAdminRoleID."'");
+		$FromDate=$sqlgraph[0]['FromDate'];
+		$ToDate=$sqlgraph[0]['ToDate'];
+	    $First= $FromDate;
+		$Last= $ToDate;
+		$SelectStore="Select StoreID, StoreName from tblStores WHERE StoreID=3";
+		$RSCF = $DB->query($SelectStore);
+			if ($RSCF->num_rows > 0) 
+			{
+				while($rowS = $RSCF->fetch_assoc())
+				{
+					$StoreID = $rowS["StoreID"];
+					$strStoreName = $rowS["StoreName"];
+					$StoreName = substr($strStoreName, 0, 6);
+					$SelectExpenseBalance="Select tblExpensesBalance.Balance, SUM(tblExpenses.Amount) as Expenses from tblExpensesBalance left Join tblExpenses ON tblExpensesBalance.StoreID=tblExpenses.StoreID where tblExpensesBalance.StoreID='$StoreID' and tblExpenses.Status='0' and  Date(DateOfExpense)>=Date('".$First."') and Date(DateOfExpense)<=Date('".$Last."') group by tblExpensesBalance.StoreID";
+						// echo $SelectExpenseBalance."<br><br><br><br>";
+						
+							$RSP= $DB->query($SelectExpenseBalance);
+							if($RSP->num_rows>0)
+							{
+								while($ROP=$RSP->fetch_assoc())
+								{
+									$Expenses = $ROP["Expenses"];
+									$Balance = $ROP["Balance"];
+									
+									if($Expenses=="")
+									{
+										$Expenses = "0";
+									}
+									else
+									{
+										$Expenses = $Expenses;
+									}
+									if($Balance=="")
+									{
+										$Balance = '0';
+									}
+									else
+									{
+										$Balance = $Balance;
+									}
+?>
+										{
+											"country": "<?=$StoreName?>",
+											"year2004": <?=$Expenses?>,
+											"year2005": <?=$Balance?>,
+											"color":"#fc8213"
+										}, 
+<?php
+								}
+							}
+				}
+			}
+			else
+			{
+?>
+				{
+					"country": "0",
+					"year2004": 0,
+					"year2005": 0
+				}, 
+<?php
+			}
+			$DB->close();	
+?>	
+	],
+    "valueAxes": [{
+        "stackType": "3d",
+        "unit": "",
+        "position": "left",
+        "title": "Petty Cash Analysis Branch Wise",
+    }],
+    "startDuration": 1,
+    "graphs": [{
+        "balloonText": "Balance [[category]] : <b>[[value]]</b>",
+        "fillAlphas": 0.9,
+        "lineAlpha": 0.2,
+        "title": "2004",
+        "type": "column",
+		"fillColors":"#fc8213",
+        "valueField": "year2004"
+    }, {
+        "balloonText": "Expenses [[category]]: <b>[[value]]</b>",
+        "fillAlphas": 0.9,
+        "lineAlpha": 0.2,
+        "title": "2005",
+        "type": "column",
+        "valueField": "year2005"
+    }],
+    "plotAreaFillAlphas": 0.1,
+    "depth3D": 0,
+    "angle": 30,
+    "categoryField": "country",
+    "categoryAxis": {
+        "gridPosition": "start"
+    },
+    "export": {
+    	"enabled": true
+     }
+});
+jQuery('.chart-input').off().on('input change',function() {
+	var property	= jQuery(this).data('property');
+	var target		= chart;
+	chart.startDuration = 0;
+
+	if ( property == 'topRadius') {
+		target = chart.graphs[0];
+      	if ( this.value == 0 ) {
+          this.value = undefined;
+      	}
+	}
+
+	target[property] = this.value;
+	chart.validateNow();
+});
+</script>
+
+<script>
+var chart = AmCharts.makeChart("chartdiv7", {
+    "theme": "light",
+    "type": "serial",
+    "dataProvider": [
+	
+<?php
+$DB=Connect();
+	$sqlgraph=select("FromDate,ToDate","tblGraphDateParameter","RoleID='".$strAdminRoleID."'");
+		$FromDate=$sqlgraph[0]['FromDate'];
+		$ToDate=$sqlgraph[0]['ToDate'];
+	    $First= $FromDate;
+		$Last= $ToDate;
+		$SelectStore="Select StoreID, StoreName from tblStores WHERE StoreID=4";
+		$RSCF = $DB->query($SelectStore);
+			if ($RSCF->num_rows > 0) 
+			{
+				while($rowS = $RSCF->fetch_assoc())
+				{
+					$StoreID = $rowS["StoreID"];
+					$strStoreName = $rowS["StoreName"];
+					$StoreName = substr($strStoreName, 0, 6);
+					$SelectExpenseBalance="Select tblExpensesBalance.Balance, SUM(tblExpenses.Amount) as Expenses from tblExpensesBalance left Join tblExpenses ON tblExpensesBalance.StoreID=tblExpenses.StoreID where tblExpensesBalance.StoreID='$StoreID' and tblExpenses.Status='0' and  Date(DateOfExpense)>=Date('".$First."') and Date(DateOfExpense)<=Date('".$Last."') group by tblExpensesBalance.StoreID";
+						// echo $SelectExpenseBalance."<br><br><br><br>";
+						
+							$RSP= $DB->query($SelectExpenseBalance);
+							if($RSP->num_rows>0)
+							{
+								while($ROP=$RSP->fetch_assoc())
+								{
+									$Expenses = $ROP["Expenses"];
+									$Balance = $ROP["Balance"];
+									
+									if($Expenses=="")
+									{
+										$Expenses = "0";
+									}
+									else
+									{
+										$Expenses = $Expenses;
+									}
+									if($Balance=="")
+									{
+										$Balance = '0';
+									}
+									else
+									{
+										$Balance = $Balance;
+									}
+?>
+										{
+											"country": "<?=$StoreName?>",
+											"year2004": <?=$Expenses?>,
+											"year2005": <?=$Balance?>,
+											"color":"#fc8213"
+										}, 
+<?php
+								}
+							}
+				}
+			}
+			else
+			{
+?>
+				{
+					"country": "0",
+					"year2004": 0,
+					"year2005": 0
+				}, 
+<?php
+			}
+			$DB->close();	
+?>	
+	],
+    "valueAxes": [{
+        "stackType": "3d",
+        "unit": "",
+        "position": "left",
+        "title": "Petty Cash Analysis Branch Wise",
+    }],
+    "startDuration": 1,
+    "graphs": [{
+        "balloonText": "Balance [[category]] : <b>[[value]]</b>",
+        "fillAlphas": 0.9,
+        "lineAlpha": 0.2,
+        "title": "2004",
+        "type": "column",
+		"fillColors":"#fc8213",
+        "valueField": "year2004"
+    }, {
+        "balloonText": "Expenses [[category]]: <b>[[value]]</b>",
+        "fillAlphas": 0.9,
+        "lineAlpha": 0.2,
+        "title": "2005",
+        "type": "column",
+        "valueField": "year2005"
+    }],
+    "plotAreaFillAlphas": 0.1,
+    "depth3D": 0,
+    "angle": 30,
+    "categoryField": "country",
+    "categoryAxis": {
+        "gridPosition": "start"
+    },
+    "export": {
+    	"enabled": true
+     }
+});
+jQuery('.chart-input').off().on('input change',function() {
+	var property	= jQuery(this).data('property');
+	var target		= chart;
+	chart.startDuration = 0;
+
+	if ( property == 'topRadius') {
+		target = chart.graphs[0];
+      	if ( this.value == 0 ) {
+          this.value = undefined;
+      	}
+	}
+
+	target[property] = this.value;
+	chart.validateNow();
+});
+</script>
+<script>
+var chart = AmCharts.makeChart("chartdiv5", {
+    "theme": "light",
+    "type": "serial",
+    "dataProvider": [
+	
+<?php
+$DB=Connect();
+	$sqlgraph=select("FromDate,ToDate","tblGraphDateParameter","RoleID='".$strAdminRoleID."'");
+		$FromDate=$sqlgraph[0]['FromDate'];
+		$ToDate=$sqlgraph[0]['ToDate'];
+	    $First= $FromDate;
+		$Last= $ToDate;
+		$SelectStore="Select StoreID, StoreName from tblStores WHERE StoreID=5";
+		$RSCF = $DB->query($SelectStore);
+			if ($RSCF->num_rows > 0) 
+			{
+				while($rowS = $RSCF->fetch_assoc())
+				{
+					$StoreID = $rowS["StoreID"];
+					$strStoreName = $rowS["StoreName"];
+					$StoreName = substr($strStoreName, 0, 6);
+					$SelectExpenseBalance="Select tblExpensesBalance.Balance, SUM(tblExpenses.Amount) as Expenses from tblExpensesBalance left Join tblExpenses ON tblExpensesBalance.StoreID=tblExpenses.StoreID where tblExpensesBalance.StoreID='$StoreID' and tblExpenses.Status='0' and  Date(DateOfExpense)>=Date('".$First."') and Date(DateOfExpense)<=Date('".$Last."') group by tblExpensesBalance.StoreID";
+						// echo $SelectExpenseBalance."<br><br><br><br>";
+						
+							$RSP= $DB->query($SelectExpenseBalance);
+							if($RSP->num_rows>0)
+							{
+								while($ROP=$RSP->fetch_assoc())
+								{
+									$Expenses = $ROP["Expenses"];
+									$Balance = $ROP["Balance"];
+									
+									if($Expenses=="")
+									{
+										$Expenses = "0";
+									}
+									else
+									{
+										$Expenses = $Expenses;
+									}
+									if($Balance=="")
+									{
+										$Balance = '0';
+									}
+									else
+									{
+										$Balance = $Balance;
+									}
+?>
+										{
+											"country": "<?=$StoreName?>",
+											"year2004": <?=$Expenses?>,
+											"year2005": <?=$Balance?>,
+											"color":"#fc8213"
+										}, 
+<?php
+								}
+							}
+				}
+			}
+			else
+			{
+?>
+				{
+					"country": "0",
+					"year2004": 0,
+					"year2005": 0
+				}, 
+<?php
+			}
+			$DB->close();	
+?>	
+	],
+    "valueAxes": [{
+        "stackType": "3d",
+        "unit": "",
+        "position": "left",
+        "title": "Petty Cash Analysis Branch Wise",
+    }],
+    "startDuration": 1,
+    "graphs": [{
+        "balloonText": "Balance [[category]] : <b>[[value]]</b>",
+        "fillAlphas": 0.9,
+        "lineAlpha": 0.2,
+        "title": "2004",
+        "type": "column",
+		"fillColors":"#fc8213",
+        "valueField": "year2004"
+    }, {
+        "balloonText": "Expenses [[category]]: <b>[[value]]</b>",
+        "fillAlphas": 0.9,
+        "lineAlpha": 0.2,
+        "title": "2005",
+        "type": "column",
+        "valueField": "year2005"
+    }],
+    "plotAreaFillAlphas": 0.1,
+    "depth3D": 0,
+    "angle": 30,
+    "categoryField": "country",
+    "categoryAxis": {
+        "gridPosition": "start"
+    },
+    "export": {
+    	"enabled": true
+     }
+});
+jQuery('.chart-input').off().on('input change',function() {
+	var property	= jQuery(this).data('property');
+	var target		= chart;
+	chart.startDuration = 0;
+
+	if ( property == 'topRadius') {
+		target = chart.graphs[0];
+      	if ( this.value == 0 ) {
+          this.value = undefined;
+      	}
+	}
+
+	target[property] = this.value;
+	chart.validateNow();
+});
+</script>

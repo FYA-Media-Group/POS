@@ -1,0 +1,809 @@
+                   
+				   <div id="page-header">
+                        <div id="header-nav-left">
+						<?php
+							if($strStore=="" || $strStore=="0")
+							{
+								$strkonami = 'boy';
+							}
+							else
+							{
+								$strkonami = 'girl';
+							}
+							$selpsspath=select("ProfilePath","tblAdmin","AdminID='".$strAdminID."'");
+								$ProfilePath=$selpsspath[0]['ProfilePath'];
+								if($ProfilePath!="")
+								{
+								   $strkonami=$ProfilePath;
+								}
+								else
+								{
+								$strkonami="imageupload/images/".$strkonami.".png";
+								}
+								
+						?>
+							<a class="header-btn" id=""  title=""><i class=""></i></a>
+                            <div class="user-account-btn dropdown">
+                                <a href="#" title="My Account" class="user-profile clearfix" data-toggle="dropdown"><img width="28" src="<?=$strkonami?>" alt="Profile image"> <span><?=$strAdminFullName?>
+							</span> <i class="glyph-icon icon-angle-down"></i></a>
+                                <div class="dropdown-menu float-right">
+                                    <div class="box-sm">
+                                        <div class="login-box clearfix">
+                                            <div class="user-img"><a href="UploadProfile.php" title="" class="change-img">Change photo</a> <img src="<?=$strkonami?>" alt=""></div>
+                                             <div class="user-info"><span>Welcome<i><?=$strAdminFullName?>
+											
+											 </i></span></div>
+                                        </div>
+                                        <div class="divider"></div>
+                                        <div class="button-pane button-pane-alt pad5L pad5R text-center"><a href="Logout.php" class="btn btn-flat display-block font-normal btn-danger"><i class="glyph-icon icon-power-off"></i> Logout</a></div>
+									   	<?php 
+										if($strAdminRoleID=='36')
+							            {
+										?>
+										<!-- <div class="button-pane button-pane-alt pad5L pad5R text-center" style="size:50px"><a href="CronServiceCatPie.php" class="btn btn-flat display-block font-normal btn-danger">Refresh Service Category Revenue Data</a></div>
+										  <div class="button-pane button-pane-alt pad5L pad5R text-center" style="size:50px"><a href="CronServiceRevenue.php" class="btn btn-flat display-block font-normal btn-danger">Refresh Service Revenue Data</a></div>
+										  <div class="button-pane button-pane-alt pad5L pad5R text-center" style="size:50px"><a href="CronBestPerformanceEmployee.php" class="btn btn-flat display-block font-normal btn-danger">Refresh Employee Sales Target</a></div>-->
+										 <?php
+										 }
+										 ?>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="header-nav-right">
+						<!--<a href="#" class="hdr-btn popover-button" title="Search" data-placement="bottom" data-id="#popover-search"><i class="glyph-icon icon-search"></i></a>-->
+                            <!--<div class="hide" id="popover-search">
+                                <div class="pad5A box-md">
+                                    <div class="input-group"><input type="text" class="form-control" placeholder="Search terms here ..."> <span class="input-group-btn"><a class="btn btn-primary" href="#">Search</a></span></div>
+                                </div>
+                            </div>-->
+                            <!-- <div class="dropdown" id="dashnav-btn"><a href="#" data-toggle="dropdown" data-placement="bottom" class="popover-button-header tooltip-button" title="Dashboard Quick Menu"><i class="glyph-icon icon-linecons-cog"></i></a>
+                                <div class="dropdown-menu float-left">
+                                    <div class="box-sm">
+                                        <div class="pad5T pad5B pad10L pad10R dashboard-buttons clearfix"><a href="#" class="btn vertical-button hover-blue-alt" title=""><span class="glyph-icon icon-separator-vertical pad0A medium"><i class="glyph-icon icon-dashboard opacity-80 font-size-20"></i></span> Dashboard</a> <a href="#" class="btn vertical-button hover-green" title=""><span class="glyph-icon icon-separator-vertical pad0A medium"><i class="glyph-icon icon-tags opacity-80 font-size-20"></i></span> Widgets</a> <a href="#" class="btn vertical-button hover-orange" title=""><span class="glyph-icon icon-separator-vertical pad0A medium"><i class="glyph-icon icon-fire opacity-80 font-size-20"></i></span> Tables</a> <a href="#" class="btn vertical-button hover-orange" title=""><span class="glyph-icon icon-separator-vertical pad0A medium"><i class="glyph-icon icon-bar-chart-o opacity-80 font-size-20"></i></span> Charts</a> <a href="#" class="btn vertical-button hover-purple" title=""><span class="glyph-icon icon-separator-vertical pad0A medium"><i class="glyph-icon icon-laptop opacity-80 font-size-20"></i></span> Buttons</a> <a href="#" class="btn vertical-button hover-azure" title=""><span class="glyph-icon icon-separator-vertical pad0A medium"><i class="glyph-icon icon-code opacity-80 font-size-20"></i></span> Panels</a></div>
+                                        <div class="divider"></div>
+                                        <div class="pad5T pad5B pad10L pad10R dashboard-buttons clearfix"><a href="#" class="btn vertical-button remove-border btn-info" title=""><span class="glyph-icon icon-separator-vertical pad0A medium"><i class="glyph-icon icon-dashboard opacity-80 font-size-20"></i></span> Dashboard</a> <a href="#" class="btn vertical-button remove-border btn-danger" title=""><span class="glyph-icon icon-separator-vertical pad0A medium"><i class="glyph-icon icon-tags opacity-80 font-size-20"></i></span> Widgets</a> <a href="#" class="btn vertical-button remove-border btn-purple" title=""><span class="glyph-icon icon-separator-vertical pad0A medium"><i class="glyph-icon icon-fire opacity-80 font-size-20"></i></span> Tables</a> <a href="#" class="btn vertical-button remove-border btn-azure" title=""><span class="glyph-icon icon-separator-vertical pad0A medium"><i class="glyph-icon icon-bar-chart-o opacity-80 font-size-20"></i></span> Charts</a> <a href="#" class="btn vertical-button remove-border btn-yellow" title=""><span class="glyph-icon icon-separator-vertical pad0A medium"><i class="glyph-icon icon-laptop opacity-80 font-size-20"></i></span> Buttons</a> <a href="#" class="btn vertical-button remove-border btn-warning" title=""><span class="glyph-icon icon-separator-vertical pad0A medium"><i class="glyph-icon icon-code opacity-80 font-size-20"></i></span> Panels</a></div>
+                                    </div>
+                                </div>
+                            </div> -->
+							<a href="#" class="hdr-btn" id="fullscreen-btn" title="Fullscreen"><i class="glyph-icon icon-arrows-alt"></i></a> 
+							<!--<a href="#" class="hdr-btn sb-toggle-left" id="close-sidebar" title="Close sidebar"><i class="glyph-icon icon-linecons-paper-plane"></i></a>-->
+				
+							  
+							<?php
+							$DB = Connect();
+							if($strAdminRoleID=='38')
+							{
+								$selp=select("Stock","tblStoreProduct","1");
+								$checkstock=$selp[0]['Stock'];
+								if($checkstock<5)
+								{
+								
+							?>
+							    <div class="dropdown" id="notifications-btn"><a data-toggle="dropdown" href="#" title=""><span class="small-badge bg-yellow"></span> <i class="glyph-icon icon-linecons-megaphone"></i></a>
+                                <div class="dropdown-menu box-md float-left">
+                                    <div class="popover-title display-block clearfix pad10A">Less Product Stock <a class="text-transform-cap font-primary font-normal btn-link float-right" href="#" title="View more options">More options...</a></div>
+                                    <div class="scrollable-content scrollable-slim-box">
+                                        <ul class="no-border notifications-box">
+										<?php
+										$sqlstorenamedisplayd = "select ProductID,ProductStockID,StoreID,Stock from tblStoreProduct where Stock<5";
+										$RSstorenamedisplayd = $DB->query($sqlstorenamedisplayd);
+										if ($RSstorenamedisplayd->num_rows > 0) 
+										{
+											while($rowstorenamedisplayt = $RSstorenamedisplayd->fetch_assoc())
+											{
+												$Stock = $rowstorenamedisplayt["Stock"];
+												$ProductID = $rowstorenamedisplayt["ProductID"];
+												$StoreID = $rowstorenamedisplayt["StoreID"];
+												$ProductStockID = $rowstorenamedisplayt["ProductStockID"];
+												$sept=select("StoreName","tblStores","StoreID='".$StoreID."'");
+												$StoreName=$sept[0]['StoreName'];
+												$septm=select("ProductName","tblNewProducts","ProductID='".$ProductID."'");
+												$ProductName=$septm[0]['ProductName'];
+												?>
+												 <li><span class="bg-danger icon-notification glyph-icon icon-bullhorn"></span><span class="notification-text">&nbsp;&nbsp;<b>Store : </b>&nbsp;<?=$StoreName?></span>&nbsp;&nbsp;<span class="notification-text">&nbsp;&nbsp;<b>Product : </b>&nbsp;<?=$ProductName?></span>&nbsp;&nbsp;<span class="notification-text">&nbsp;&nbsp;<b>Stock : </b>&nbsp;<?=$Stock?>&nbsp;&nbsp;</span>
+                                                
+                                            </li>
+												<?php
+											}
+										}
+										?>
+										
+                                           
+                                        </ul>
+                                    </div>
+                                   <div class="button-pane button-pane-alt pad5T pad5L pad5R text-center"><a href="#" class="btn btn-flat btn-primary" title="View all notifications">View all notifications</a></div>
+                                </div>
+                            </div>
+							<?php
+								}
+								
+							}
+							elseif($strAdminRoleID=='39')
+							{
+								$selp=select("Stock","tblStoreProduct","1");
+								$checkstock=$selp[0]['Stock'];
+								if($checkstock<5)
+								{
+								
+							?>
+							    <div class="dropdown" id="notifications-btn"><a data-toggle="dropdown" href="#" title=""><span class="small-badge bg-yellow"></span> <i class="glyph-icon icon-linecons-megaphone"></i></a>
+                                <div class="dropdown-menu box-md float-left">
+                                    <div class="popover-title display-block clearfix pad10A">Less Product Stock <a class="text-transform-cap font-primary font-normal btn-link float-right" href="#" title="View more options">More options...</a></div>
+                                    <div class="scrollable-content scrollable-slim-box">
+                                        <ul class="no-border notifications-box">
+										<?php
+										$sqlstorenamedisplayd = "select ProductID,ProductStockID,StoreID,Stock from tblStoreProduct where Stock<5";
+										$RSstorenamedisplayd = $DB->query($sqlstorenamedisplayd);
+										if ($RSstorenamedisplayd->num_rows > 0) 
+										{
+											while($rowstorenamedisplayt = $RSstorenamedisplayd->fetch_assoc())
+											{
+												$Stock = $rowstorenamedisplayt["Stock"];
+												$ProductID = $rowstorenamedisplayt["ProductID"];
+												$StoreID = $rowstorenamedisplayt["StoreID"];
+												$ProductStockID = $rowstorenamedisplayt["ProductStockID"];
+												$sept=select("StoreName","tblStores","StoreID='".$StoreID."'");
+												$StoreName=$sept[0]['StoreName'];
+												$septm=select("ProductName","tblNewProducts","ProductID='".$ProductID."'");
+												$ProductName=$septm[0]['ProductName'];
+												?>
+												 <li><span class="bg-danger icon-notification glyph-icon icon-bullhorn"></span><span class="notification-text">&nbsp;&nbsp;<b>Store : </b>&nbsp;<?=$StoreName?></span>&nbsp;&nbsp;<span class="notification-text">&nbsp;&nbsp;<b>Product : </b>&nbsp;<?=$ProductName?></span>&nbsp;&nbsp;<span class="notification-text">&nbsp;&nbsp;<b>Stock : </b>&nbsp;<?=$Stock?>&nbsp;&nbsp;</span>
+                                                
+                                            </li>
+												<?php
+											}
+										}
+										?>
+										
+                                           
+                                        </ul>
+                                    </div>
+                                   <div class="button-pane button-pane-alt pad5T pad5L pad5R text-center"><a href="#" class="btn btn-flat btn-primary" title="View all notifications">View all notifications</a></div>
+                                </div>
+                            </div>
+							<?php
+								}
+								$date=date('Y-m-d');
+								$septmquCNTAPP=select("count(*)","tblAppointments","StoreID!='0' and AppointmentDate = '$date' and Status='0' and AppointmentCheckInTime='00:00:00' and 45minstatus='0'");
+								$remincntAPP=$septmquCNTAPP[0]['count(*)'];
+								if($remincntAPP>0)
+								{
+									?>
+							    <div class="dropdown" id="notifications-btn"><a data-toggle="dropdown" href="#" title=""><span class="small-badge bg-yellow"></span> <i class="glyph-icon icon-bell"></i></a>
+                                <div class="dropdown-menu box-md float-left">
+                                    <div class="popover-title display-block clearfix pad10A">45 Reminder Appointments</div>
+                                    <div class="scrollable-content scrollable-slim-box">
+                                        <ul class="no-border notifications-box">
+										<?php
+										$sqlstorenamedisplaydq = "select * from tblAppointments where StoreID!='0' and AppointmentDate = '$date' and Status='0' and AppointmentCheckInTime='00:00:00' and 45minstatus='0'";
+										$dep = $DB->query($sqlstorenamedisplaydq);
+										if ($dep->num_rows > 0) 
+										{
+											
+											while($row = $dep->fetch_assoc())
+											{
+												$strAppointmentID = $row["AppointmentID"];
+												$getUID = EncodeQ($strAppointmentID);
+												$getUIDDelete = Encode($strAppointmentID);	
+												$strCustomerID = $row["CustomerID"];
+												$strStoreID = $row["StoreID"];	
+												$AppointmentDate = $row["AppointmentDate"];
+													date_default_timezone_set('Asia/Kolkata');
+												$SuitableAppointmentTime = $row["SuitableAppointmentTime"];
+												$dateObject = new DateTime($SuitableAppointmentTime);
+												// echo $dateObject->format('h:i A');
+												// $abc=date("H:i",strtotime($SuitableAppointmentTime));
+												$abc=date_format("H:i:s",strtotime($SuitableAppointmentTime));
+											
+												// $SuitableAppointmentTime=date('y/m/d H:i:s');
+												// $newDateTime = date('h:i A', strtotime($SuitableAppointmentTime));
+												// echo $newDateTime."<br>"; 
+												
+												$AppointmentCheckInTime = $row["AppointmentCheckInTime"];
+												$AppointmentCheckOutTime = $row["AppointmentCheckOutTime"];
+												$AppointmentOfferID = $row["AppointmentOfferID"];
+												$Status = $row["Status"];
+												  $seldataqt=select("Flag","tblInvoiceDetails","AppointmentId='".$strAppointmentID."'");
+												   $Flag=$seldataqt[0]['Flag'];
+												   
+												   $timestamp =  date("H:i:s", time());
+														
+														$date1=$timestamp;
+														$date2=$SuitableAppointmentTime;
+														$dateyu=Date('Y-m-d H:i:s');
+														
+														$sql_cust = "SELECT * FROM tblCustomers WHERE CustomerID = '".$strCustomerID."'";
+																$RS_cust = $DB->query($sql_cust);
+																$row_cust = $RS_cust->fetch_assoc();
+																$CustomerFullName = $row_cust['CustomerFullName'];
+																$CustomerMobileNo = $row_cust['CustomerMobileNo'];
+																$sql_store = "SELECT * FROM tblStores WHERE StoreID = '".$strStoreID."'";
+																$RS_store = $DB->query($sql_store);
+																$row_store = $RS_store->fetch_assoc();
+																$StoreName = $row_store['StoreName'];
+												
+												?>
+												 <li><span class="notification-text"><b>Name : </b><?=$CustomerFullName?><br> <b>Mobile No : </b><?=$CustomerMobileNo;?></span>&nbsp;&nbsp;<br><br>&nbsp;&nbsp;<span class="notification-text"><b>Date : </b><?=$AppointmentDate?><br><b>Time : </b>
+																<?=$dateObject->format('h:i A')?>&nbsp;&nbsp;</span><br/>
+																<span class="notification-text"><b>Store : </b>&nbsp;<?=$StoreName?></span>
+                                                
+                                            </li>
+												<?php
+											}
+										}
+										?>
+										
+                                           
+                                        </ul>
+                                    </div>
+                                  
+                                </div>
+                            </div>
+							<?php
+								}
+							}
+							elseif($strAdminRoleID=='4')
+							{
+									$selp=select("Stock","tblStoreProduct","1");
+								$checkstock=$selp[0]['Stock'];
+								if($checkstock<5)
+								{
+								
+							?>
+							    <div class="dropdown" id="notifications-btn"><a data-toggle="dropdown" href="#" title=""><span class="small-badge bg-yellow"></span> <i class="glyph-icon icon-linecons-megaphone"></i></a>
+                                <div class="dropdown-menu box-md float-left">
+                                    <div class="popover-title display-block clearfix pad10A">Less Product Stock <a class="text-transform-cap font-primary font-normal btn-link float-right" href="#" title="View more options">More options...</a></div>
+                                    <div class="scrollable-content scrollable-slim-box">
+                                        <ul class="no-border notifications-box">
+										<?php
+										$sqlstorenamedisplayd = "select ProductID,ProductStockID,StoreID,Stock from tblStoreProduct where Stock<5";
+										$RSstorenamedisplayd = $DB->query($sqlstorenamedisplayd);
+										if ($RSstorenamedisplayd->num_rows > 0) 
+										{
+											while($rowstorenamedisplayt = $RSstorenamedisplayd->fetch_assoc())
+											{
+												$Stock = $rowstorenamedisplayt["Stock"];
+												$ProductID = $rowstorenamedisplayt["ProductID"];
+												$StoreID = $rowstorenamedisplayt["StoreID"];
+												$ProductStockID = $rowstorenamedisplayt["ProductStockID"];
+												$sept=select("StoreName","tblStores","StoreID='".$StoreID."'");
+												$StoreName=$sept[0]['StoreName'];
+												$septm=select("ProductName","tblNewProducts","ProductID='".$ProductID."'");
+												$ProductName=$septm[0]['ProductName'];
+												?>
+												 <li><span class="bg-danger icon-notification glyph-icon icon-bullhorn"></span><span class="notification-text"><b>Customer Name&nbsp;&nbsp; : </b>&nbsp;<?=$CustomerFullName?></span><br/><span class="notification-text"><b>Mobile : </b>&nbsp;<?=$CustomerMobileNo?></span><br/><span class="notification-text">&nbsp;&nbsp;<b>Last Appointment : </b>&nbsp;<?=$AppointmentDate?><br/></span>
+                                            </li>
+												<?php
+											}
+										}
+										?>
+										
+                                           
+                                        </ul>
+                                    </div>
+                                  
+                                </div>
+                            </div>
+							<?php
+								}
+								?>
+									  <div class="dropdown" id="notifications-btn"><a data-toggle="dropdown" href="#" title=""><span class="small-badge bg-yellow"></span> <i class="glyph-icon demo-icon icon-cloud"></i></a>
+                                <div class="dropdown-menu box-md float-left">
+                                  <div class="popover-title display-block clearfix pad10A">List Of Offers</div>
+                                  <div class="scrollable-content scrollable-slim-box">
+                                   <ul class="no-border notifications-box">
+								   <?php
+								$septmqudd=select("*","tblOffers","Status='0'");
+								
+								foreach($septmqudd as $addd)
+								{
+								     
+												$OfferName = $addd["OfferName"];
+												
+												
+												?>
+												 <li>&nbsp;&nbsp;<span class="notification-text"><?=$OfferName?></span>
+                                                
+                                            </li>
+												<?php
+											
+										
+                                        
+							}
+							?>
+							   
+                                        </ul>
+                                    </div>
+                                  
+                                </div>
+                            </div>
+							<?php
+							}
+							elseif($strAdminRoleID=='6')
+							{
+								$selp=select("Stock","tblStoreProduct","1");
+								$checkstock=$selp[0]['Stock'];
+								if($checkstock<5)
+								{
+								
+							?>
+							    <div class="dropdown" id="notifications-btn"><a data-toggle="dropdown" href="#" title=""><span class="small-badge bg-yellow"></span> <i class="glyph-icon icon-linecons-megaphone"></i></a>
+                                <div class="dropdown-menu box-md float-left">
+                                    <div class="popover-title display-block clearfix pad10A">Less Product Stock</div>
+                                    <div class="scrollable-content scrollable-slim-box">
+                                        <ul class="no-border notifications-box">
+										<?php
+										$sqlstorenamedisplayd = "select ProductID,ProductStockID,StoreID,Stock from tblStoreProduct where Stock<5 and StoreID='".$strStore."'";
+										$RSstorenamedisplayd = $DB->query($sqlstorenamedisplayd);
+										if ($RSstorenamedisplayd->num_rows > 0) 
+										{
+											
+											while($rowstorenamedisplayt = $RSstorenamedisplayd->fetch_assoc())
+											{
+												$Stock = $rowstorenamedisplayt["Stock"];
+												$ProductID = $rowstorenamedisplayt["ProductID"];
+												$StoreID = $rowstorenamedisplayt["StoreID"];
+												$ProductStockID = $rowstorenamedisplayt["ProductStockID"];
+												$sept=select("StoreName","tblStores","StoreID='".$StoreID."'");
+												$StoreName=$sept[0]['StoreName'];
+												$septm=select("ProductName","tblNewProducts","ProductID='".$ProductID."'");
+												$ProductName=$septm[0]['ProductName'];
+												?>
+											 <li><span class="bg-danger icon-notification glyph-icon icon-bullhorn"></span><span class="notification-text"><b>Customer Name&nbsp;&nbsp; : </b>&nbsp;<?=$CustomerFullName?></span><span class="notification-text"><b>Mobile : </b>&nbsp;<?=$CustomerMobileNo?></span><br/><span class="notification-text">&nbsp;&nbsp;<b>Last Appointment : </b>&nbsp;<?=$AppointmentDate?><br/></span>
+											 </li>
+												<?php
+											}
+										}
+										?>
+										
+                                           
+                                        </ul>
+                                    </div>
+                               
+                                </div>
+                            </div>
+							<?php
+								}
+								$septmqu=select("count(*)","tblAppointments","StoreID='".$strStore."' and CommentType='2' and ReturnStatus='0'");
+								$remincnt=$septmqu[0]['count(*)'];
+								if($remincnt>0)
+								{
+									?>
+							    <div class="dropdown" id="notifications-btn"><a data-toggle="dropdown" href="#" title=""><span class="small-badge bg-yellow"></span> <i class="glyph-icon icon-bell"></i></a>
+                                <div class="dropdown-menu box-md float-left">
+                                    <div class="popover-title display-block clearfix pad10A">Customer Call Later Reminder<a class="text-transform-cap font-primary font-normal btn-link float-right" href="ViewUsers.php?type=2" title="View more options">More options...</a></div>
+                                    <div class="scrollable-content scrollable-slim-box">
+                                        <ul class="no-border notifications-box">
+										<?php
+										$sqlstorenamedisplaydq = "select * from tblAppointments where StoreID='".$strStore."' and CommentType='2' and ReturnStatus='0'";
+										$dep = $DB->query($sqlstorenamedisplaydq);
+										if ($dep->num_rows > 0) 
+										{
+											
+											while($rowstorenamedisplayty = $dep->fetch_assoc())
+											{
+												$CustomerID = $rowstorenamedisplayty["CustomerID"];
+												$AppointmentDate = $rowstorenamedisplayty["AppointmentDate"];
+												$CustomerRemark = $rowstorenamedisplayty["CustomerRemark"];
+												$sept=select("*","tblCustomers","CustomerID='".$CustomerID."'");
+												$CustomerFullName=$sept[0]['CustomerFullName'];
+												$CustomerMobileNo=$sept[0]['CustomerMobileNo'];
+												
+												?>
+												 <li><span class="bg-danger icon-notification glyph-icon icon-bullhorn"></span><span class="notification-text"><b>Customer Name&nbsp;&nbsp; : </b>&nbsp;<?=$CustomerFullName?></span>&nbsp;&nbsp;<span class="notification-text">&nbsp;&nbsp;<b>Mobile : </b>&nbsp;<?=$CustomerMobileNo?></span>&nbsp;&nbsp;<span class="notification-text">&nbsp;&nbsp;<b>Last Appointment : </b>&nbsp;<?=$AppointmentDate?>&nbsp;&nbsp;</span>&nbsp;&nbsp;<span class="notification-text">&nbsp;&nbsp;<b>Remark: </b>&nbsp;<?=$CustomerRemark?>&nbsp;&nbsp;</span>
+                                                
+                                            </li>
+												<?php
+											}
+										}
+										?>
+										
+                                           
+                                        </ul>
+                                    </div>
+                                  
+                                </div>
+                            </div>
+							<?php
+								}
+								$septmqu=select("count(*)","tblAppointments","StoreID='".$strStore."' and CommentType='4' and ReturnStatus='0'");
+								$clienttravelcount=$septmqu[0]['count(*)'];
+								if($clienttravelcount>0)
+								{
+									?>
+							    <div class="dropdown" id="notifications-btn"><a data-toggle="dropdown" href="#" title=""><span class="small-badge bg-yellow"></span> <i class="glyph-icon icon-plane"></i></a>
+                                <div class="dropdown-menu box-md float-left">
+                                    <div class="popover-title display-block clearfix pad10A">Customer Travelling Reminder<a class="text-transform-cap font-primary font-normal btn-link float-right" href="ViewUsers.php?type=4" title="View more options">More options...</a></div>
+                                    <div class="scrollable-content scrollable-slim-box">
+                                        <ul class="no-border notifications-box">
+										<?php
+										$sqlstorenamedisplaydq = "select * from tblAppointments where StoreID='".$strStore."' and CommentType='4' and ReturnStatus='0'";
+										$dep = $DB->query($sqlstorenamedisplaydq);
+										if ($dep->num_rows > 0) 
+										{
+											
+											while($rowstorenamedisplayty = $dep->fetch_assoc())
+											{
+												$CustomerID = $rowstorenamedisplayty["CustomerID"];
+												$AppointmentDate = $rowstorenamedisplayty["AppointmentDate"];
+												$CustomerRemark = $rowstorenamedisplayty["CustomerRemark"];
+												$sept=select("*","tblCustomers","CustomerID='".$CustomerID."'");
+												$CustomerFullName=$sept[0]['CustomerFullName'];
+												$CustomerMobileNo=$sept[0]['CustomerMobileNo'];
+												
+												?>
+												 <li><span class="bg-danger icon-notification glyph-icon icon-bullhorn"></span><span class="notification-text"><b>Customer Name&nbsp;&nbsp; : </b>&nbsp;<?=$CustomerFullName?></span>&nbsp;&nbsp;<span class="notification-text">&nbsp;&nbsp;<b>Mobile : </b>&nbsp;<?=$CustomerMobileNo?></span>&nbsp;&nbsp;<span class="notification-text">&nbsp;&nbsp;<b>Last Appointment : </b>&nbsp;<?=$AppointmentDate?><br/></span><span class="notification-text">&nbsp;&nbsp;<b>Remark: </b>&nbsp;<?=$CustomerRemark?>&nbsp;&nbsp;</span>
+                                                
+                                            </li>
+												<?php
+											}
+										}
+										?>
+										
+                                           
+                                        </ul>
+                                    </div>
+                                  
+                                </div>
+                            </div>
+							<?php
+								}
+								$septmqu=select("count(*)","tblAppointments","StoreID='".$strStore."' and CommentType='3' and ReturnStatus='0'");
+								$clienttravelcount=$septmqu[0]['count(*)'];
+								if($clienttravelcount>0)
+								{
+									?>
+							    <div class="dropdown" id="notifications-btn"><a data-toggle="dropdown" href="#" title=""><span class="small-badge bg-yellow"></span> <i class="glyph-icon icon-exclamation-triangle"></i></a>
+                                <div class="dropdown-menu box-md float-left">
+                                    <div class="popover-title display-block clearfix pad10A">Customer Unavailable Reminder<a class="text-transform-cap font-primary font-normal btn-link float-right" href="ViewUsers.php?type=3" title="View more options">More options...</a></div>
+                                    <div class="scrollable-content scrollable-slim-box">
+                                        <ul class="no-border notifications-box">
+										<?php
+										$sqlstorenamedisplaydq = "select * from tblAppointments where StoreID='".$strStore."' and CommentType='3' and ReturnStatus='0'";
+										$dep = $DB->query($sqlstorenamedisplaydq);
+										if ($dep->num_rows > 0) 
+										{
+											
+											while($rowstorenamedisplayty = $dep->fetch_assoc())
+											{
+												$CustomerID = $rowstorenamedisplayty["CustomerID"];
+												$AppointmentDate = $rowstorenamedisplayty["AppointmentDate"];
+												$CustomerRemark = $rowstorenamedisplayty["CustomerRemark"];
+												$sept=select("*","tblCustomers","CustomerID='".$CustomerID."'");
+												$CustomerFullName=$sept[0]['CustomerFullName'];
+												$CustomerMobileNo=$sept[0]['CustomerMobileNo'];
+												
+												?>
+												 <li><span class="bg-danger icon-notification glyph-icon icon-bullhorn"></span><span class="notification-text"><b>Customer Name&nbsp;&nbsp; : </b>&nbsp;<?=$CustomerFullName?></span>&nbsp;&nbsp;<span class="notification-text">&nbsp;&nbsp;<b>Mobile : </b>&nbsp;<?=$CustomerMobileNo?></span>&nbsp;&nbsp;<span class="notification-text">&nbsp;&nbsp;<b>Last Appointment : </b>&nbsp;<?=$AppointmentDate?>&nbsp;&nbsp;</span><span class="notification-text">&nbsp;&nbsp;<b>Remark: </b>&nbsp;<?=$CustomerRemark?>&nbsp;&nbsp;</span>
+                                                
+                                            </li>
+												<?php
+											}
+										}
+										?>
+										
+                                           
+                                        </ul>
+                                    </div>
+                                  
+                                </div>
+                            </div>
+							<?php
+								}
+									$septmqu=select("count(*)","tblAppointments","StoreID='".$strStore."' and CommentType='8'");
+								$remincnt=$septmqu[0]['count(*)'];
+								if($remincnt>0)
+								{
+									?>
+							    <div class="dropdown" id="notifications-btn"><a data-toggle="dropdown" href="#" title=""><span class="small-badge bg-yellow"></span> <i class="glyph-icon icon-close"></i></a>
+                                <div class="dropdown-menu box-md float-left">
+                                    <div class="popover-title display-block clearfix pad10A">Customer Close Tickets</div>
+                                    <div class="scrollable-content scrollable-slim-box">
+                                        <ul class="no-border notifications-box">
+										<?php
+										$sqlstorenamedisplaydq = "select * from tblAppointments where StoreID='".$strStore."' and CommentType='8'";
+										$dep = $DB->query($sqlstorenamedisplaydq);
+										if ($dep->num_rows > 0) 
+										{
+											
+											while($rowstorenamedisplayty = $dep->fetch_assoc())
+											{
+												$CustomerID = $rowstorenamedisplayty["CustomerID"];
+												$AppointmentDate = $rowstorenamedisplayty["AppointmentDate"];
+												$CustomerRemark = $rowstorenamedisplayty["CustomerRemark"];
+												$sept=select("*","tblCustomers","CustomerID='".$CustomerID."'");
+												$CustomerFullName=$sept[0]['CustomerFullName'];
+												$CustomerMobileNo=$sept[0]['CustomerMobileNo'];
+												
+												?>
+												 <li>&nbsp;&nbsp;<span class="notification-text"><b>Customer Name&nbsp;&nbsp; : </b>&nbsp;<?=$CustomerFullName?></span>&nbsp;&nbsp;<span class="notification-text">&nbsp;&nbsp;<b>Mobile : </b>&nbsp;<?=$CustomerMobileNo?></span>&nbsp;&nbsp;<span class="notification-text">&nbsp;&nbsp;<b>Last Appointment : </b>&nbsp;<?=$AppointmentDate?>&nbsp;&nbsp;</span>&nbsp;&nbsp;<span class="notification-text">&nbsp;&nbsp;<b>Remark: </b>&nbsp;<?=$CustomerRemark?>&nbsp;&nbsp;</span>
+                                                
+                                            </li>
+												<?php
+											}
+										}
+										?>
+										
+                                           
+                                        </ul>
+                                    </div>
+                                  
+                                </div>
+                            </div>
+							<?php
+								}
+										$septmqu=select("count(*)","tblAppointments","StoreID='".$strStore."' and NonCustomerCommentType='2' and ReturnNonStatus='0'");
+								$reminnoncnt=$septmqu[0]['count(*)'];
+								if($reminnoncnt>0)
+								{
+									?>
+							    <div class="dropdown" id="notifications-btn"><a data-toggle="dropdown" href="#" title=""><span class="small-badge bg-yellow"></span> <i class="glyph-icon icon-phone"></i></a>
+                                <div class="dropdown-menu box-md float-left">
+                                    <div class="popover-title display-block clearfix pad10A">Non Customer Call Later Reminder<a class="text-transform-cap font-primary font-normal btn-link float-right" href="ViewNonUsers.php?type=2" title="View more options">More options...</a></div>
+                                    <div class="scrollable-content scrollable-slim-box">
+                                        <ul class="no-border notifications-box">
+										<?php
+										$sqlstorenamedisplaydq = "select * from tblAppointments where StoreID='".$strStore."' and NonCustomerCommentType='2' and ReturnNonStatus='0'";
+										$dep = $DB->query($sqlstorenamedisplaydq);
+										if ($dep->num_rows > 0) 
+										{
+											
+											while($rowstorenamedisplayty = $dep->fetch_assoc())
+											{
+												$CustomerID = $rowstorenamedisplayty["CustomerID"];
+												$AppointmentDate = $rowstorenamedisplayty["AppointmentDate"];
+												$CustomerRemark = $rowstorenamedisplayty["CustomerRemark"];
+												$sept=select("*","tblCustomers","CustomerID='".$CustomerID."'");
+												$CustomerFullName=$sept[0]['CustomerFullName'];
+												$CustomerMobileNo=$sept[0]['CustomerMobileNo'];
+												
+												?>
+												 <li><span class="bg-danger icon-notification glyph-icon icon-bullhorn"></span><span class="notification-text"><b>Customer Name&nbsp;&nbsp; : </b>&nbsp;<?=$CustomerFullName?></span>&nbsp;&nbsp;<span class="notification-text">&nbsp;&nbsp;<b>Mobile : </b>&nbsp;<?=$CustomerMobileNo?></span>&nbsp;&nbsp;<span class="notification-text">&nbsp;&nbsp;<b>Last Appointment : </b>&nbsp;<?=$AppointmentDate?>&nbsp;&nbsp;</span>&nbsp;&nbsp;<span class="notification-text">&nbsp;&nbsp;<b>Remark: </b>&nbsp;<?=$CustomerRemark?>&nbsp;&nbsp;</span>
+                                                
+                                            </li>
+												<?php
+											}
+										}
+										?>
+										
+                                           
+                                        </ul>
+                                    </div>
+                                  
+                                </div>
+                            </div>
+							<?php
+								}
+										$septmqu=select("count(*)","tblAppointments","StoreID='".$strStore."' and NonCustomerCommentType='4' and ReturnNonStatus='0'");
+								$clienttravelcount=$septmqu[0]['count(*)'];
+								if($clienttravelcount>0)
+								{
+									?>
+							    <div class="dropdown" id="notifications-btn"><a data-toggle="dropdown" href="#" title=""><span class="small-badge bg-yellow"></span> <i class="glyph-icon icon-taxi"></i></a>
+                                <div class="dropdown-menu box-md float-left">
+                                    <div class="popover-title display-block clearfix pad10A">Non Customer Travelling Reminder<a class="text-transform-cap font-primary font-normal btn-link float-right" href="ViewNonUsers.php?type=4" title="View more options">More options...</a></div>
+                                    <div class="scrollable-content scrollable-slim-box">
+                                        <ul class="no-border notifications-box">
+										<?php
+										$sqlstorenamedisplaydq = "select * from tblAppointments where StoreID='".$strStore."' and NonCustomerCommentType='4' and ReturnNonStatus='0'";
+										$dep = $DB->query($sqlstorenamedisplaydq);
+										if ($dep->num_rows > 0) 
+										{
+											
+											while($rowstorenamedisplayty = $dep->fetch_assoc())
+											{
+												$CustomerID = $rowstorenamedisplayty["CustomerID"];
+												$AppointmentDate = $rowstorenamedisplayty["AppointmentDate"];
+												$CustomerRemark = $rowstorenamedisplayty["CustomerRemark"];
+												$sept=select("*","tblCustomers","CustomerID='".$CustomerID."'");
+												$CustomerFullName=$sept[0]['CustomerFullName'];
+												$CustomerMobileNo=$sept[0]['CustomerMobileNo'];
+												
+												?>
+												 <li><span class="bg-danger icon-notification glyph-icon icon-bullhorn"></span><span class="notification-text"><b>Customer Name&nbsp;&nbsp; : </b>&nbsp;<?=$CustomerFullName?></span>&nbsp;&nbsp;<span class="notification-text">&nbsp;&nbsp;<b>Mobile : </b>&nbsp;<?=$CustomerMobileNo?></span>&nbsp;&nbsp;<span class="notification-text">&nbsp;&nbsp;<b>Last Appointment : </b>&nbsp;<?=$AppointmentDate?><br/></span><span class="notification-text">&nbsp;&nbsp;<b>Remark: </b>&nbsp;<?=$CustomerRemark?>&nbsp;&nbsp;</span>
+                                                
+                                            </li>
+												<?php
+											}
+										}
+										?>
+										
+                                           
+                                        </ul>
+                                    </div>
+                                  
+                                </div>
+                            </div>
+							<?php
+								}
+									$septmqu=select("count(*)","tblAppointments","StoreID='".$strStore."' and NonCustomerCommentType='3' and ReturnNonStatus='0'");
+								$clienttravelcount=$septmqu[0]['count(*)'];
+								if($clienttravelcount>0)
+								{
+									?>
+							    <div class="dropdown" id="notifications-btn"><a data-toggle="dropdown" href="#" title=""><span class="small-badge bg-yellow"></span> <i class="glyph-icon icon-ban"></i></a>
+                                <div class="dropdown-menu box-md float-left">
+                                    <div class="popover-title display-block clearfix pad10A">Non Customer Unavailable Reminder<a class="text-transform-cap font-primary font-normal btn-link float-right" href="ViewNonUsers.php?type=3" title="View more options">More options...</a></div>
+                                    <div class="scrollable-content scrollable-slim-box">
+                                        <ul class="no-border notifications-box">
+										<?php
+										$sqlstorenamedisplaydq = "select * from tblAppointments where StoreID='".$strStore."' and NonCustomerCommentType='3' and ReturnNonStatus='0'";
+										$dep = $DB->query($sqlstorenamedisplaydq);
+										if ($dep->num_rows > 0) 
+										{
+											
+											while($rowstorenamedisplayty = $dep->fetch_assoc())
+											{
+												$CustomerID = $rowstorenamedisplayty["CustomerID"];
+												$AppointmentDate = $rowstorenamedisplayty["AppointmentDate"];
+												$CustomerRemark = $rowstorenamedisplayty["CustomerRemark"];
+												$sept=select("*","tblCustomers","CustomerID='".$CustomerID."'");
+												$CustomerFullName=$sept[0]['CustomerFullName'];
+												$CustomerMobileNo=$sept[0]['CustomerMobileNo'];
+												
+												?>
+												 <li><span class="bg-danger icon-notification glyph-icon icon-bullhorn"></span><span class="notification-text"><b>Customer Name&nbsp;&nbsp; : </b>&nbsp;<?=$CustomerFullName?></span>&nbsp;&nbsp;<span class="notification-text">&nbsp;&nbsp;<b>Mobile : </b>&nbsp;<?=$CustomerMobileNo?></span>&nbsp;&nbsp;<span class="notification-text">&nbsp;&nbsp;<b>Last Appointment : </b>&nbsp;<?=$AppointmentDate?>&nbsp;&nbsp;</span><span class="notification-text">&nbsp;&nbsp;<b>Remark: </b>&nbsp;<?=$CustomerRemark?>&nbsp;&nbsp;</span>
+                                                
+                                            </li>
+												<?php
+											}
+										}
+										?>
+										
+                                           
+                                        </ul>
+                                    </div>
+                                  
+                                </div>
+                            </div>
+							<?php
+								}
+								$septmqu=select("count(*)","tblAppointments","StoreID='".$strStore."' and NonCustomerCommentType='8'");
+								$remincnt=$septmqu[0]['count(*)'];
+								if($remincnt>0)
+								{
+									?>
+							    <div class="dropdown" id="notifications-btn"><a data-toggle="dropdown" href="#" title=""><span class="small-badge bg-yellow"></span> <i class="glyph-icon demo-icon icon-times-circle"></i></a>
+                                <div class="dropdown-menu box-md float-left">
+                                    <div class="popover-title display-block clearfix pad10A">Customer Close Tickets</div>
+                                    <div class="scrollable-content scrollable-slim-box">
+                                        <ul class="no-border notifications-box">
+										<?php
+										$sqlstorenamedisplaydq = "select * from tblAppointments where StoreID='".$strStore."' and NonCustomerCommentType='8'";
+										$dep = $DB->query($sqlstorenamedisplaydq);
+										if ($dep->num_rows > 0) 
+										{
+											
+											while($rowstorenamedisplayty = $dep->fetch_assoc())
+											{
+												$CustomerID = $rowstorenamedisplayty["CustomerID"];
+												$AppointmentDate = $rowstorenamedisplayty["AppointmentDate"];
+												$CustomerRemark = $rowstorenamedisplayty["CustomerRemark"];
+												$sept=select("*","tblCustomers","CustomerID='".$CustomerID."'");
+												$CustomerFullName=$sept[0]['CustomerFullName'];
+												$CustomerMobileNo=$sept[0]['CustomerMobileNo'];
+												
+												?>
+												 <li><span class="notification-text"><b>Customer Name&nbsp;&nbsp; : </b>&nbsp;<?=$CustomerFullName?></span>&nbsp;&nbsp;<span class="notification-text">&nbsp;&nbsp;<b>Mobile : </b>&nbsp;<?=$CustomerMobileNo?></span>&nbsp;&nbsp;<span class="notification-text">&nbsp;&nbsp;<b>Last Appointment : </b>&nbsp;<?=$AppointmentDate?>&nbsp;&nbsp;</span>&nbsp;&nbsp;<span class="notification-text">&nbsp;&nbsp;<b>Remark: </b>&nbsp;<?=$CustomerRemark?>&nbsp;&nbsp;</span>
+                                                
+                                            </li>
+												<?php
+											}
+										}
+										?>
+										
+                                           
+                                        </ul>
+                                    </div>
+                                  
+                                </div>
+                            </div>
+							<?php
+								}
+								?>
+								  <div class="dropdown" id="notifications-btn"><a data-toggle="dropdown" href="#" title=""><span class="small-badge bg-yellow"></span> <i class="glyph-icon demo-icon icon-cloud"></i></a>
+                                <div class="dropdown-menu box-md float-left">
+                                  <div class="popover-title display-block clearfix pad10A">List Of Offers</div>
+                                  <div class="scrollable-content scrollable-slim-box">
+                                   <ul class="no-border notifications-box">
+								   <?php
+								$septmqudd=select("*","tblOffers","Status='0'");
+								
+								foreach($septmqudd as $addd)
+								{
+								     
+												$OfferName = $addd["OfferName"];
+												
+												
+												?>
+												 <li>&nbsp;&nbsp;<span class="notification-text"><?=$OfferName?></span>
+                                                
+                                            </li>
+												<?php
+											
+										
+                                        
+							}
+							?>
+							   
+                                        </ul>
+                                    </div>
+                                  
+                                </div>
+                            </div>
+							<?php
+								
+							}
+								
+							
+							?>
+							
+							
+                            <!--<div class="dropdown" id="notifications-btn"><a data-toggle="dropdown" href="#" title=""><span class="small-badge bg-yellow"></span> <i class="glyph-icon icon-linecons-megaphone"></i></a>
+                                <div class="dropdown-menu box-md float-left">
+                                    <div class="popover-title display-block clearfix pad10A">Notifications <a class="text-transform-cap font-primary font-normal btn-link float-right" href="#" title="View more options">More options...</a></div>
+                                    <div class="scrollable-content scrollable-slim-box">
+                                        <ul class="no-border notifications-box">
+                                            <li><span class="bg-danger icon-notification glyph-icon icon-bullhorn"></span> <span class="notification-text">New Appointment</span>
+                                                
+                                            </li>
+											<li><span class="bg-danger icon-notification glyph-icon icon-bullhorn"></span> <span class="notification-text">New Appointment</span>
+                                                
+                                            </li>
+											<li><span class="bg-danger icon-notification glyph-icon icon-bullhorn"></span> <span class="notification-text">New Appointment</span>
+                                                
+                                            </li>
+											<li><span class="bg-danger icon-notification glyph-icon icon-bullhorn"></span> <span class="notification-text">New Appointment</span>
+                                                
+                                            </li>
+                                            
+                                        </ul>
+                                    </div>
+                                   <div class="button-pane button-pane-alt pad5T pad5L pad5R text-center"><a href="#" class="btn btn-flat btn-primary" title="View all notifications">View all notifications</a></div>
+                                </div>
+                            </div>-->
+							
+							
+                            <?php
+							if($strStore=="" || $strStore=="0")
+							{
+								
+							}
+							else
+							{
+								$DB = Connect();
+								$sqlstorenamedisplay = "select StoreName from tblStores where StoreID='$strStore'";
+								$RSstorenamedisplay = $DB->query($sqlstorenamedisplay);
+								if ($RSstorenamedisplay->num_rows > 0) 
+								{
+									while($rowstorenamedisplay = $RSstorenamedisplay->fetch_assoc())
+									{
+										$strStoreNamedisplay = $rowstorenamedisplay["StoreName"];
+										// Candy issue in BC added by Saif Usmani 16-11-2016
+										if($strStoreNamedisplay=="Breach Candy")
+										{
+											$strStoreNamedisplay = "BreachCandy";
+										}
+										else
+										{
+											$strStoreNamedisplay = $rowstorenamedisplay["StoreName"];
+										}
+									}
+								}
+								$DB->close();
+								
+							?>
+								<div class="dropdown" id="cloud-btn">
+							
+						
+								<a href="#" data-placement="bottom" class="tooltip-button " title="You are managing <?=$strStoreNamedisplay?> store"><b style="color:#dc1156;">
+							
+								<?=$strStoreNamedisplay?></b></a></div>
+							<?php
+							}
+							?>
+							
+							
+                        </div>
+                    </div>
